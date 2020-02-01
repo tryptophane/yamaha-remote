@@ -66,6 +66,15 @@ If the address of your receiver is http://192.168.188.80 and you want to expose 
 
 `docker run -d -p 9200:80 --env BACKEND_API_URL=http://192.168.188.80 yamaha-remote`
 
+## Start docker container from Docker Hub
+
+master releases of YamahaRemote automatically get build at Docker Hub. You can deploy directly from Docker Hub without having to download the sources and build
+the container by yourself by issuing the following command (for receiver at IP 192.168.188.80 and serving on port 9200):
+
+`docker run -d -p 9200:80 --env BACKEND_API_URL=http://192.168.188.80 tryptophane/yamaha-remote`
+
+Docker Hub URL: https://hub.docker.com/repository/docker/tryptophane/yamaha-remote
+
 ## TODO's
 
 ### Functionality:
