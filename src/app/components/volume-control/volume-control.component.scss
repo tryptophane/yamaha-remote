@@ -1,0 +1,30 @@
+.volume-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  mat-button-toggle {
+    margin-left: 16px
+  }
+
+  .control {
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
+
+    button {
+      margin-top: 4px;
+    }
+
+    .volume-label {
+      display: inline-flex;
+      align-items: center;
+      width: 80px;
+      margin-left: 10px;
+    }
+
+    .mat-slider {
+      width: 300px;
+    }
+  }
+}

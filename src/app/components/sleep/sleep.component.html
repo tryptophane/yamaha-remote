@@ -1,0 +1,10 @@
+<div *ngIf="(basicStatusState$ | async) as basicStatusState" class="yamaha-sleep">
+    <button (click)="toggleSleep(basicStatusState.sleep)" [class.button-glow]="basicStatusState.sleep && basicStatusState.sleep !== 'Off'" [disabled]="!basicStatusState.on"
+            [matTooltipShowDelay]="500"
+            [matTooltip]="basicStatusState.sleep !== service.sleepStates[0] ? 'Sleep timer was set to ' + basicStatusState.sleep : 'Sleep Off'"
+            id="sleepButton"
+            mat-mini-fab
+            mat-stroked-button>
+        <mat-icon>snooze</mat-icon>
+    </button>
+</div>

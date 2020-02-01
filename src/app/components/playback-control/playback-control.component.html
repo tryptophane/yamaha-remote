@@ -1,0 +1,22 @@
+<ng-template #navigation let-state="state">
+    <button (click)="skipPrevious()" mat-button>
+        <mat-icon>skip_previous</mat-icon>
+    </button>
+    <button (click)="stop()" *ngIf="currentInput === 'SERVER'" mat-button>
+        <mat-icon>stop</mat-icon>
+    </button>
+    <button (click)="play()" *ngIf="['Stop', 'Pause'].includes(state.status?.playback)" mat-button>
+        <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button (click)="pause()" *ngIf="state.status?.playback === 'Play'" mat-button>
+        <mat-icon>pause</mat-icon>
+    </button>
+    <button (click)="skipNext()" mat-button>
+        <mat-icon>skip_next</mat-icon>
+    </button>
+</ng-template>
+<mat-card *ngIf="['Spotify', 'SERVER', 'AirPlay'].includes(currentInput)" class="net-radio-nav-button-bar">
+    <ng-container
+            *ngTemplateOutlet="navigation;context:{state: (getState() | async)}">
+    </ng-container>
+</mat-card>

@@ -1,0 +1,49 @@
+@import '~@angular/material/theming';
+
+@mixin sleep-theme($theme) {
+
+  $accent: map-get($theme, accent);
+
+  $glow: mat-color($accent);
+
+  @keyframes glowing {
+    0% {
+      box-shadow: 0 0 -10px $glow;
+    }
+    40% {
+      box-shadow: 0 0 10px $glow;
+    }
+    60% {
+      box-shadow: 0 0 10px $glow;
+    }
+    100% {
+      box-shadow: 0 0 -10px $glow;
+    }
+  }
+
+  app-sleep {
+    #sleepButton {
+      background-color: transparent;
+
+      &:not(.button-glow) {
+        border-color: rgba(255, 255, 255, 0.12);
+        border-style: solid;
+        border-width: 1px;
+      }
+
+      &.button-glow {
+        box-shadow: 0 0 10px $glow;
+        color: lighten(mat-color($accent), 40%);
+      }
+
+    }
+  }
+
+  .sleep-snack-bar {
+    display: flex;
+    background-color: transparent;
+    color: white;
+    animation: glowing 3000ms infinite !important;
+    min-width: unset !important;
+  }
+}

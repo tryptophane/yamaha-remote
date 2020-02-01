@@ -1,0 +1,10 @@
+<div *ngIf="(serverState$ | async) as serverState">
+    <button (click)="service.toggleRepeat(serverState.status?.repeat)" [class.on]="serverState.status?.repeat" aria-label="Repeat"
+            mat-button>
+        <mat-icon>repeat</mat-icon>
+    </button>
+    <button (click)="service.toggleShuffle(serverState.status?.shuffle)" [class.on]="serverState.status?.shuffle" aria-label="Shuffle"
+            mat-button>
+        <mat-icon>shuffle</mat-icon>
+    </button>
+</div>

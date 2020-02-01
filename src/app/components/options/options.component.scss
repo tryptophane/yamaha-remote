@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  justify-content: flex-end;
+  width: 260px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.mat-slider {
+  width: 250px;
+}
+
+.mat-slide-toggle {
+  margin-top: 8px;
+}

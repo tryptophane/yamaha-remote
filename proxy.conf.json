@@ -1,0 +1,8 @@
+{
+  "/YamahaRemoteControl/*": {
+  "target": "http://192.168.188.80",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}
+

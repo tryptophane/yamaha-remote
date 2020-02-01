@@ -1,0 +1,95 @@
+.remote-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-horizontal-left-align {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.flex-vertical-left-align {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.flex-horiuontal-center-align {
+  justify-content: center;
+}
+
+.flex-vertical-center-align {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-horizontal-right-align {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-vertical-right-align {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.vertical-center {
+  align-items: center;
+}
+
+.vertical-top {
+  align-items: flex-start;
+}
+
+tr {
+  display: flex;
+  flex-direction: row;
+  padding: 0 8px;
+
+  &.top-margin {
+    margin-top: 16px;
+  }
+}
+
+td {
+  width: 100%;
+}
+
+.mat-slider {
+  width: 300px;
+}
+
+.fill {
+  display: flex;
+  flex-grow: 1;
+}
+
+app-input-selection {
+  margin-left: 32px;
+}
+
+app-volume-control {
+  margin-bottom: 40px;
+}
+
+app-cursor-control {
+  margin-top: 16px;
+}
+
+app-options {
+  margin-top: 32px;
+}
+
+app-play-mode {
+  margin-top: 32px;
+}
+
+.device-info {
+  font-size: 20px;
+}
+
+app-sleep {
+  margin-left: 16px;
+}

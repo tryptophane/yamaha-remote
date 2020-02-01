@@ -1,0 +1,10 @@
+::ng-deep .dsp-select-panel-class {
+  min-height: 400px;
+}
+
+.dsp-selection {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}

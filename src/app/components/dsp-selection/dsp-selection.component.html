@@ -1,0 +1,11 @@
+<div class="dsp-selection">
+    <mat-form-field>
+        <mat-select (selectionChange)="changeSelected($event.value)"
+                    [disabled]="disabled"
+                    [value]="selectedDsp"
+                    panelClass="dsp-select-panel-class">
+            <mat-option *ngFor="let item of presets" value="{{item}}">{{item}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+

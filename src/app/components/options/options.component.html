@@ -1,0 +1,36 @@
+<mat-card class="options">
+    <span>{{'Bass: ' + (basicStatusState.bass / 10) + ' dB'}}</span>
+    <mat-slider
+            (change)="this.service.setBass($event.value);"
+            [value]="basicStatusState.bass"
+            class="example-margin"
+            max="60"
+            min="-60"
+            step="5">
+    </mat-slider>
+    <span>{{'Treble: ' + (basicStatusState.treble / 10) + ' dB'}}</span>
+    <mat-slider
+            (change)="this.service.setTreble($event.value);"
+            [value]="basicStatusState.treble"
+            class="example-margin"
+            max="60"
+            min="-60"
+            step="5">
+    </mat-slider>
+    <mat-slide-toggle (change)="this.service.adaptiveDRC($event.source.checked);" [checked]="basicStatusState.adaptiveDRCEnabled"
+                      labelPosition="before">
+        Adaptive DRC
+    </mat-slide-toggle>
+    <mat-slide-toggle (change)="this.service.enhancer($event.source.checked);" [checked]="basicStatusState.enhancer"
+                      labelPosition="before">
+        Enhancer
+    </mat-slide-toggle>
+    <mat-slide-toggle (change)="this.service.direct($event.source.checked);" [checked]="basicStatusState.direct"
+                      labelPosition="before">
+        Direct
+    </mat-slide-toggle>
+    <mat-slide-toggle (change)="this.service.threeDCinemaDsp($event.source.checked);" [checked]="basicStatusState.threeDCinemaDsp"
+                      labelPosition="before">
+        CINEMA DSP 3D-Mode
+    </mat-slide-toggle>
+</mat-card>

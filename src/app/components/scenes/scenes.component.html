@@ -1,0 +1,5 @@
+<div class="scene-selection">
+    <button (click)="selectScene(scene.xmlName)" *ngFor="let scene of (scenesState$ | async).scenes"
+            mat-stroked-button>{{scene.name}}</button>
+</div>
+

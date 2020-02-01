@@ -1,0 +1,30 @@
+<div *ngIf="(netradioState$ | async) as state" class="net-radio-list">
+    <mat-nav-list *ngIf="state.list.menuStatus === 'Ready'; else spinner">
+
+        <mat-list-item (click)="selectRadioListLine(line)"
+                       *ngFor="let line of state.list?.lines"
+                       [class.selected]="line.txt && line.txt === state.status?.station[0]">
+            <span>{{line.txt}}</span>
+        </mat-list-item>
+    </mat-nav-list>
+    <div class="net-radio-nav-button-bar">
+        <button (click)="moveNetRadioCursor('BACK')" mat-button>
+            <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button (click)="moveNetRadioCursor('DOWN')" mat-button>
+            <mat-icon>expand_more</mat-icon>
+        </button>
+        <button (click)="moveNetRadioCursor('UP')" mat-button>
+            <mat-icon>expand_less</mat-icon>
+        </button>
+    </div>
+</div>
+<ng-template #spinner>
+    <div class="spinner">
+        <mat-progress-spinner
+                class="example-margin"
+                color="accent"
+                mode="indeterminate">
+        </mat-progress-spinner>
+    </div>
+</ng-template>
