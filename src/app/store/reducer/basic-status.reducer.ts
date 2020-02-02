@@ -13,6 +13,7 @@ export interface State {
     treble: number;
     dsp: string;
     sleep: string;
+    error: boolean;
 }
 
 const initialState: State = {
@@ -27,7 +28,8 @@ const initialState: State = {
     bass: 0,
     treble: 0,
     dsp: '',
-    sleep: ''
+    sleep: '',
+    error: false
 };
 
 /* tslint:disable:no-switch-case-fall-through */
@@ -35,6 +37,9 @@ export function reducer(state: State = initialState, action: BasicStatusActions)
     switch (action.type) {
         case BasicStatusActionTypes.SET_BASIC_STATUS: {
             return Object.assign({}, state, action.payload);
+        }
+        case BasicStatusActionTypes.SET_ERROR: {
+            return Object.assign({}, state, {error: action.payload});
         }
         default: {
             return state;

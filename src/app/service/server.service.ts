@@ -32,13 +32,15 @@ export class ServerService extends AbstractService {
     }
 
     toggleShuffle(on: boolean): void {
-        const command = this.generateXml(`<SERVER><Play_Control><Play_Mode><Shuffle>${on ? 'On' : 'Off'}</Shuffle></Play_Mode></Play_Control></SERVER>`,
+        const command = this.generateXml(
+            `<SERVER><Play_Control><Play_Mode><Shuffle>${on ? 'On' : 'Off'}</Shuffle></Play_Mode></Play_Control></SERVER>`,
             HttpMethod.PUT, true);
         this.executeCommand(command);
     }
 
     toggleRepeat(on: boolean): void {
-        const command = this.generateXml(`<SERVER><Play_Control><Play_Mode><Repeat>${on ? 'All' : 'Off'}</Repeat></Play_Mode></Play_Control></SERVER>`,
+        const command = this.generateXml(
+            `<SERVER><Play_Control><Play_Mode><Repeat>${on ? 'All' : 'Off'}</Repeat></Play_Mode></Play_Control></SERVER>`,
             HttpMethod.PUT, true);
         this.executeCommand(command);
     }

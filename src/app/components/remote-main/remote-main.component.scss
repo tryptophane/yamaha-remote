@@ -14,7 +14,7 @@
   align-items: flex-start;
 }
 
-.flex-horiuontal-center-align {
+.flex-horizontal-center-align {
   justify-content: center;
 }
 
@@ -92,4 +92,12 @@ app-play-mode {
 
 app-sleep {
   margin-left: 16px;
+}
+
+.error {
+  display: flex;
+
+  mat-icon {
+    margin-right: 8px;
+  }
 }

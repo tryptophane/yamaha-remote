@@ -1,40 +1,50 @@
-<table *ngIf="(basicStatusState$ | async) as basicStatusState" class="remote-main">
-    <tr class="vertical-center">
-        <td class="flex-horizontal-left-align vertical-center">
-            <mat-button-toggle (change)="powerButtonClicked($event.source.checked)" [checked]="basicStatusState.on">
-                <mat-icon>power_settings_new</mat-icon>
-            </mat-button-toggle>
-            <app-sleep></app-sleep>
-            <app-scenes></app-scenes>
-        </td>
-        <td class="flex-horiuontal-center-align">
-            <span class="device-info">{{(networkNameState$ | async).networkName}}</span>
-        </td>
-        <td class="flex-horizontal-right-align">
-            <app-dsp-select [disabled]="!basicStatusState.on" [selectedDsp]="basicStatusState.dsp"></app-dsp-select>
-            <app-input-selection [currentInput]="basicStatusState.currentInput"
-                                 [disabled]="!basicStatusState.on"></app-input-selection>
-        </td>
-    </tr>
-    <tr class="vertical-top top-margin">
-        <td class="flex-horizontal-left-align">
-            <div *ngIf="basicStatusState.on" class="flex-vertical-left-align">
-                <app-volume-control [disabled]="!basicStatusState.on"></app-volume-control>
-                <app-net-radio-list *ngIf="basicStatusState.currentInput === 'NET RADIO'"></app-net-radio-list>
-                <div class="flex-vertical-center-align">
-                    <app-playback-control [currentInput]="basicStatusState.currentInput"></app-playback-control>
-                    <app-play-mode *ngIf="basicStatusState.currentInput === 'SERVER'"></app-play-mode>
+<div *ngIf="(basicStatusState$ | async) as basicStatusState">
+    <table *ngIf="!basicStatusState.error; else error" class="remote-main">
+        <tr class="vertical-center">
+            <td class="flex-horizontal-left-align vertical-center">
+                <mat-button-toggle [checked]="basicStatusState.on" (change)="powerButtonClicked($event.source.checked)">
+                    <mat-icon>power_settings_new</mat-icon>
+                </mat-button-toggle>
+                <app-sleep></app-sleep>
+                <app-scenes></app-scenes>
+            </td>
+            <td class="flex-horizontal-center-align">
+                <span class="device-info">{{(networkNameState$ | async).networkName}}</span>
+            </td>
+            <td class="flex-horizontal-right-align">
+                <app-dsp-select [selectedDsp]="basicStatusState.dsp" [disabled]="!basicStatusState.on"></app-dsp-select>
+                <app-input-selection [currentInput]="basicStatusState.currentInput"
+                                     [disabled]="!basicStatusState.on"></app-input-selection>
+            </td>
+        </tr>
+        <tr class="vertical-top top-margin">
+            <td class="flex-horizontal-left-align">
+                <div class="flex-vertical-left-align" *ngIf="basicStatusState.on">
+                    <app-volume-control [disabled]="!basicStatusState.on"></app-volume-control>
+                    <app-net-radio-list *ngIf="basicStatusState.currentInput === 'NET RADIO'"></app-net-radio-list>
+                    <div class="flex-vertical-center-align">
+                        <app-playback-control [currentInput]="basicStatusState.currentInput"></app-playback-control>
+                        <app-play-mode *ngIf="basicStatusState.currentInput === 'SERVER'"></app-play-mode>
+                    </div>
                 </div>
-            </div>
-        </td>
-        <td class="flex-vertical-center-align">
-            <div class="playback-info">
-                <app-playback-info *ngIf="basicStatusState.on"></app-playback-info>
-            </div>
-        </td>
-        <td class="flex-vertical-right-align">
-            <app-options *ngIf="basicStatusState.on" [basicStatusState]="basicStatusState"></app-options>
-            <app-cursor-control *ngIf="basicStatusState.on"></app-cursor-control>
-        </td>
-    </tr>
-</table>
+            </td>
+            <td class="flex-vertical-center-align">
+                <div class="playback-info">
+                    <app-playback-info *ngIf="basicStatusState.on"></app-playback-info>
+                </div>
+            </td>
+            <td class="flex-vertical-right-align">
+                <app-options *ngIf="basicStatusState.on" [basicStatusState]="basicStatusState"></app-options>
+                <app-cursor-control *ngIf="basicStatusState.on"></app-cursor-control>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<ng-template #error>
+    <mat-card class="error">
+        <mat-icon>error</mat-icon>
+        There was an error while connecting the receiver. Check your network connection or the configured IP address
+        of the receiver.
+    </mat-card>
+</ng-template>
