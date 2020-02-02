@@ -93,3 +93,11 @@ app-play-mode {
 app-sleep {
   margin-left: 16px;
 }
+
+.error {
+  display: flex;
+
+  mat-icon {
+    margin-right: 8px;
+  }
+}
