@@ -6,7 +6,7 @@ import {State} from '../../store/reducer';
 import {Observable} from 'rxjs';
 import {RemoteService} from '../../service/remote-service';
 import {skip, switchMap, take, tap} from 'rxjs/operators';
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-sleep',
