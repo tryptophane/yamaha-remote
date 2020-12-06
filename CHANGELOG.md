@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.1.2
+- updated angular and other dependencies
+
 ## v0.1.1
 - display error message when the connection to the receiver fails
 - README updated, screenhots added
