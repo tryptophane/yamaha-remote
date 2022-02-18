@@ -1,7 +1,8 @@
-html, body, app-root, .app-frame {
+:host, html, body, app-root, .app-frame {
   overflow: hidden;
   margin: 0;
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  box-sizing: border-box;
   color: #e0e0e0;
 }

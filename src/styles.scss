@@ -1,6 +1,8 @@
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+//@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 html, body {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
