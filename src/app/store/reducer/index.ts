@@ -1,4 +1,4 @@
-import {ActionReducerMap} from '@ngrx/store';
+import { ActionReducerMap } from '@ngrx/store';
 import * as fromBasicStatus from './basic-status.reducer';
 import * as fromNetradio from './netradio.reducer';
 import * as fromSpotify from './spotify.reducer';
@@ -9,25 +9,25 @@ import * as fromAirplay from './airplay.reducer';
 import * as fromNetworkName from './network-name.reducer';
 
 export interface State {
-    basicStatus: fromBasicStatus.State;
-    netradio: fromNetradio.State;
-    spotify: fromSpotify.State;
-    server: fromServer.State;
-    inputs: fromInputs.State;
-    scenes: fromScenes.State;
-    airplay: fromAirplay.State;
-    networkName: fromNetworkName.State;
+  basicStatus: fromBasicStatus.State;
+  netradio: fromNetradio.State;
+  spotify: fromSpotify.State;
+  server: fromServer.State;
+  inputs: fromInputs.State;
+  scenes: fromScenes.State;
+  airplay: fromAirplay.State;
+  networkName: fromNetworkName.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
-    basicStatus: fromBasicStatus.reducer,
-    netradio: fromNetradio.reducer,
-    spotify: fromSpotify.reducer,
-    server: fromServer.reducer,
-    inputs: fromInputs.reducer,
-    scenes: fromScenes.reducer,
-    airplay: fromAirplay.reducer,
-    networkName: fromNetworkName.reducer
+  basicStatus: fromBasicStatus.reducer,
+  netradio: fromNetradio.reducer,
+  spotify: fromSpotify.reducer,
+  server: fromServer.reducer,
+  inputs: fromInputs.reducer,
+  scenes: fromScenes.reducer,
+  airplay: fromAirplay.reducer,
+  networkName: fromNetworkName.reducer
 };
 
 export const getBasicStatusState = (state: State) => state.basicStatus;

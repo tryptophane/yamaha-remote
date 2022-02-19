@@ -1,7 +1,6 @@
 @use '@angular/material' as mat;
 
 @mixin play-mode-theme($theme) {
-
   $accent: map-get($theme, accent);
 
   .mat-button.on {

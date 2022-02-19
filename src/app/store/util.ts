@@ -10,12 +10,13 @@
 
 const typeCache: { [label: string]: boolean } = {};
 
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function type<T>(label: T | ''): T {
-    if (typeCache[label as string]) {
-        throw new Error(`Action type "${label}" is not unique"`);
-    }
+  if (typeCache[label as string]) {
+    throw new Error(`Action type "${label}" is not unique"`);
+  }
 
-    typeCache[label as string] = true;
+  typeCache[label as string] = true;
 
-    return label as T;
+  return label as T;
 }

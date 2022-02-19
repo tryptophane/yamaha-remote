@@ -1,7 +1,6 @@
 @use '@angular/material' as mat;
 
 @mixin sleep-theme($theme) {
-
   $accent: map-get($theme, accent);
 
   $glow: mat.get-color-from-palette($accent);
@@ -35,7 +34,6 @@
         box-shadow: 0 0 10px $glow;
         color: lighten(mat.get-color-from-palette($accent), 40%);
       }
-
     }
   }
 

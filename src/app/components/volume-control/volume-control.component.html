@@ -1,21 +1,39 @@
 <div class="volume-control">
+  <span class="volume-label">{{
+    ((basicStatusState$ | async)?.volume / 10).toFixed(1) + ' Db'
+  }}</span>
 
-    <span class="volume-label">{{((basicStatusState$ | async)?.volume / 10).toFixed(1) + ' Db'}}</span>
+  <div class="control">
+    <button
+      (click)="this.service.volumeDown(5)"
+      [disabled]="disabled"
+      mat-mini-fab
+    >
+      <mat-icon>volume_down</mat-icon>
+    </button>
 
-    <div class="control">
-        <button (click)="this.service.volumeDown(5);" [disabled]="disabled" mat-mini-fab>
-            <mat-icon>volume_down</mat-icon>
-        </button>
+    <mat-slider
+      (change)="this.service.setVolumeTo($event.source.value)"
+      [disabled]="disabled"
+      max="0"
+      min="-800"
+      step="5"
+      value="{{ (basicStatusState$ | async).volume }}"
+    ></mat-slider>
 
-        <mat-slider (change)="this.service.setVolumeTo($event.source.value);" [disabled]="disabled" max="0" min="-800" step="5"
-                    value="{{(basicStatusState$ | async).volume}}"></mat-slider>
-
-        <button (click)="this.service.volumeUp(5);" [disabled]="disabled" mat-mini-fab>
-            <mat-icon>volume_up</mat-icon>
-        </button>
-        <mat-button-toggle (change)="this.service.sendMute($event.source.checked);" [checked]="(basicStatusState$ | async).muted"
-                           [disabled]="disabled">
-            <mat-icon>volume_off</mat-icon>
-        </mat-button-toggle>
-    </div>
+    <button
+      (click)="this.service.volumeUp(5)"
+      [disabled]="disabled"
+      mat-mini-fab
+    >
+      <mat-icon>volume_up</mat-icon>
+    </button>
+    <mat-button-toggle
+      (change)="this.service.sendMute($event.source.checked)"
+      [checked]="(basicStatusState$ | async).muted"
+      [disabled]="disabled"
+    >
+      <mat-icon>volume_off</mat-icon>
+    </mat-button-toggle>
+  </div>
 </div>

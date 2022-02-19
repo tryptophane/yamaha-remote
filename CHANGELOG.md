@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.1.3
+- updated all libs. Angular is now at v13.
+- migrated from tslint to eslint
+- added husky, lint-staged and prettier
+- reformatted files, fixed linting warnings
+- fixed "Display" button
+- fixed some layout issues
+
 ## v0.1.2
 - updated angular and other dependencies
 

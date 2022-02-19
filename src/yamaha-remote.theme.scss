@@ -6,16 +6,18 @@
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
-@import "app/components/net-radio-list/net-radio-list.theming";
-@import "app/components/play-mode/play-mode.theming";
-@import "app/components/sleep/sleep.theming";
+@import 'app/components/net-radio-list/net-radio-list.theming';
+@import 'app/components/play-mode/play-mode.theming';
+@import 'app/components/sleep/sleep.theming';
 
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
-$fontConfig: mat.define-typography-config( $font-family: 'Roboto, monospace',
-$headline: mat.define-typography-level(32px, 48px, 700),
-$body-1: mat.define-typography-level(16px, 24px, 500));
+$fontConfig: mat.define-typography-config(
+  $font-family: 'Roboto, monospace',
+  $headline: mat.define-typography-level(32px, 48px, 700),
+  $body-1: mat.define-typography-level(16px, 24px, 500)
+);
 
 // Foreground Elements
 
@@ -28,22 +30,22 @@ $dark-dividers: rgba(rgba(black, 0.87), 0.12);
 $dark-focused: rgba(rgba(black, 0.87), 0.12);
 
 mat.$light-theme-foreground-palette: (
-  base:              black,
-  divider:           rgba(black, 0.12),
-  dividers:          rgba(black, 0.12),
-  disabled:          rgba(black, 0.38),
-  disabled-button:   rgba($dark-text, 0.26),
-  disabled-text:     rgba(black, 0.38),
-  elevation:         black,
-  secondary-text:    $dark-accent-text,
-  hint-text:         rgba(black, 0.38),
-  accent-text:       $dark-accent-text,
-  icon:              $dark-accent-text,
-  icons:             $dark-accent-text,
-  text:              rgba(black, 0.87),
-  slider-min:        rgba(black, 0.87),
-  slider-off:        rgba($dark-text, 0.26),
-  slider-off-active: rgba(black, 0.38),
+  base: black,
+  divider: rgba(black, 0.12),
+  dividers: rgba(black, 0.12),
+  disabled: rgba(black, 0.38),
+  disabled-button: rgba($dark-text, 0.26),
+  disabled-text: rgba(black, 0.38),
+  elevation: black,
+  secondary-text: $dark-accent-text,
+  hint-text: rgba(black, 0.38),
+  accent-text: $dark-accent-text,
+  icon: $dark-accent-text,
+  icons: $dark-accent-text,
+  text: rgba(black, 0.87),
+  slider-min: rgba(black, 0.87),
+  slider-off: rgba($dark-text, 0.26),
+  slider-off-active: rgba(black, 0.38)
 );
 
 // Dark Theme text
@@ -55,77 +57,77 @@ $light-dividers: rgba(white, 0.12);
 $light-focused: rgba(white, 0.12);
 
 mat.$dark-theme-foreground-palette: (
-  base:              $light-text,
-  divider:           rgba(white, 0.12),
-  dividers:          rgba(white, 0.12),
-  disabled:          rgba(white, 0.5),
-  disabled-button:   rgba($light-text, 0.3),
-  disabled-text:     rgba(white, 0.5),
-  elevation:         black,
-  hint-text:         rgba(white, 0.5),
-  secondary-text:    $light-accent-text,
-  accent-text:       $light-accent-text,
-  icon:              $light-text,
-  icons:             $light-text,
-  text:              $light-text,
-  slider-min:        $light-text,
-  slider-off:        rgba($light-text, 0.3),
-  slider-off-active: rgba($light-text, 0.3),
+  base: $light-text,
+  divider: rgba(white, 0.12),
+  dividers: rgba(white, 0.12),
+  disabled: rgba(white, 0.5),
+  disabled-button: rgba($light-text, 0.3),
+  disabled-text: rgba(white, 0.5),
+  elevation: black,
+  hint-text: rgba(white, 0.5),
+  secondary-text: $light-accent-text,
+  accent-text: $light-accent-text,
+  icon: $light-text,
+  icons: $light-text,
+  text: $light-text,
+  slider-min: $light-text,
+  slider-off: rgba($light-text, 0.3),
+  slider-off-active: rgba($light-text, 0.3)
 );
 
 // Background config
 // Light bg
-$light-background:    #fafafa;
-$light-bg-darker-5:   darken($light-background, 5%);
-$light-bg-darker-10:  darken($light-background, 10%);
-$light-bg-darker-20:  darken($light-background, 20%);
-$light-bg-darker-30:  darken($light-background, 30%);
-$light-bg-lighter-5:  lighten($light-background, 5%);
-$dark-bg-alpha-4:     rgba(#2c2c2c, 0.04);
-$dark-bg-alpha-12:    rgba(#2c2c2c, 0.12);
+$light-background: #fafafa;
+$light-bg-darker-5: darken($light-background, 5%);
+$light-bg-darker-10: darken($light-background, 10%);
+$light-bg-darker-20: darken($light-background, 20%);
+$light-bg-darker-30: darken($light-background, 30%);
+$light-bg-lighter-5: lighten($light-background, 5%);
+$dark-bg-alpha-4: rgba(#2c2c2c, 0.04);
+$dark-bg-alpha-12: rgba(#2c2c2c, 0.12);
 
 mat.$light-theme-background-palette: (
-  background:               $light-background,
-  status-bar:               $light-bg-darker-20,
-  app-bar:                  $light-bg-darker-5,
-  hover:                    $dark-bg-alpha-4,
-  card:                     $light-bg-lighter-5,
-  dialog:                   $light-bg-lighter-5,
-  disabled-button:          $dark-bg-alpha-12,
-  raised-button:            $light-bg-lighter-5,
-  focused-button:           rgba(black, 0.12),
-  selected-button:          $light-bg-darker-20,
+  background: $light-background,
+  status-bar: $light-bg-darker-20,
+  app-bar: $light-bg-darker-5,
+  hover: $dark-bg-alpha-4,
+  card: $light-bg-lighter-5,
+  dialog: $light-bg-lighter-5,
+  disabled-button: $dark-bg-alpha-12,
+  raised-button: $light-bg-lighter-5,
+  focused-button: rgba(black, 0.12),
+  selected-button: $light-bg-darker-20,
   selected-disabled-button: $light-bg-darker-30,
-  disabled-button-toggle:   $light-bg-darker-10,
-  unselected-chip:          $light-bg-darker-10,
-  disabled-list-option:     $light-bg-darker-10,
+  disabled-button-toggle: $light-bg-darker-10,
+  unselected-chip: $light-bg-darker-10,
+  disabled-list-option: $light-bg-darker-10
 );
 
 // Dark bg
-$dark-background:     #2c2c2c;
-$dark-bg-lighter-5:   lighten($dark-background, 5%);
-$dark-bg-lighter-10:  lighten($dark-background, 10%);
-$dark-bg-lighter-20:  lighten($dark-background, 20%);
-$dark-bg-lighter-30:  lighten($dark-background, 30%);
-$light-bg-alpha-4:    rgba(#fafafa, 0.04);
-$light-bg-alpha-12:   rgba(#fafafa, 0.12);
+$dark-background: #2c2c2c;
+$dark-bg-lighter-5: lighten($dark-background, 5%);
+$dark-bg-lighter-10: lighten($dark-background, 10%);
+$dark-bg-lighter-20: lighten($dark-background, 20%);
+$dark-bg-lighter-30: lighten($dark-background, 30%);
+$light-bg-alpha-4: rgba(#fafafa, 0.04);
+$light-bg-alpha-12: rgba(#fafafa, 0.12);
 
 // Background palette for dark themes.
 mat.$dark-theme-background-palette: (
-  background:               $dark-background,
-  status-bar:               $dark-bg-lighter-20,
-  app-bar:                  $dark-bg-lighter-5,
-  hover:                    $light-bg-alpha-4,
-  card:                     $dark-bg-lighter-5,
-  dialog:                   $dark-bg-lighter-5,
-  disabled-button:          $light-bg-alpha-12,
-  raised-button:            $dark-bg-lighter-5,
-  focused-button:           rgba(white, 0.12),
-  selected-button:          $dark-bg-lighter-20,
+  background: $dark-background,
+  status-bar: $dark-bg-lighter-20,
+  app-bar: $dark-bg-lighter-5,
+  hover: $light-bg-alpha-4,
+  card: $dark-bg-lighter-5,
+  dialog: $dark-bg-lighter-5,
+  disabled-button: $light-bg-alpha-12,
+  raised-button: $dark-bg-lighter-5,
+  focused-button: rgba(white, 0.12),
+  selected-button: $dark-bg-lighter-20,
   selected-disabled-button: $dark-bg-lighter-30,
-  disabled-button-toggle:   $dark-bg-lighter-10,
-  unselected-chip:          $dark-bg-lighter-20,
-  disabled-list-option:     $dark-bg-lighter-10,
+  disabled-button-toggle: $dark-bg-lighter-10,
+  unselected-chip: $dark-bg-lighter-20,
+  disabled-list-option: $dark-bg-lighter-10
 );
 
 // Compute font config
@@ -141,19 +143,21 @@ body {
   --text-primary-lighter-color: #{rgba(black, 0.87)};
   --text-primary-darker-color: #{white};
   background: $dark-background;
-  font-family: Roboto, "Helvetica Neue", sans-serif
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 $mat-primary: (
   main: #000000,
   lighter: #b3b3b3,
   darker: #000000,
-  200: #000000, // For slide toggle,
-  contrast : (
-    main: white,
-    lighter: rgba(black, 0.87),
-    darker: white,
-  )
+  200: #000000,
+  // For slide toggle,
+  contrast:
+    (
+      main: white,
+      lighter: rgba(black, 0.87),
+      darker: white
+    )
 );
 $theme-primary: mat.define-palette($mat-primary, main, lighter, darker);
 
@@ -170,12 +174,14 @@ $mat-accent: (
   main: #d40000,
   lighter: #f2b3b3,
   darker: #c30000,
-  200: #d40000, // For slide toggle,
-  contrast : (
-    main: white,
-    lighter: rgba(black, 0.87),
-    darker: white,
-  )
+  200: #d40000,
+  // For slide toggle,
+  contrast:
+    (
+      main: white,
+      lighter: rgba(black, 0.87),
+      darker: white
+    )
 );
 $theme-accent: mat.define-palette($mat-accent, main, lighter, darker);
 
@@ -192,14 +198,16 @@ $mat-warn: (
   main: #0026ff,
   lighter: #b3beff,
   darker: #0017ff,
-  200: #0026ff, // For slide toggle,
-  contrast : (
-    main: white,
-    lighter: rgba(black, 0.87),
-    darker: white,
-  )
+  200: #0026ff,
+  // For slide toggle,
+  contrast:
+    (
+      main: white,
+      lighter: rgba(black, 0.87),
+      darker: white
+    )
 );
-$theme-warn: mat.define-palette($mat-warn, main, lighter, darker);;
+$theme-warn: mat.define-palette($mat-warn, main, lighter, darker);
 
 $theme: mat.define-dark-theme($theme-primary, $theme-accent, $theme-warn);
 $altTheme: mat.define-light-theme($theme-primary, $theme-accent, $theme-warn);
@@ -217,20 +225,20 @@ $altTheme: mat.define-light-theme($theme-primary, $theme-accent, $theme-warn);
 @include sleep-theme($theme);
 
 // Handle buttons appropriately, with respect to line-height
-.mat-raised-button, .mat-stroked-button, .mat-flat-button {
+.mat-raised-button,
+.mat-stroked-button,
+.mat-flat-button {
   padding: 0 1.15em;
-  margin: 0 .65em;
+  margin: 0 0.65em;
   min-width: 3em;
-  line-height: 36.4px
+  line-height: 36.4px;
 }
 
 .mat-standard-chip {
-  padding: .5em .85em;
+  padding: 0.5em 0.85em;
   min-height: 2.5em;
 }
 
 .mat-tooltip {
   font-size: 0.9rem;
 }
-
-

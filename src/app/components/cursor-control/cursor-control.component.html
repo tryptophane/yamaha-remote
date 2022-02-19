@@ -1,62 +1,97 @@
 <mat-card>
-    <table>
-        <tr>
-            <td>
-                <button (click)="service.menuCommand('On Screen')" class="function-button" mat-stroked-button>Setup
-                </button>
-            </td>
-            <td></td>
-            <td>
-                <button (click)="service.menuCommand('Option')" class="function-button" mat-stroked-button>Option
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <button (click)="service.cursorCommand('Up')" mat-stroked-button style="border-radius: 16px 16px 0 0">
-                    <mat-icon>keyboard_arrow_up</mat-icon>
-                </button>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <button (click)="service.cursorCommand('Left')" mat-stroked-button style="border-radius: 16px 0 0 16px">
-                    <mat-icon>keyboard_arrow_left</mat-icon>
-                </button>
-            </td>
-            <td>
-                <button (click)="service.cursorCommand('Sel')" mat-stroked-button>
-                    <mat-icon>games</mat-icon>
-                </button>
-            </td>
-            <td>
-                <button (click)="service.cursorCommand('Right')" mat-stroked-button
-                        style="border-radius: 0 16px 16px 0">
-                    <mat-icon>keyboard_arrow_right</mat-icon>
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <button (click)="service.cursorCommand('Down')" mat-stroked-button style="border-radius: 0 0 16px 16px">
-                    <mat-icon>keyboard_arrow_down</mat-icon>
-                </button>
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>
-                <button (click)="service.cursorCommand('Return')" class="function-button" mat-stroked-button>Return
-                </button>
-            </td>
-            <td></td>
-            <td>
-                <button (click)="service.cursorCommand('Display')" class="function-button" mat-stroked-button>Display
-                </button>
-            </td>
-        </tr>
-    </table>
+  <table>
+    <tr>
+      <td>
+        <button
+          (click)="service.menuCommand('On Screen')"
+          class="function-button"
+          mat-stroked-button
+        >
+          Setup
+        </button>
+      </td>
+      <td></td>
+      <td>
+        <button
+          (click)="service.menuCommand('Option')"
+          class="function-button"
+          mat-stroked-button
+        >
+          Option
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button
+          (click)="service.cursorCommand('Up')"
+          mat-stroked-button
+          style="border-radius: 16px 16px 0 0"
+        >
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <button
+          (click)="service.cursorCommand('Left')"
+          mat-stroked-button
+          style="border-radius: 16px 0 0 16px"
+        >
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+      </td>
+      <td>
+        <button (click)="service.cursorCommand('Sel')" mat-stroked-button>
+          <mat-icon>games</mat-icon>
+        </button>
+      </td>
+      <td>
+        <button
+          (click)="service.cursorCommand('Right')"
+          mat-stroked-button
+          style="border-radius: 0 16px 16px 0"
+        >
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button
+          (click)="service.cursorCommand('Down')"
+          mat-stroked-button
+          style="border-radius: 0 0 16px 16px"
+        >
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <button
+          (click)="service.cursorCommand('Return')"
+          class="function-button"
+          mat-stroked-button
+        >
+          Return
+        </button>
+      </td>
+      <td></td>
+      <td>
+        <button
+          (click)="service.menuCommand('Display')"
+          class="function-button"
+          mat-stroked-button
+        >
+          Display
+        </button>
+      </td>
+    </tr>
+  </table>
 </mat-card>

@@ -1,11 +1,14 @@
 <div class="input-selection">
-    <mat-form-field *ngIf="((inputsState$ | async).inputList) as inputList">
-        <mat-select (selectionChange)="this.service.setInputTo($event.value);"
-                    [disabled]="disabled"
-                    [value]="currentInput"
-                    panelClass="input-select-panel-class">
-            <mat-option *ngFor="let input of inputList" value="{{input.param}}">{{input.title}}</mat-option>
-        </mat-select>
-    </mat-form-field>
+  <mat-form-field *ngIf="(inputsState$ | async).inputList as inputList">
+    <mat-select
+      (selectionChange)="this.service.setInputTo($event.value)"
+      [disabled]="disabled"
+      [value]="currentInput"
+      panelClass="input-select-panel-class"
+    >
+      <mat-option *ngFor="let input of inputList" value="{{ input.param }}">{{
+        input.title
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
-

@@ -1,5 +1,4 @@
 @mixin net-radio-list-theme($theme) {
-
   $primary: map-get($theme, primary);
 
   .net-radio-list {

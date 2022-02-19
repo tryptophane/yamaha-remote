@@ -1,0 +1,82 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*",
+    "test.ts",
+    "src/polyfills.ts"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json",
+          "e2e/tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "prettier",
+        ".eslint-rules.base.json"
+      ],
+      "plugins": [
+        "@microsoft/sdl",
+        "prettier",
+        "eslint-plugin-no-null",
+        "eslint-plugin-unicorn",
+        "eslint-plugin-unused-imports"
+      ],
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "prefix": "app",
+            "style": "kebab-case",
+            "type": "element"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "prefix": "app",
+            "style": "camelCase",
+            "type": "attribute"
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    },
+    {
+      "files": [
+        "*.reducer.ts"
+      ],
+      "rules": {
+        "prefer-arrow/prefer-arrow-functions": "off"
+      }
+    },
+    {
+      "files": [
+        "*.action.ts"
+      ],
+      "rules": {
+        "max-classes-per-file": "off",
+        "@typescript-eslint/naming-convention": "off"
+      }
+    }
+
+  ]
+}

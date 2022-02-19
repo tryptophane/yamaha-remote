@@ -1,6 +1,7 @@
 //@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-html, body {
+html,
+body {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -8,5 +9,5 @@ html, body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }

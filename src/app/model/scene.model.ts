@@ -1,4 +1,4 @@
 export interface Scene {
-    xmlName: string;
-    name: string;
+  xmlName: string;
+  name: string;
 }
