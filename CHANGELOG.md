@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.1.4
+- added back margins on page-sides
+
 ## v0.1.3
 - updated all libs. Angular is now at v13.
 - migrated from tslint to eslint
