@@ -7,7 +7,7 @@ RUN npm install
 COPY ./ /usr/angular-workdir
 RUN npm run build
 
-FROM nginx:latest
+FROM nginx:alpine
 
 ## Remove default Nginx website
 RUN rm -rf /usr/share/nginx/html/*

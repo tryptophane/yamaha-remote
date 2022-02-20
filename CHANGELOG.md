@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.1.5
+- use nginx:alpine base image to reduce docker container size
+
 ## v0.1.4
 - added back margins on page-sides
 
