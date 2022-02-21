@@ -5,7 +5,7 @@
       *ngFor="let line of state.list?.lines"
       [class.selected]="line.txt && line.txt === state.status?.station[0]"
     >
-      <span>{{ line.txt }}</span>
+      <span>{{ line.txt | fixAmp }}</span>
     </mat-list-item>
   </mat-nav-list>
   <div class="net-radio-nav-button-bar">

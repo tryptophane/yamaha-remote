@@ -6,8 +6,10 @@
     "
     class="radio-info"
   >
-    <span class="radio-station">{{ netradioState.status?.station }}</span>
-    <span class="radio-song">{{ netradioState.status?.song }}</span>
+    <span class="radio-station">{{
+      netradioState.status?.station | fixAmp
+    }}</span>
+    <span class="radio-song">{{ netradioState.status?.song | fixAmp }}</span>
   </div>
   <div
     *ngIf="
@@ -16,9 +18,11 @@
     "
     class="radio-info"
   >
-    <span class="radio-station">{{ spotifyState.status?.artist }}</span>
-    <span class="radio-song">{{ spotifyState.status?.album }}</span>
-    <span class="radio-song">{{ spotifyState.status?.track }}</span>
+    <span class="radio-station">{{
+      spotifyState.status?.artist | fixAmp
+    }}</span>
+    <span class="radio-song">{{ spotifyState.status?.album | fixAmp }}</span>
+    <span class="radio-song">{{ spotifyState.status?.track | fixAmp }}</span>
   </div>
   <div
     *ngIf="
@@ -27,9 +31,9 @@
     "
     class="radio-info"
   >
-    <span class="radio-station">{{ serverState.status?.artist }}</span>
-    <span class="radio-song">{{ serverState.status?.album }}</span>
-    <span class="radio-song">{{ serverState.status?.song }}</span>
+    <span class="radio-station">{{ serverState.status?.artist | fixAmp }}</span>
+    <span class="radio-song">{{ serverState.status?.album | fixAmp }}</span>
+    <span class="radio-song">{{ serverState.status?.song | fixAmp }}</span>
   </div>
   <div
     *ngIf="
@@ -38,8 +42,10 @@
     "
     class="radio-info"
   >
-    <span class="radio-station">{{ airplayState.status?.artist }}</span>
-    <span class="radio-song">{{ airplayState.status?.album }}</span>
-    <span class="radio-song">{{ airplayState.status?.song }}</span>
+    <span class="radio-station">{{
+      airplayState.status?.artist | fixAmp
+    }}</span>
+    <span class="radio-song">{{ airplayState.status?.album | fixAmp }}</span>
+    <span class="radio-song">{{ airplayState.status?.song | fixAmp }}</span>
   </div>
 </div>

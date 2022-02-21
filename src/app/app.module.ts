@@ -34,6 +34,7 @@ import { CursorControlComponent } from './components/cursor-control/cursor-contr
 import { RemoteMainComponent } from './components/remote-main/remote-main.component';
 import { AppComponent } from './app.component';
 import { BasicStatusEffects } from './store/effects/basic-status.effects';
+import { FixAmpPipe } from './utils/fix-amp.pipe';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { BasicStatusEffects } from './store/effects/basic-status.effects';
     ScenesComponent,
     PlayModeComponent,
     SleepComponent,
-    CursorControlComponent
+    CursorControlComponent,
+    FixAmpPipe
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.1.6
+- fix broken ampersand (&) characters
+
 ## v0.1.5
 - use nginx:alpine base image to reduce docker container size
 
