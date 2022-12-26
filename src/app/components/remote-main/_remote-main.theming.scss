@@ -1,0 +1,7 @@
+@mixin remote-main-theme($theme) {
+  app-remote-main {
+    .power-button.mat-button-toggle-checked > button {
+      color: $primary-color;
+    }
+  }
+}

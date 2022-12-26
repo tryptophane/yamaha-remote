@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
 
-  mat-button-toggle {
+  .mat-button-toggle {
     margin-left: 16px;
   }
 
@@ -23,7 +23,7 @@
       margin-left: 10px;
     }
 
-    .mat-slider {
+    .mat-mdc-slider {
       width: 300px;
     }
   }

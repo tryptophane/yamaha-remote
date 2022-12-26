@@ -4,16 +4,20 @@
   width: 260px;
 }
 
+.mat-mdc-card {
+  padding: 16px;
+}
+
 .options {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
 
-.mat-slider {
+.mat-mdc-slider {
   width: 250px;
 }
 
-.mat-slide-toggle {
+.mat-mdc-slide-toggle {
   margin-top: 8px;
 }

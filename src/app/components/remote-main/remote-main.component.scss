@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.top-row {
+  height: 70px;
+}
+
 .flex-horizontal-left-align {
   display: flex;
   justify-content: flex-start;
@@ -43,6 +47,10 @@
   align-items: flex-start;
 }
 
+.pad-16 {
+  padding-top: 16px;
+}
+
 tr {
   display: flex;
   flex-direction: row;
@@ -57,7 +65,7 @@ td {
   width: 100%;
 }
 
-.mat-slider {
+.mat-mdc-slider {
   width: 300px;
 }
 
@@ -96,8 +104,11 @@ app-sleep {
 
 .error {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  line-height: 48px;
 
-  mat-icon {
+  .mat-icon {
     margin-right: 8px;
   }
 }

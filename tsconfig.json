@@ -6,7 +6,7 @@
     "declaration": false,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "target": "es2020",
+    "target": "ES2022",
     "allowJs": true,
     "typeRoots": [
       "node_modules/@types"
@@ -17,9 +17,11 @@
     ],
     "module": "es2020",
     "baseUrl": "./",
-    "paths" : {
-      "stream": ["../node_modules/stream-browserify"]
-    }
-
+    "paths": {
+      "stream": [
+        "../node_modules/stream-browserify"
+      ]
+    },
+    "useDefineForClassFields": false
   }
 }

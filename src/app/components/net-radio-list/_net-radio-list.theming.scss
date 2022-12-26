@@ -1,13 +1,13 @@
 @mixin net-radio-list-theme($theme) {
   $primary: map-get($theme, primary);
 
-  .net-radio-list {
-    .mat-nav-list {
+  app-net-radio-list {
+    .mat-mdc-nav-list {
       background-color: lighten(#2c2c2c, 10%);
       padding-bottom: 10px;
       overflow-y: auto;
 
-      .mat-list-item.selected {
+      .mat-mdc-list-item.selected {
         background-color: #2c2c2c;
       }
     }

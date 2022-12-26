@@ -3,7 +3,7 @@
 @mixin play-mode-theme($theme) {
   $accent: map-get($theme, accent);
 
-  .mat-button.on {
+  .mat-mdc-button.on {
     color: mat.get-color-from-palette($accent);
   }
 }

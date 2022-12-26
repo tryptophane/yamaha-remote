@@ -1,8 +1,9 @@
 <div *ngIf="basicStatusState$ | async as basicStatusState">
   <table *ngIf="!basicStatusState.error; else error" class="remote-main">
-    <tr class="vertical-center">
+    <tr class="vertical-center top-row">
       <td class="flex-horizontal-left-align vertical-center">
         <mat-button-toggle
+          class="power-button"
           [checked]="basicStatusState.on"
           (change)="powerButtonClicked($event.source.checked)"
         >
@@ -16,7 +17,7 @@
           (networkNameState$ | async).networkName
         }}</span>
       </td>
-      <td class="flex-horizontal-right-align">
+      <td class="flex-horizontal-right-align pad-16">
         <app-dsp-select
           [selectedDsp]="basicStatusState.dsp"
           [disabled]="!basicStatusState.on"
@@ -65,7 +66,9 @@
 <ng-template #error>
   <mat-card class="error">
     <mat-icon>error</mat-icon>
-    There was an error while connecting the receiver. Check your network
-    connection or the configured IP address of the receiver.
+    <span>
+      There was an error while connecting the receiver. Check your network
+      connection or the configured IP address of the receiver.
+    </span>
   </mat-card>
 </ng-template>

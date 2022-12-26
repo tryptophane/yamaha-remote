@@ -14,7 +14,7 @@ export class BasicStatusEffects {
       ofType('[BASIC_STATUS] Refresh all status'),
       switchMap(() => this.service.fetchBasicStatus()),
       tap(basicStatus => {
-        if (basicStatus.on) {
+        if (basicStatus?.on) {
           const currentInput = basicStatus.currentInput;
           if (!currentInput || currentInput === 'NET RADIO') {
             this.netradioService.refreshNetRadioStatus();

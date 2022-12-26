@@ -1,6 +1,9 @@
-<div class="volume-control">
+<div
+  class="volume-control"
+  *ngIf="basicStatusState$ | async as basicStatusState"
+>
   <span class="volume-label">{{
-    ((basicStatusState$ | async)?.volume / 10).toFixed(1) + ' Db'
+    (basicStatusState.volume / 10).toFixed(1) + ' Db'
   }}</span>
 
   <div class="control">
@@ -12,14 +15,13 @@
       <mat-icon>volume_down</mat-icon>
     </button>
 
-    <mat-slider
-      (change)="this.service.setVolumeTo($event.source.value)"
-      [disabled]="disabled"
-      max="0"
-      min="-800"
-      step="5"
-      value="{{ (basicStatusState$ | async).volume }}"
-    ></mat-slider>
+    <mat-slider [disabled]="disabled" max="0" min="-800" step="5">
+      <input
+        matSliderThumb
+        [ngModel]="basicStatusState.volume"
+        (valueChange)="this.service.setVolumeTo($event.valueOf())"
+      />
+    </mat-slider>
 
     <button
       (click)="this.service.volumeUp(5)"
@@ -30,7 +32,7 @@
     </button>
     <mat-button-toggle
       (change)="this.service.sendMute($event.source.checked)"
-      [checked]="(basicStatusState$ | async).muted"
+      [checked]="basicStatusState.muted"
       [disabled]="disabled"
     >
       <mat-icon>volume_off</mat-icon>
