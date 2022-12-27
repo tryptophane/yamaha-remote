@@ -43,5 +43,15 @@
     color: white;
     animation: glowing 3000ms infinite !important;
     min-width: unset !important;
+    margin-bottom: 32px !important;
+
+    > div {
+      background-color: unset !important;
+    }
+
+    div[matsnackbarlabel] {
+      color: $primary-color;
+      text-align: center;
+    }
   }
 }
