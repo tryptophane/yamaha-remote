@@ -63,7 +63,7 @@ for a production build.
 
 ## Build docker container
 
-Run `docker build -t angular-remote .` inside the main folder of the project.
+Run `docker build -t yamaha-remote .` inside the main folder of the project.
 
 ## Start docker container
 
