@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.7
+- update to angular@15 and newest versions of all dependencies
+- cleaner theming
+
 ## v0.1.6
 - fix broken ampersand (&) characters
 
