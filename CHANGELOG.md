@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.1.8
+- Styling fixes
+- Fixes example code snippet in README
+
 ## v0.1.7
 - update to angular@15 and newest versions of all dependencies
 - cleaner theming

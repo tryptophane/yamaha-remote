@@ -1,4 +1,4 @@
-<div *ngIf="basicStatusState$ | async as basicStatusState">
+<ng-container *ngIf="basicStatusState$ | async as basicStatusState">
   <table *ngIf="!basicStatusState.error; else error" class="remote-main">
     <tr class="vertical-center top-row">
       <td class="flex-horizontal-left-align vertical-center">
@@ -61,7 +61,7 @@
       </td>
     </tr>
   </table>
-</div>
+</ng-container>
 
 <ng-template #error>
   <mat-card class="error">
