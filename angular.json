@@ -59,10 +59,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "yamaha-remote:build:production"
+              "buildTarget": "yamaha-remote:build:production"
             },
             "development": {
-              "browserTarget": "yamaha-remote:build:development"
+              "buildTarget": "yamaha-remote:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -70,7 +70,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "yamaha-remote:build"
+            "buildTarget": "yamaha-remote:build"
           }
         },
         "test": {
