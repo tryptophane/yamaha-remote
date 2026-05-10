@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { State } from '../store/reducer';
+import { Scene } from '../model/scene.model';
 import { SetScenesAction } from '../store/actions/scenes.action';
 import { AbstractService, HttpMethod } from './abstract-service';
 
@@ -26,7 +27,7 @@ export class ScenesService extends AbstractService {
       .pipe(
         map(res => this.parseXml(res)),
         map(config => {
-          const scenes = [];
+          const scenes: Array<Scene> = [];
 
           const scene =
             config.YAMAHA_AV.Main_Zone[0].Config[0].Name[0].Scene[0];

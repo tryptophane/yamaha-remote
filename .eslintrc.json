@@ -20,17 +20,19 @@
       "extends": [
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
         "prettier",
         ".eslint-rules.base.json"
       ],
       "plugins": [
+        "@typescript-eslint",
         "@microsoft/sdl",
         "prettier",
-        "eslint-plugin-no-null",
-        "eslint-plugin-unicorn",
-        "eslint-plugin-unused-imports"
+        "import",
+        "jsdoc",
+        "prefer-arrow",
+        "no-null",
+        "unicorn",
+        "unused-imports"
       ],
       "rules": {
         "@angular-eslint/component-selector": [

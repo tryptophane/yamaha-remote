@@ -2,7 +2,7 @@ import { SpotifyStatus } from '../../model/spotify-status.model';
 import { SpotifyActions, SpotifyActionTypes } from '../actions/spotify.action';
 
 export interface State {
-  status: SpotifyStatus;
+  status: SpotifyStatus | null;
 }
 
 const initialState: State = {

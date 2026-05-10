@@ -1,6 +1,4 @@
 @mixin net-radio-list-theme($theme) {
-  $primary: map-get($theme, primary);
-
   app-net-radio-list {
     .mat-mdc-nav-list {
       background-color: lighten(#2c2c2c, 10%);

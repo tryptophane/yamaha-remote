@@ -34,7 +34,7 @@ export class InputSelectionService extends AbstractService {
     return this.sendCommand(command).pipe(
       map(res => this.parseXml(res)),
       map(inputs => {
-        const itemList = [];
+        const itemList: Array<InputItem> = [];
         for (
           let i = 1;
           inputs.YAMAHA_AV.Main_Zone[0].Input[0].Input_Sel_Item[0][`Item_${i}`];

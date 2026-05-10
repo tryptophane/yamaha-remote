@@ -11,18 +11,18 @@ export const NetRadioActionTypes = {
 
 export class SetRadioStatusAction implements Action {
   type: string = NetRadioActionTypes.SET_RADIO_STATUS;
-  payload: NetRadioStatus;
+  payload: NetRadioStatus | null;
 
-  constructor(status: NetRadioStatus) {
+  constructor(status: NetRadioStatus | null) {
     this.payload = status;
   }
 }
 
 export class SetListAction implements Action {
   type: string = NetRadioActionTypes.SET_LIST;
-  payload: NetRadioList;
+  payload: NetRadioList | null;
 
-  constructor(list: NetRadioList) {
+  constructor(list: NetRadioList | null) {
     this.payload = list;
   }
 }

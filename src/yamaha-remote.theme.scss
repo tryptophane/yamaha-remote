@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
 
-@import '@angular/material/theming';
 @import 'app/components/net-radio-list/net-radio-list.theming';
 @import 'app/components/play-mode/play-mode.theming';
 @import 'app/components/sleep/sleep.theming';
@@ -26,6 +25,7 @@ $angular-dark-theme: mat.define-dark-theme(
 
 $primary-color: mat.get-color-from-palette($angular-primary, default);
 
+@include mat.all-component-bases($angular-dark-theme);
 @include mat.all-component-colors($angular-dark-theme);
 
 @include net-radio-list-theme($angular-dark-theme);

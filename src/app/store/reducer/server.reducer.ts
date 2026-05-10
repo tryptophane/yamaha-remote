@@ -2,7 +2,7 @@ import { ServerStatus } from '../../model/server-status.model';
 import { ServerActions, ServerActionTypes } from '../actions/server.action';
 
 export interface State {
-  status: ServerStatus;
+  status: ServerStatus | null;
 }
 
 const initialState: State = {

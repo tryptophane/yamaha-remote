@@ -1,4 +1,4 @@
-import { combineLatest, Observable, of, timer } from 'rxjs';
+import { combineLatest, EMPTY, Observable, timer } from 'rxjs';
 import { filter, map, take, takeWhile } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
@@ -20,7 +20,7 @@ import { AbstractService, HttpMethod } from './abstract-service';
 export class NetradioService extends AbstractService {
   netradioState$: Observable<fromNetradio.State>;
 
-  fetchingNetRadioList: boolean;
+  fetchingNetRadioList = false;
 
   constructor(
     private readonly http: HttpClient,
@@ -54,7 +54,7 @@ export class NetradioService extends AbstractService {
         );
         return this.sendCommand(cmd3);
       default:
-        return of(null);
+        return EMPTY;
     }
   }
 
@@ -65,7 +65,7 @@ export class NetradioService extends AbstractService {
     combineLatest([timer(0, 500), this.netradioState$])
       .pipe(
         map(([x, state]) => state),
-        takeWhile(state => state.list.menuStatus !== 'Ready'),
+        takeWhile(state => state.list?.menuStatus !== 'Ready'),
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         take(100),
         filter(() => !this.fetchingNetRadioList)
@@ -133,7 +133,8 @@ export class NetradioService extends AbstractService {
           inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Cursor_Position[0]
             .Max_Line[0];
 
-        const lines = [];
+        const lines: Array<{ txt: string; attribute: string; index: number }> =
+          [];
 
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         for (let i = 1; i < 9; i++) {
@@ -177,5 +178,6 @@ export class NetradioService extends AbstractService {
       );
       return this.sendCommand(command);
     }
+    return EMPTY;
   }
 }

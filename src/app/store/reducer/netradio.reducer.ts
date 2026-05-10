@@ -6,8 +6,8 @@ import { NetRadioStatus } from '../../model/net-radio-status.model';
 import { NetRadioList } from '../../model/net-radio-list.model';
 
 export interface State {
-  status: NetRadioStatus;
-  list: NetRadioList;
+  status: NetRadioStatus | null;
+  list: NetRadioList | null;
 }
 
 const initialState: State = {

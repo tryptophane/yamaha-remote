@@ -22,6 +22,7 @@
         "../node_modules/stream-browserify"
       ]
     },
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "strictNullChecks": true
   }
 }

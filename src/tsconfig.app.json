@@ -4,13 +4,8 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "types": ["node"],
-    "typeRoots": [ "../node_modules/@types" ]
+    "typeRoots": ["../node_modules/@types"]
   },
-  "files": [
-    "main.ts",
-    "polyfills.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ]
+  "files": ["main.ts", "polyfills.ts"],
+  "include": ["src/**/*.d.ts"]
 }

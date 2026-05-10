@@ -2,7 +2,7 @@ import { AirplayStatus } from '../../model/airplay-status.model';
 import { AirplayActions, AirplayActionTypes } from '../actions/airplay.action';
 
 export interface State {
-  status: AirplayStatus;
+  status: AirplayStatus | null;
 }
 
 const initialState: State = {

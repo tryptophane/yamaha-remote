@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
 import { Component, Input } from '@angular/core';
-import { Observable, timer } from 'rxjs';
+import { EMPTY, Observable, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
 import * as fromSpotify from '../../store/reducer/spotify.reducer';
@@ -99,6 +99,7 @@ export class PlaybackControlComponent {
     } else if (this.currentInput === 'AirPlay') {
       return this.airplayState$;
     }
+    return EMPTY;
   }
 
   private refreshStatus(): void {

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, take } from 'rxjs/operators';
+import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
 import {
@@ -29,7 +29,10 @@ export abstract class AbstractService {
     const headers = new HttpHeaders().set('Content-Type', 'application/xml');
     console.log('Sending XML: ', xml);
     return this.httpClient
-      .post('/YamahaRemoteControl/ctrl', xml, { headers, responseType: 'text' })
+      .post('/YamahaRemoteControl/ctrl', xml, {
+        headers,
+        responseType: 'text' as const
+      })
       .pipe(
         take(1),
         catchError(err => {
@@ -45,7 +48,7 @@ export abstract class AbstractService {
           }
           return returnNullOnError ? of('ERROR') : EMPTY;
         }),
-        map(o => (o !== 'ERROR' ? o.toString() : null))
+        map(o => (o !== 'ERROR' ? o : ''))
       );
   }
 
@@ -90,192 +93,192 @@ export abstract class AbstractService {
       HttpMethod.GET
     );
     return this.sendCommand(command, true).pipe(
+      tap(response => {
+        if (!response) this.ngrxStore.dispatch(new SetErrorAction(true));
+      }),
+      filter((response): response is string => !!response),
       map(response => {
-        if (!response) {
-          this.ngrxStore.dispatch(new SetErrorAction(true));
-        } else {
-          const basicStatus = this.parseXml(response);
-          console.log('basic-status (from receiver): ', basicStatus);
+        const basicStatus = this.parseXml(response);
+        console.log('basic-status (from receiver): ', basicStatus);
 
-          const state = {
-            volume: Number(
-              basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0]
-                .Lvl[0].Val[0]
-            ),
-            muted:
-              basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0]
-                .Mute[0] !== 'Off',
-            on:
-              basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                .Power_Control[0].Power[0] === 'On',
-            off:
-              basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                .Power_Control[0].Power[0] !== 'On',
-            currentInput:
-              basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Input[0]
-                .Input_Sel[0],
-            error: false,
-            partyModeEnabled: (() => {
-              try {
-                return (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Party_Info[0] === 'On'
-                );
-              } catch (e) {
-                return 'Not Available';
+        const state = {
+          volume: Number(
+            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0].Lvl[0]
+              .Val[0]
+          ),
+          muted:
+            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0]
+              .Mute[0] !== 'Off',
+          on:
+            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Power_Control[0]
+              .Power[0] === 'On',
+          off:
+            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Power_Control[0]
+              .Power[0] !== 'On',
+          currentInput:
+            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Input[0]
+              .Input_Sel[0],
+          error: false,
+          partyModeEnabled: (() => {
+            try {
+              return (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Party_Info[0] === 'On'
+              );
+            } catch (e) {
+              return 'Not Available';
+            }
+          }).apply(this),
+          pureDirectEnabled: (() => {
+            try {
+              return (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Pure_Direct[0].Mode[0] === 'On'
+              );
+            } catch (e) {
+              return 'Not Available';
+            }
+          }).apply(this),
+          bass: (() => {
+            try {
+              return Number(
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Tone[0].Bass[0].Val[0]
+              );
+            } catch (e) {
+              return 0;
+            }
+          }).apply(this),
+          treble: (() => {
+            try {
+              return Number(
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Tone[0].Treble[0].Val[0]
+              );
+            } catch (e) {
+              return 0;
+            }
+          }).apply(this),
+          subwooferTrim: (() => {
+            try {
+              return Number(
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0]
+                  .Subwoofer_Trim[0].Val[0]
+              );
+            } catch (e) {
+              return 0;
+            }
+          }).apply(this),
+          dialogueLift: (() => {
+            try {
+              return Number(
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Dialogue_Adjust[0].Dialogue_Lift[0]
+              );
+            } catch (e) {
+              return 0;
+            }
+          }).apply(this),
+          dialogueLevel: (() => {
+            try {
+              return Number(
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Dialogue_Adjust[0].Dialogue_Lvl[0]
+              );
+            } catch (e) {
+              return 0;
+            }
+          }).apply(this),
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          YPAOVolumeEnabled: (() => {
+            // values 'Off' or 'Auto'
+            try {
+              return (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].YPAO_Volume[0] !== 'Off'
+              );
+            } catch (e) {
+              return false;
+            }
+          }).apply(this),
+          extraBassEnabled: (() => {
+            // values 'Off' or 'Auto'
+            try {
+              return (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Extra_Bass[0] !== 'Off'
+              );
+            } catch (e) {
+              return false;
+            }
+          }).apply(this),
+          adaptiveDRCEnabled: (() => {
+            // values 'Off' or 'Auto'
+            try {
+              return (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Adaptive_DRC[0] !== 'Off'
+              );
+            } catch (e) {
+              return false;
+            }
+          }).apply(this),
+          enhancer: (() => {
+            try {
+              return (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Surround[0]
+                  .Program_Sel[0].Current[0].Enhancer[0] !== 'Off'
+              );
+            } catch (e) {
+              return false;
+            }
+          }).apply(this),
+          direct: (() => {
+            try {
+              return (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                  .Sound_Video[0].Direct[0].Mode[0] !== 'Off'
+              );
+            } catch (e) {
+              return false;
+            }
+          }).apply(this),
+          threeDCinemaDsp: (() => {
+            try {
+              return (
+                // eslint-disable-next-line no-underscore-dangle
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Surround[0]
+                  ._3D_Cinema_DSP[0] !== 'Off'
+              );
+            } catch (e) {
+              return false;
+            }
+          }).apply(this),
+          dsp: (() => {
+            try {
+              if (
+                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Surround[0]
+                  .Program_Sel[0].Current[0].Straight[0] === 'On'
+              ) {
+                return 'Straight';
               }
-            }).apply(this),
-            pureDirectEnabled: (() => {
-              try {
-                return (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Pure_Direct[0].Mode[0] === 'On'
-                );
-              } catch (e) {
-                return 'Not Available';
-              }
-            }).apply(this),
-            bass: (() => {
-              try {
-                return Number(
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Tone[0].Bass[0].Val[0]
-                );
-              } catch (e) {
-                return 0;
-              }
-            }).apply(this),
-            treble: (() => {
-              try {
-                return Number(
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Tone[0].Treble[0].Val[0]
-                );
-              } catch (e) {
-                return 0;
-              }
-            }).apply(this),
-            subwooferTrim: (() => {
-              try {
-                return Number(
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0]
-                    .Subwoofer_Trim[0].Val[0]
-                );
-              } catch (e) {
-                return 0;
-              }
-            }).apply(this),
-            dialogueLift: (() => {
-              try {
-                return Number(
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Dialogue_Adjust[0].Dialogue_Lift[0]
-                );
-              } catch (e) {
-                return 0;
-              }
-            }).apply(this),
-            dialogueLevel: (() => {
-              try {
-                return Number(
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Dialogue_Adjust[0].Dialogue_Lvl[0]
-                );
-              } catch (e) {
-                return 0;
-              }
-            }).apply(this),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            YPAOVolumeEnabled: (() => {
-              // values 'Off' or 'Auto'
-              try {
-                return (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].YPAO_Volume[0] !== 'Off'
-                );
-              } catch (e) {
-                return false;
-              }
-            }).apply(this),
-            extraBassEnabled: (() => {
-              // values 'Off' or 'Auto'
-              try {
-                return (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Extra_Bass[0] !== 'Off'
-                );
-              } catch (e) {
-                return false;
-              }
-            }).apply(this),
-            adaptiveDRCEnabled: (() => {
-              // values 'Off' or 'Auto'
-              try {
-                return (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Adaptive_DRC[0] !== 'Off'
-                );
-              } catch (e) {
-                return false;
-              }
-            }).apply(this),
-            enhancer: (() => {
-              try {
-                return (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Surround[0].Program_Sel[0].Current[0].Enhancer[0] !== 'Off'
-                );
-              } catch (e) {
-                return false;
-              }
-            }).apply(this),
-            direct: (() => {
-              try {
-                return (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Sound_Video[0].Direct[0].Mode[0] !== 'Off'
-                );
-              } catch (e) {
-                return false;
-              }
-            }).apply(this),
-            threeDCinemaDsp: (() => {
-              try {
-                return (
-                  // eslint-disable-next-line no-underscore-dangle
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Surround[0]._3D_Cinema_DSP[0] !== 'Off'
-                );
-              } catch (e) {
-                return false;
-              }
-            }).apply(this),
-            dsp: (() => {
-              try {
-                if (
-                  basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                    .Surround[0].Program_Sel[0].Current[0].Straight[0] === 'On'
-                ) {
-                  return 'Straight';
-                }
-                return basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Surround[0].Program_Sel[0].Current[0].Sound_Program[0];
-              } catch (e) {
-                return false;
-              }
-            }).apply(this),
-            sleep: (() => {
-              try {
-                return basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Power_Control[0].Sleep[0];
-              } catch (e) {
-                return false;
-              }
-            }).apply(this)
-          };
-          console.log('basic-status (parsed): ', state);
-          return state;
-        }
+              return basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                .Surround[0].Program_Sel[0].Current[0].Sound_Program[0];
+            } catch (e) {
+              return false;
+            }
+          }).apply(this),
+          sleep: (() => {
+            try {
+              return basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
+                .Power_Control[0].Sleep[0];
+            } catch (e) {
+              return false;
+            }
+          }).apply(this)
+        };
+        console.log('basic-status (parsed): ', state);
+        return state;
       })
     );
   }

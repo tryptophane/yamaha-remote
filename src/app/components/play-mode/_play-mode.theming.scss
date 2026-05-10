@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
 @mixin play-mode-theme($theme) {
-  $accent: map-get($theme, accent);
+  $accent: map-get(mat.get-color-config($theme), accent);
 
   .mat-mdc-button.on {
     color: mat.get-color-from-palette($accent);

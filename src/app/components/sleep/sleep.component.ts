@@ -25,7 +25,7 @@ export class SleepComponent {
   }
 
   openSnackBar(message: string) {
-    this.snackBar.open(message, null, {
+    this.snackBar.open(message, undefined, {
       duration: 2000,
       panelClass: 'sleep-snack-bar'
     });

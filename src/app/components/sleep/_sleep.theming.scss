@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
 @mixin sleep-theme($theme) {
-  $accent: map-get($theme, accent);
+  $accent: map-get(mat.get-color-config($theme), accent);
 
   $glow: mat.get-color-from-palette($accent);
 
