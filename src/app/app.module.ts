@@ -4,7 +4,10 @@ import { StoreModule } from '@ngrx/store';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { MatButtonModule } from '@angular/material/button';
@@ -53,11 +56,11 @@ import { FixAmpPipe } from './utils/fix-amp.pipe';
     CursorControlComponent,
     FixAmpPipe
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatInputModule,
@@ -74,7 +77,6 @@ import { FixAmpPipe } from './utils/fix-amp.pipe';
     EffectsModule.forRoot([BasicStatusEffects]),
     MatCardModule
   ],
-  providers: [RemoteService],
-  bootstrap: [AppComponent]
+  providers: [RemoteService, provideHttpClient(withInterceptorsFromDi())]
 })
 export class AppModule {}
