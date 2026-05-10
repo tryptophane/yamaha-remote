@@ -3,12 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
+import parser from 'xml2js';
 import {
   SetBasicStatusAction,
   SetErrorAction
 } from '../store/actions/basic-status.action';
 import * as fromBasicStatus from '../store/reducer/basic-status.reducer';
 import { State } from '../store/reducer';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
 
 export enum HttpMethod {
   GET = 'GET',
@@ -71,8 +74,6 @@ export abstract class AbstractService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseXml(xmlStr: string): any {
     let result;
-    // eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-    const parser = require('xml2js');
     parser.Parser().parseString(xmlStr, (e, r) => (result = r));
     return result;
   }

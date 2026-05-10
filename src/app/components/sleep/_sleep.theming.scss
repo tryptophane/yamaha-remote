@@ -1,9 +1,9 @@
 @use '@angular/material' as mat;
 
 @mixin sleep-theme($theme) {
-  $accent: map-get(mat.get-color-config($theme), accent);
+  $accent: map-get(mat.m2-get-color-config($theme), accent);
 
-  $glow: mat.get-color-from-palette($accent);
+  $glow: mat.m2-get-color-from-palette($accent);
 
   @keyframes glowing {
     0% {
@@ -32,7 +32,7 @@
 
       &.button-glow {
         box-shadow: 0 0 10px $glow;
-        color: lighten(mat.get-color-from-palette($accent), 40%);
+        color: lighten(mat.m2-get-color-from-palette($accent), 40%);
       }
     }
   }

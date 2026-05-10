@@ -7,13 +7,13 @@
 
 @include mat.core();
 
-$angular-primary: mat.define-palette(mat.$red-palette, 500, 100, 900);
-$angular-contrast: mat.define-palette(mat.$red-palette, 900, 100, 900);
-$angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$angular-primary: mat.m2-define-palette(mat.$m2-red-palette, 500, 100, 900);
+$angular-contrast: mat.m2-define-palette(mat.$m2-red-palette, 900, 100, 900);
+$angular-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
 
-$angular-warn: mat.define-palette(mat.$deep-purple-palette);
+$angular-warn: mat.m2-define-palette(mat.$m2-deep-purple-palette);
 
-$angular-dark-theme: mat.define-dark-theme(
+$angular-dark-theme: mat.m2-define-dark-theme(
   (
     color: (
       primary: $angular-primary,
@@ -23,7 +23,7 @@ $angular-dark-theme: mat.define-dark-theme(
   )
 );
 
-$primary-color: mat.get-color-from-palette($angular-primary, default);
+$primary-color: mat.m2-get-color-from-palette($angular-primary, default);
 
 @include mat.all-component-bases($angular-dark-theme);
 @include mat.all-component-colors($angular-dark-theme);
@@ -43,5 +43,5 @@ $primary-color: mat.get-color-from-palette($angular-primary, default);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: mat.get-color-from-palette($angular-contrast, default);
+  background: mat.m2-get-color-from-palette($angular-contrast, default);
 }
