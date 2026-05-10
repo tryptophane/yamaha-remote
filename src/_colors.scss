@@ -1,0 +1,4 @@
+@use '@angular/material' as mat;
+
+$primary-palette: mat.m2-define-palette(mat.$m2-red-palette, 500, 100, 900);
+$primary-color: mat.m2-get-color-from-palette($primary-palette, default);

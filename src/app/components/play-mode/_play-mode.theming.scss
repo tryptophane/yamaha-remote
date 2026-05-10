@@ -1,7 +1,8 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 @mixin play-mode-theme($theme) {
-  $accent: map-get(mat.m2-get-color-config($theme), accent);
+  $accent: map.get(mat.m2-get-color-config($theme), accent);
 
   .mat-mdc-button.on {
     color: mat.m2-get-color-from-palette($accent);

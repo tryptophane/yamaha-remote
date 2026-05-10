@@ -1,13 +1,14 @@
 @use '@angular/material' as mat;
+@use 'colors';
 
-@import 'app/components/net-radio-list/net-radio-list.theming';
-@import 'app/components/play-mode/play-mode.theming';
-@import 'app/components/sleep/sleep.theming';
-@import 'app/components/remote-main/remote-main.theming';
+@use 'app/components/net-radio-list/net-radio-list.theming';
+@use 'app/components/play-mode/play-mode.theming';
+@use 'app/components/sleep/sleep.theming';
+@use 'app/components/remote-main/remote-main.theming';
 
 @include mat.core();
 
-$angular-primary: mat.m2-define-palette(mat.$m2-red-palette, 500, 100, 900);
+$angular-primary: colors.$primary-palette;
 $angular-contrast: mat.m2-define-palette(mat.$m2-red-palette, 900, 100, 900);
 $angular-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
 
@@ -23,22 +24,20 @@ $angular-dark-theme: mat.m2-define-dark-theme(
   )
 );
 
-$primary-color: mat.m2-get-color-from-palette($angular-primary, default);
-
 @include mat.all-component-bases($angular-dark-theme);
 @include mat.all-component-colors($angular-dark-theme);
 
-@include net-radio-list-theme($angular-dark-theme);
-@include play-mode-theme($angular-dark-theme);
-@include sleep-theme($angular-dark-theme);
-@include remote-main-theme($angular-dark-theme);
+@include net-radio-list.net-radio-list-theme($angular-dark-theme);
+@include play-mode.play-mode-theme($angular-dark-theme);
+@include sleep.sleep-theme($angular-dark-theme);
+@include remote-main.remote-main-theme($angular-dark-theme);
 
 ::-webkit-scrollbar {
   width: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: $primary-color;
+  background: colors.$primary-color;
   border-radius: 10px;
 }
 

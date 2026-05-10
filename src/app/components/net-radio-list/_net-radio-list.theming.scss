@@ -1,7 +1,8 @@
+@use 'sass:color';
 @mixin net-radio-list-theme($theme) {
   app-net-radio-list {
     .mat-mdc-nav-list {
-      background-color: lighten(#2c2c2c, 10%);
+      background-color: color.adjust(#2c2c2c, $lightness: 10%);
       padding-bottom: 10px;
       overflow-y: auto;
 
