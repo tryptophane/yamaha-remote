@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
 import * as fromNetradio from '../../store/reducer/netradio.reducer';
 import * as fromSpotify from '../../store/reducer/spotify.reducer';
@@ -15,7 +15,7 @@ import { FixAmpPipe } from '../../utils/fix-amp.pipe';
   selector: 'app-playback-info',
   templateUrl: './playback-info.component.html',
   styleUrls: ['./playback-info.component.scss'],
-  imports: [NgIf, AsyncPipe, FixAmpPipe]
+  imports: [AsyncPipe, FixAmpPipe]
 })
 export class PlaybackInfoComponent {
   private readonly store = inject<Store<State>>(Store);

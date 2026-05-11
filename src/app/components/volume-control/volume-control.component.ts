@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
@@ -17,7 +17,6 @@ import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
   templateUrl: './volume-control.component.html',
   styleUrls: ['./volume-control.component.scss'],
   imports: [
-    NgIf,
     MatMiniFabButton,
     MatIcon,
     MatSlider,

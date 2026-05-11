@@ -1,9 +1,7 @@
 <div class="scene-selection">
-  <button
-    (click)="selectScene(scene.xmlName)"
-    *ngFor="let scene of (scenesState$ | async).scenes"
-    mat-stroked-button
-  >
-    {{ scene.name }}
-  </button>
+  @for (scene of (scenesState$ | async).scenes; track scene) {
+    <button (click)="selectScene(scene.xmlName)" mat-stroked-button>
+      {{ scene.name }}
+    </button>
+  }
 </div>

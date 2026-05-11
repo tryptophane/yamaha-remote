@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatListItem, MatNavList } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -21,9 +21,7 @@ import { FixAmpPipe } from '../../utils/fix-amp.pipe';
   templateUrl: './net-radio-list.component.html',
   styleUrls: ['./net-radio-list.component.scss'],
   imports: [
-    NgIf,
     MatNavList,
-    NgFor,
     MatListItem,
     MatButton,
     MatIcon,

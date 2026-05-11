@@ -1,14 +1,14 @@
 import { Component, Input, inject } from '@angular/core';
 import { MatFormField } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { NgFor } from '@angular/common';
+
 import { DspSelectionService } from '../../service/dsp-selection.service';
 
 @Component({
   selector: 'app-dsp-select',
   templateUrl: './dsp-selection.component.html',
   styleUrls: ['./dsp-selection.component.scss'],
-  imports: [MatFormField, MatSelect, NgFor, MatOption]
+  imports: [MatFormField, MatSelect, MatOption]
 })
 export class DspSelectionComponent {
   private readonly service = inject(DspSelectionService);

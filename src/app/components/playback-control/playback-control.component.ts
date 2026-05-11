@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { MatCard } from '@angular/material/card';
 import * as fromSpotify from '../../store/reducer/spotify.reducer';
 import * as fromServer from '../../store/reducer/server.reducer';
@@ -21,7 +21,7 @@ import { ServerService } from '../../service/server.service';
   selector: 'app-playback-control',
   templateUrl: './playback-control.component.html',
   styleUrls: ['./playback-control.component.scss'],
-  imports: [MatButton, MatIcon, NgIf, MatCard, NgTemplateOutlet, AsyncPipe]
+  imports: [MatButton, MatIcon, MatCard, NgTemplateOutlet, AsyncPipe]
 })
 export class PlaybackControlComponent {
   private readonly store = inject<Store<State>>(Store);

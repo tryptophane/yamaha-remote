@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';
@@ -36,7 +36,6 @@ import { CursorControlComponent } from '../cursor-control/cursor-control.compone
   styleUrls: ['./remote-main.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     MatButtonToggle,
     MatIcon,
     SleepComponent,

@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { skip, switchMap, take, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { RemoteService } from '../../service/remote-service';
   selector: 'app-sleep',
   templateUrl: './sleep.component.html',
   styleUrls: ['./sleep.component.scss'],
-  imports: [NgIf, MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
+  imports: [MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
 })
 export class SleepComponent {
   private readonly store = inject<Store<State>>(Store);

@@ -1,51 +1,59 @@
-<div *ngIf="basicStatusState$ | async as basicStatusState">
-  <div
-    *ngIf="
-      basicStatusState.currentInput === 'NET RADIO' &&
-      (netradioState$ | async) as netradioState
-    "
-    class="radio-info"
-  >
-    <span class="radio-station">{{
-      netradioState.status?.station | fixAmp
-    }}</span>
-    <span class="radio-song">{{ netradioState.status?.song | fixAmp }}</span>
+@if (basicStatusState$ | async; as basicStatusState) {
+  <div>
+    @if (
+      basicStatusState.currentInput === 'NET RADIO' && (netradioState$ | async);
+      as netradioState
+    ) {
+      <div class="radio-info">
+        <span class="radio-station">{{
+          netradioState.status?.station | fixAmp
+        }}</span>
+        <span class="radio-song">{{
+          netradioState.status?.song | fixAmp
+        }}</span>
+      </div>
+    }
+    @if (
+      basicStatusState.currentInput === 'Spotify' && (spotifyState$ | async);
+      as spotifyState
+    ) {
+      <div class="radio-info">
+        <span class="radio-station">{{
+          spotifyState.status?.artist | fixAmp
+        }}</span>
+        <span class="radio-song">{{
+          spotifyState.status?.album | fixAmp
+        }}</span>
+        <span class="radio-song">{{
+          spotifyState.status?.track | fixAmp
+        }}</span>
+      </div>
+    }
+    @if (
+      basicStatusState.currentInput === 'SERVER' && (serverState$ | async);
+      as serverState
+    ) {
+      <div class="radio-info">
+        <span class="radio-station">{{
+          serverState.status?.artist | fixAmp
+        }}</span>
+        <span class="radio-song">{{ serverState.status?.album | fixAmp }}</span>
+        <span class="radio-song">{{ serverState.status?.song | fixAmp }}</span>
+      </div>
+    }
+    @if (
+      basicStatusState.currentInput === 'AirPlay' && (airplayState$ | async);
+      as airplayState
+    ) {
+      <div class="radio-info">
+        <span class="radio-station">{{
+          airplayState.status?.artist | fixAmp
+        }}</span>
+        <span class="radio-song">{{
+          airplayState.status?.album | fixAmp
+        }}</span>
+        <span class="radio-song">{{ airplayState.status?.song | fixAmp }}</span>
+      </div>
+    }
   </div>
-  <div
-    *ngIf="
-      basicStatusState.currentInput === 'Spotify' &&
-      (spotifyState$ | async) as spotifyState
-    "
-    class="radio-info"
-  >
-    <span class="radio-station">{{
-      spotifyState.status?.artist | fixAmp
-    }}</span>
-    <span class="radio-song">{{ spotifyState.status?.album | fixAmp }}</span>
-    <span class="radio-song">{{ spotifyState.status?.track | fixAmp }}</span>
-  </div>
-  <div
-    *ngIf="
-      basicStatusState.currentInput === 'SERVER' &&
-      (serverState$ | async) as serverState
-    "
-    class="radio-info"
-  >
-    <span class="radio-station">{{ serverState.status?.artist | fixAmp }}</span>
-    <span class="radio-song">{{ serverState.status?.album | fixAmp }}</span>
-    <span class="radio-song">{{ serverState.status?.song | fixAmp }}</span>
-  </div>
-  <div
-    *ngIf="
-      basicStatusState.currentInput === 'AirPlay' &&
-      (airplayState$ | async) as airplayState
-    "
-    class="radio-info"
-  >
-    <span class="radio-station">{{
-      airplayState.status?.artist | fixAmp
-    }}</span>
-    <span class="radio-song">{{ airplayState.status?.album | fixAmp }}</span>
-    <span class="radio-song">{{ airplayState.status?.song | fixAmp }}</span>
-  </div>
-</div>
+}

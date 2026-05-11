@@ -1,41 +1,37 @@
-<div
-  class="volume-control"
-  *ngIf="basicStatusState$ | async as basicStatusState"
->
-  <span class="volume-label">{{
-    (basicStatusState.volume / 10).toFixed(1) + ' Db'
-  }}</span>
-
-  <div class="control">
-    <button
-      (click)="this.service.volumeDown(5)"
-      [disabled]="disabled"
-      mat-mini-fab
-    >
-      <mat-icon>volume_down</mat-icon>
-    </button>
-
-    <mat-slider [disabled]="disabled" max="0" min="-800" step="5">
-      <input
-        matSliderThumb
-        [ngModel]="basicStatusState.volume"
-        (valueChange)="this.service.setVolumeTo($event.valueOf())"
-      />
-    </mat-slider>
-
-    <button
-      (click)="this.service.volumeUp(5)"
-      [disabled]="disabled"
-      mat-mini-fab
-    >
-      <mat-icon>volume_up</mat-icon>
-    </button>
-    <mat-button-toggle
-      (change)="this.service.sendMute($event.source.checked)"
-      [checked]="basicStatusState.muted"
-      [disabled]="disabled"
-    >
-      <mat-icon>volume_off</mat-icon>
-    </mat-button-toggle>
+@if (basicStatusState$ | async; as basicStatusState) {
+  <div class="volume-control">
+    <span class="volume-label">{{
+      (basicStatusState.volume / 10).toFixed(1) + ' Db'
+    }}</span>
+    <div class="control">
+      <button
+        (click)="this.service.volumeDown(5)"
+        [disabled]="disabled"
+        mat-mini-fab
+      >
+        <mat-icon>volume_down</mat-icon>
+      </button>
+      <mat-slider [disabled]="disabled" max="0" min="-800" step="5">
+        <input
+          matSliderThumb
+          [ngModel]="basicStatusState.volume"
+          (valueChange)="this.service.setVolumeTo($event.valueOf())"
+        />
+      </mat-slider>
+      <button
+        (click)="this.service.volumeUp(5)"
+        [disabled]="disabled"
+        mat-mini-fab
+      >
+        <mat-icon>volume_up</mat-icon>
+      </button>
+      <mat-button-toggle
+        (change)="this.service.sendMute($event.source.checked)"
+        [checked]="basicStatusState.muted"
+        [disabled]="disabled"
+      >
+        <mat-icon>volume_off</mat-icon>
+      </mat-button-toggle>
+    </div>
   </div>
-</div>
+}
