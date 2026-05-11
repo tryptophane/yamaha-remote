@@ -1,44 +1,44 @@
 <mat-card class="options">
-  <span>{{ 'Bass: ' + basicStatusState.bass / 10 + ' dB' }}</span>
+  <span>{{ 'Bass: ' + basicStatusState().bass / 10 + ' dB' }}</span>
   <mat-slider class="example-margin" max="60" min="-60" step="5">
     <input
       matSliderThumb
-      [ngModel]="basicStatusState.bass"
+      [ngModel]="basicStatusState().bass"
       (valueChange)="this.service.setBass($event.valueOf())"
     />
   </mat-slider>
-  <span>{{ 'Treble: ' + basicStatusState.treble / 10 + ' dB' }}</span>
+  <span>{{ 'Treble: ' + basicStatusState().treble / 10 + ' dB' }}</span>
   <mat-slider class="example-margin" max="60" min="-60" step="5">
     <input
       matSliderThumb
-      [ngModel]="basicStatusState.treble"
+      [ngModel]="basicStatusState().treble"
       (valueChange)="this.service.setTreble($event.valueOf())"
     />
   </mat-slider>
   <mat-slide-toggle
     (change)="this.service.adaptiveDRC($event.source.checked)"
-    [checked]="basicStatusState.adaptiveDRCEnabled"
+    [checked]="basicStatusState().adaptiveDRCEnabled"
     labelPosition="before"
   >
     Adaptive DRC
   </mat-slide-toggle>
   <mat-slide-toggle
     (change)="this.service.enhancer($event.source.checked)"
-    [checked]="basicStatusState.enhancer"
+    [checked]="basicStatusState().enhancer"
     labelPosition="before"
   >
     Enhancer
   </mat-slide-toggle>
   <mat-slide-toggle
     (change)="this.service.direct($event.source.checked)"
-    [checked]="basicStatusState.direct"
+    [checked]="basicStatusState().direct"
     labelPosition="before"
   >
     Direct
   </mat-slide-toggle>
   <mat-slide-toggle
     (change)="this.service.threeDCinemaDsp($event.source.checked)"
-    [checked]="basicStatusState.threeDCinemaDsp"
+    [checked]="basicStatusState().threeDCinemaDsp"
     labelPosition="before"
   >
     CINEMA DSP 3D-Mode

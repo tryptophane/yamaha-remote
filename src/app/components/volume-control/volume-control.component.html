@@ -6,12 +6,12 @@
     <div class="control">
       <button
         (click)="this.service.volumeDown(5)"
-        [disabled]="disabled"
+        [disabled]="disabled()"
         mat-mini-fab
       >
         <mat-icon>volume_down</mat-icon>
       </button>
-      <mat-slider [disabled]="disabled" max="0" min="-800" step="5">
+      <mat-slider [disabled]="disabled()" max="0" min="-800" step="5">
         <input
           matSliderThumb
           [ngModel]="basicStatusState.volume"
@@ -20,7 +20,7 @@
       </mat-slider>
       <button
         (click)="this.service.volumeUp(5)"
-        [disabled]="disabled"
+        [disabled]="disabled()"
         mat-mini-fab
       >
         <mat-icon>volume_up</mat-icon>
@@ -28,7 +28,7 @@
       <mat-button-toggle
         (change)="this.service.sendMute($event.source.checked)"
         [checked]="basicStatusState.muted"
-        [disabled]="disabled"
+        [disabled]="disabled()"
       >
         <mat-icon>volume_off</mat-icon>
       </mat-button-toggle>

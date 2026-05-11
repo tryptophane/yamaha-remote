@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,5 @@ import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
 export class OptionsComponent {
   readonly service = inject(OptionsService);
 
-  @Input()
-  basicStatusState!: fromBasicStatus.State;
+  readonly basicStatusState = input.required<fromBasicStatus.State>();
 }

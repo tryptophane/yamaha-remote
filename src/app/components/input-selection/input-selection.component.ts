@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit, input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
@@ -20,11 +20,9 @@ export class InputSelectionComponent implements OnInit {
   private readonly store = inject<Store<State>>(Store);
   protected readonly service = inject(InputSelectionService);
 
-  @Input()
-  currentInput!: string;
+  readonly currentInput = input.required<string>();
 
-  @Input()
-  disabled = false;
+  readonly disabled = input(false);
 
   inputsState$: Observable<fromInputs.State>;
 

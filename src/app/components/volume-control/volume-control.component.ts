@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
@@ -30,8 +30,7 @@ export class VolumeControlComponent {
   private readonly store = inject<Store<State>>(Store);
   readonly service = inject(VolumeControlService);
 
-  @Input()
-  disabled = false;
+  readonly disabled = input(false);
 
   basicStatusState$: Observable<fromBasicStatus.State>;
 

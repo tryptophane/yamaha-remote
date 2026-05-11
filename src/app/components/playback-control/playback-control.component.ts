@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
@@ -30,8 +30,7 @@ export class PlaybackControlComponent {
   private readonly spotifyService = inject(SpotifyService);
   private readonly serverService = inject(ServerService);
 
-  @Input()
-  currentInput!: string;
+  readonly currentInput = input.required<string>();
 
   spotifyState$: Observable<fromSpotify.State>;
   serverState$: Observable<fromServer.State>;
@@ -95,22 +94,24 @@ export class PlaybackControlComponent {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getState(): Observable<any> {
-    if (this.currentInput === 'SERVER') {
+    const currentInput = this.currentInput();
+    if (currentInput === 'SERVER') {
       return this.serverState$;
-    } else if (this.currentInput === 'Spotify') {
+    } else if (currentInput === 'Spotify') {
       return this.spotifyState$;
-    } else if (this.currentInput === 'AirPlay') {
+    } else if (currentInput === 'AirPlay') {
       return this.airplayState$;
     }
     return EMPTY;
   }
 
   private refreshStatus(): void {
-    if (this.currentInput === 'SERVER') {
+    const currentInput = this.currentInput();
+    if (currentInput === 'SERVER') {
       this.serverService.refreshServerStatus();
-    } else if (this.currentInput === 'Spotify') {
+    } else if (currentInput === 'Spotify') {
       this.spotifyService.refreshSpotifyStatus();
-    } else if (this.currentInput === 'AirPlay') {
+    } else if (currentInput === 'AirPlay') {
       this.airplayService.refreshAirplayStatus();
     }
   }

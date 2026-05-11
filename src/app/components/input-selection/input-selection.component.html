@@ -3,8 +3,8 @@
     <mat-form-field>
       <mat-select
         (selectionChange)="this.service.setInputTo($event.value)"
-        [disabled]="disabled"
-        [value]="currentInput"
+        [disabled]="disabled()"
+        [value]="currentInput()"
         panelClass="input-select-panel-class"
       >
         @for (input of inputList; track input) {

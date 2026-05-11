@@ -2,7 +2,7 @@
   <button (click)="skipPrevious()" mat-button>
     <mat-icon>skip_previous</mat-icon>
   </button>
-  @if (currentInput === 'SERVER') {
+  @if (currentInput() === 'SERVER') {
     <button (click)="stop()" mat-button>
       <mat-icon>stop</mat-icon>
     </button>
@@ -21,7 +21,7 @@
     <mat-icon>skip_next</mat-icon>
   </button>
 </ng-template>
-@if (['Spotify', 'SERVER', 'AirPlay'].includes(currentInput)) {
+@if (['Spotify', 'SERVER', 'AirPlay'].includes(currentInput())) {
   <mat-card class="net-radio-nav-button-bar">
     <ng-container
       *ngTemplateOutlet="navigation; context: { state: (getState() | async) }"

@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatFormField } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 
@@ -13,11 +13,9 @@ import { DspSelectionService } from '../../service/dsp-selection.service';
 export class DspSelectionComponent {
   private readonly service = inject(DspSelectionService);
 
-  @Input()
-  selectedDsp!: string;
+  readonly selectedDsp = input.required<string>();
 
-  @Input()
-  disabled = false;
+  readonly disabled = input(false);
 
   readonly presets: Array<string> = [
     'Hall in Munich',

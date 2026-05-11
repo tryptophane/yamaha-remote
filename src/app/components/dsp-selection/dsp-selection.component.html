@@ -2,8 +2,8 @@
   <mat-form-field>
     <mat-select
       (selectionChange)="changeSelected($event.value)"
-      [disabled]="disabled"
-      [value]="selectedDsp"
+      [disabled]="disabled()"
+      [value]="selectedDsp()"
       panelClass="dsp-select-panel-class"
     >
       @for (item of presets; track item) {
