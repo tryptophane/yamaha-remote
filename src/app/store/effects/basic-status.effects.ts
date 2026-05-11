@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { NetradioService } from '../../service/netradio.service';
@@ -9,6 +9,13 @@ import { RemoteService } from '../../service/remote-service';
 
 @Injectable()
 export class BasicStatusEffects {
+  private readonly actions$ = inject(Actions);
+  private readonly service = inject(RemoteService);
+  private readonly netradioService = inject(NetradioService);
+  private readonly airplayService = inject(AirplayService);
+  private readonly spotifyService = inject(SpotifyService);
+  private readonly serverService = inject(ServerService);
+
   refreshAllStatus$ = createEffect(() =>
     this.actions$.pipe(
       ofType('[BASIC_STATUS] Refresh all status'),
@@ -33,13 +40,4 @@ export class BasicStatusEffects {
       }))
     )
   );
-
-  constructor(
-    private readonly actions$: Actions,
-    private readonly service: RemoteService,
-    private readonly netradioService: NetradioService,
-    private readonly airplayService: AirplayService,
-    private readonly spotifyService: SpotifyService,
-    private readonly serverService: ServerService
-  ) {}
 }

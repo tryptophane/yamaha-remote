@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
@@ -13,8 +13,8 @@ import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
   imports: [MatCard, MatSlider, MatSliderThumb, FormsModule, MatSlideToggle]
 })
 export class OptionsComponent {
+  readonly service = inject(OptionsService);
+
   @Input()
   basicStatusState: fromBasicStatus.State;
-
-  constructor(readonly service: OptionsService) {}
 }

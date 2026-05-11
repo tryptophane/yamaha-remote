@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
-import { MatNavList, MatListItem } from '@angular/material/list';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { MatListItem, MatNavList } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -33,13 +33,13 @@ import { FixAmpPipe } from '../../utils/fix-amp.pipe';
   ]
 })
 export class NetRadioListComponent implements OnInit {
+  private readonly store = inject<Store<State>>(Store);
+  private readonly service = inject(NetradioService);
+
   netradioState$: Observable<fromNetradio.State>;
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly service: NetradioService
-  ) {
-    this.netradioState$ = store.select(fromRoot.getNetradioState);
+  constructor() {
+    this.netradioState$ = this.store.select(fromRoot.getNetradioState);
   }
 
   ngOnInit() {

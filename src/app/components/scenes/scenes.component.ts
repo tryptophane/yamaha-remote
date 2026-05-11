@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgFor } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import * as fromScenes from '../../store/reducer/scenes.reducer';
 import * as fromRoot from '../../store/reducer';
@@ -15,13 +15,13 @@ import { ScenesService } from '../../service/scenes.service';
   imports: [NgFor, MatButton, AsyncPipe]
 })
 export class ScenesComponent implements OnInit {
+  private readonly store = inject<Store<State>>(Store);
+  private readonly service = inject(ScenesService);
+
   scenesState$: Observable<fromScenes.State>;
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly service: ScenesService
-  ) {
-    this.scenesState$ = store.select(fromRoot.getScenesState);
+  constructor() {
+    this.scenesState$ = this.store.select(fromRoot.getScenesState);
   }
 
   ngOnInit() {

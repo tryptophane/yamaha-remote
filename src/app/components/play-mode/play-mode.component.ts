@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import * as fromServer from '../../store/reducer/server.reducer';
@@ -16,12 +16,12 @@ import { ServerService } from '../../service/server.service';
   imports: [NgIf, MatButton, MatIcon, AsyncPipe]
 })
 export class PlayModeComponent {
+  private readonly store = inject<Store<State>>(Store);
+  readonly service = inject(ServerService);
+
   serverState$: Observable<fromServer.State>;
 
-  constructor(
-    private readonly store: Store<State>,
-    readonly service: ServerService
-  ) {
-    this.serverState$ = store.select(fromRoot.getServerState);
+  constructor() {
+    this.serverState$ = this.store.select(fromRoot.getServerState);
   }
 }

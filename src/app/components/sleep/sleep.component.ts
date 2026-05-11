@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { skip, switchMap, take, tap } from 'rxjs/operators';
@@ -19,14 +19,14 @@ import { RemoteService } from '../../service/remote-service';
   imports: [NgIf, MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
 })
 export class SleepComponent {
+  private readonly store = inject<Store<State>>(Store);
+  protected readonly service = inject(RemoteService);
+  private readonly snackBar = inject(MatSnackBar);
+
   basicStatusState$: Observable<fromBasicStatus.State>;
 
-  constructor(
-    private readonly store: Store<State>,
-    protected readonly service: RemoteService,
-    private readonly snackBar: MatSnackBar
-  ) {
-    this.basicStatusState$ = store.select(fromRoot.getBasicStatusState);
+  constructor() {
+    this.basicStatusState$ = this.store.select(fromRoot.getBasicStatusState);
   }
 
   openSnackBar(message: string) {

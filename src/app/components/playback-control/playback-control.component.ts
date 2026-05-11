@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
@@ -24,6 +24,12 @@ import { ServerService } from '../../service/server.service';
   imports: [MatButton, MatIcon, NgIf, MatCard, NgTemplateOutlet, AsyncPipe]
 })
 export class PlaybackControlComponent {
+  private readonly store = inject<Store<State>>(Store);
+  private readonly service = inject(PlaybackControlService);
+  private readonly airplayService = inject(AirplayService);
+  private readonly spotifyService = inject(SpotifyService);
+  private readonly serverService = inject(ServerService);
+
   @Input()
   currentInput: string;
 
@@ -31,16 +37,10 @@ export class PlaybackControlComponent {
   serverState$: Observable<fromServer.State>;
   airplayState$: Observable<fromAirplay.State>;
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly service: PlaybackControlService,
-    private readonly airplayService: AirplayService,
-    private readonly spotifyService: SpotifyService,
-    private readonly serverService: ServerService
-  ) {
-    this.spotifyState$ = store.select(fromRoot.getSpotifyState);
-    this.serverState$ = store.select(fromRoot.getServerState);
-    this.airplayState$ = store.select(fromRoot.getAirplayState);
+  constructor() {
+    this.spotifyState$ = this.store.select(fromRoot.getSpotifyState);
+    this.serverState$ = this.store.select(fromRoot.getServerState);
+    this.airplayState$ = this.store.select(fromRoot.getAirplayState);
   }
 
   pause(): void {

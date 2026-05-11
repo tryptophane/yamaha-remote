@@ -2,10 +2,10 @@ import { Store } from '@ngrx/store';
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
   OnInit
 } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AsyncPipe, NgIf } from '@angular/common';
@@ -55,17 +55,16 @@ import { CursorControlComponent } from '../cursor-control/cursor-control.compone
   ]
 })
 export class RemoteMainComponent implements OnInit, OnDestroy {
+  private readonly store = inject<Store<State>>(Store);
+  private readonly service = inject(RemoteService);
+
   basicStatusState$: Observable<fromBasicStatus.State>;
   networkNameState$: Observable<fromNetworkName.State>;
   private readonly unsubscribe$: Subject<void> = new Subject();
 
-  constructor(
-    private readonly store: Store<State>,
-    private readonly http: HttpClient,
-    private readonly service: RemoteService
-  ) {
-    this.basicStatusState$ = store.select(fromRoot.getBasicStatusState);
-    this.networkNameState$ = store.select(fromRoot.getNetworkNameState);
+  constructor() {
+    this.basicStatusState$ = this.store.select(fromRoot.getBasicStatusState);
+    this.networkNameState$ = this.store.select(fromRoot.getNetworkNameState);
   }
 
   ngOnInit(): void {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
@@ -17,6 +17,9 @@ import { InputSelectionService } from '../../service/input-selection.service';
   imports: [NgIf, MatFormField, MatSelect, NgFor, MatOption, AsyncPipe]
 })
 export class InputSelectionComponent implements OnInit {
+  private readonly store = inject<Store<State>>(Store);
+  protected readonly service = inject(InputSelectionService);
+
   @Input()
   currentInput: string;
 
@@ -25,11 +28,8 @@ export class InputSelectionComponent implements OnInit {
 
   inputsState$: Observable<fromInputs.State>;
 
-  constructor(
-    private readonly store: Store<State>,
-    protected readonly service: InputSelectionService
-  ) {
-    this.inputsState$ = store.select(fromRoot.getInputsState);
+  constructor() {
+    this.inputsState$ = this.store.select(fromRoot.getInputsState);
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -11,5 +11,5 @@ import { CursorControlService } from '../../service/cursor-control.service';
   imports: [MatCard, MatButton, MatIcon]
 })
 export class CursorControlComponent {
-  constructor(readonly service: CursorControlService) {}
+  readonly service = inject(CursorControlService);
 }

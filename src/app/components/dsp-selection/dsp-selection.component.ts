@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatFormField } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { NgFor } from '@angular/common';
@@ -11,6 +11,8 @@ import { DspSelectionService } from '../../service/dsp-selection.service';
   imports: [MatFormField, MatSelect, NgFor, MatOption]
 })
 export class DspSelectionComponent {
+  private readonly service = inject(DspSelectionService);
+
   @Input()
   selectedDsp: string;
 
@@ -39,8 +41,6 @@ export class DspSelectionComponent {
     '5ch Stereo',
     'Straight'
   ];
-
-  constructor(private readonly service: DspSelectionService) {}
 
   changeSelected(dsp: string): void {
     this.service.setStraight(dsp === 'Straight');
