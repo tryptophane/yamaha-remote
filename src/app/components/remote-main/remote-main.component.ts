@@ -8,7 +8,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';

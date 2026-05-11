@@ -1,5 +1,5 @@
 <div *ngIf="netradioState$ | async as state" class="net-radio-list">
-  <mat-nav-list *ngIf="state.list.menuStatus === 'Ready'; else spinner">
+  <mat-nav-list *ngIf="state?.list?.menuStatus === 'Ready'; else spinner">
     <mat-list-item
       (click)="selectRadioListLine(line)"
       *ngFor="let line of state.list?.lines"

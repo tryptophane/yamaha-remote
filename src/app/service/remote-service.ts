@@ -8,11 +8,9 @@ import { SetNetworkNameAction } from '../store/actions/network-name.action';
 import { SleepStates } from '../model/sleep-states.enum';
 import { AbstractService, HttpMethod } from './abstract-service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RemoteService extends AbstractService {
-  sleepStates: Array<string> = Object.keys(SleepStates).map(
-    k => SleepStates[k]
-  );
+  sleepStates: Array<string> = Object.values(SleepStates);
 
   constructor(
     private readonly http: HttpClient,

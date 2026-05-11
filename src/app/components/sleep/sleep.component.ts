@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { skip, switchMap, take, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
@@ -23,7 +23,7 @@ export class SleepComponent {
 
   constructor(
     private readonly store: Store<State>,
-    private readonly service: RemoteService,
+    protected readonly service: RemoteService,
     private readonly snackBar: MatSnackBar
   ) {
     this.basicStatusState$ = store.select(fromRoot.getBasicStatusState);

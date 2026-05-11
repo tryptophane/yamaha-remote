@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { MatFormField } from '@angular/material/input';
-import { MatSelect, MatOption } from '@angular/material/select';
+import { MatOption, MatSelect } from '@angular/material/select';
 import * as fromInputs from '../../store/reducer/inputs.reducer';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
@@ -27,7 +27,7 @@ export class InputSelectionComponent implements OnInit {
 
   constructor(
     private readonly store: Store<State>,
-    private readonly service: InputSelectionService
+    protected readonly service: InputSelectionService
   ) {
     this.inputsState$ = store.select(fromRoot.getInputsState);
   }

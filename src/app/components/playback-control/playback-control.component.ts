@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { NgIf, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatCard } from '@angular/material/card';
 import * as fromSpotify from '../../store/reducer/spotify.reducer';
 import * as fromServer from '../../store/reducer/server.reducer';
@@ -13,7 +13,6 @@ import * as fromAirplay from '../../store/reducer/airplay.reducer';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import { PlaybackControlService } from '../../service/playback-control.service';
-import { RemoteService } from '../../service/remote-service';
 import { AirplayService } from '../../service/airplay.service';
 import { SpotifyService } from '../../service/spotify.service';
 import { ServerService } from '../../service/server.service';
@@ -35,7 +34,6 @@ export class PlaybackControlComponent {
   constructor(
     private readonly store: Store<State>,
     private readonly service: PlaybackControlService,
-    private readonly remoteService: RemoteService,
     private readonly airplayService: AirplayService,
     private readonly spotifyService: SpotifyService,
     private readonly serverService: ServerService
