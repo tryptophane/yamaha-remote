@@ -4,7 +4,8 @@ import { DspSelectionService } from '../../service/dsp-selection.service';
 @Component({
   selector: 'app-dsp-select',
   templateUrl: './dsp-selection.component.html',
-  styleUrls: ['./dsp-selection.component.scss']
+  styleUrls: ['./dsp-selection.component.scss'],
+  standalone: false
 })
 export class DspSelectionComponent {
   @Input()

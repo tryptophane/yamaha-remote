@@ -12,7 +12,8 @@ import { State } from '../../store/reducer';
 @Component({
   selector: 'app-playback-info',
   templateUrl: './playback-info.component.html',
-  styleUrls: ['./playback-info.component.scss']
+  styleUrls: ['./playback-info.component.scss'],
+  standalone: false
 })
 export class PlaybackInfoComponent {
   basicStatusState$: Observable<fromBasicStatus.State>;

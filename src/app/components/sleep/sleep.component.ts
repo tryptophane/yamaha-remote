@@ -11,7 +11,8 @@ import { RemoteService } from '../../service/remote-service';
 @Component({
   selector: 'app-sleep',
   templateUrl: './sleep.component.html',
-  styleUrls: ['./sleep.component.scss']
+  styleUrls: ['./sleep.component.scss'],
+  standalone: false
 })
 export class SleepComponent {
   basicStatusState$: Observable<fromBasicStatus.State>;

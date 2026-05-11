@@ -1,20 +1,11 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "projects/**/*",
-    "test.ts",
-    "src/polyfills.ts"
-  ],
+  "ignorePatterns": ["projects/**/*", "test.ts", "src/polyfills.ts"],
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
-        ],
+        "project": ["tsconfig.json", "e2e/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
@@ -50,35 +41,27 @@
             "style": "camelCase",
             "type": "attribute"
           }
-        ]
+        ],
+        "@angular-eslint/prefer-standalone": "off"
       }
     },
     {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended"
-      ],
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     },
     {
-      "files": [
-        "*.reducer.ts"
-      ],
+      "files": ["*.reducer.ts"],
       "rules": {
         "prefer-arrow/prefer-arrow-functions": "off"
       }
     },
     {
-      "files": [
-        "*.action.ts"
-      ],
+      "files": ["*.action.ts"],
       "rules": {
         "max-classes-per-file": "off",
         "@typescript-eslint/naming-convention": "off"
       }
     }
-
   ]
 }

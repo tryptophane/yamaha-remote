@@ -17,7 +17,8 @@ import { ServerService } from '../../service/server.service';
 @Component({
   selector: 'app-playback-control',
   templateUrl: './playback-control.component.html',
-  styleUrls: ['./playback-control.component.scss']
+  styleUrls: ['./playback-control.component.scss'],
+  standalone: false
 })
 export class PlaybackControlComponent {
   @Input()

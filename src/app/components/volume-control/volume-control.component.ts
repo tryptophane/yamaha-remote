@@ -9,7 +9,8 @@ import { VolumeControlService } from '../../service/volume-control.service';
 @Component({
   selector: 'app-volume-control',
   templateUrl: './volume-control.component.html',
-  styleUrls: ['./volume-control.component.scss']
+  styleUrls: ['./volume-control.component.scss'],
+  standalone: false
 })
 export class VolumeControlComponent {
   @Input()

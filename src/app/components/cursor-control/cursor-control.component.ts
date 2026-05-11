@@ -4,7 +4,8 @@ import { CursorControlService } from '../../service/cursor-control.service';
 @Component({
   selector: 'app-cursor-control',
   templateUrl: './cursor-control.component.html',
-  styleUrls: ['./cursor-control.component.scss']
+  styleUrls: ['./cursor-control.component.scss'],
+  standalone: false
 })
 export class CursorControlComponent {
   constructor(readonly service: CursorControlService) {}

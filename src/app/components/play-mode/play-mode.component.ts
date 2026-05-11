@@ -9,7 +9,8 @@ import { ServerService } from '../../service/server.service';
 @Component({
   selector: 'app-play-mode',
   templateUrl: './play-mode.component.html',
-  styleUrls: ['./play-mode.component.scss']
+  styleUrls: ['./play-mode.component.scss'],
+  standalone: false
 })
 export class PlayModeComponent {
   serverState$: Observable<fromServer.State>;

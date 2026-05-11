@@ -19,7 +19,8 @@ import { RemoteService } from '../../service/remote-service';
   selector: 'app-remote-main',
   templateUrl: './remote-main.component.html',
   styleUrls: ['./remote-main.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class RemoteMainComponent implements OnInit, OnDestroy {
   basicStatusState$: Observable<fromBasicStatus.State>;

@@ -13,7 +13,8 @@ import { NetradioService } from '../../service/netradio.service';
 @Component({
   selector: 'app-net-radio-list',
   templateUrl: './net-radio-list.component.html',
-  styleUrls: ['./net-radio-list.component.scss']
+  styleUrls: ['./net-radio-list.component.scss'],
+  standalone: false
 })
 export class NetRadioListComponent implements OnInit {
   netradioState$: Observable<fromNetradio.State>;

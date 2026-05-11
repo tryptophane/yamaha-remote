@@ -9,7 +9,8 @@ import { ScenesService } from '../../service/scenes.service';
 @Component({
   selector: 'app-scenes',
   templateUrl: './scenes.component.html',
-  styleUrls: ['./scenes.component.scss']
+  styleUrls: ['./scenes.component.scss'],
+  standalone: false
 })
 export class ScenesComponent implements OnInit {
   scenesState$: Observable<fromScenes.State>;

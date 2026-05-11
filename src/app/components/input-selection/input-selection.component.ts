@@ -10,7 +10,8 @@ import { InputSelectionService } from '../../service/input-selection.service';
 @Component({
   selector: 'app-input-selection',
   templateUrl: './input-selection.component.html',
-  styleUrls: ['./input-selection.component.scss']
+  styleUrls: ['./input-selection.component.scss'],
+  standalone: false
 })
 export class InputSelectionComponent implements OnInit {
   @Input()
