@@ -40,22 +40,7 @@ import { BasicStatusEffects } from './store/effects/basic-status.effects';
 import { FixAmpPipe } from './utils/fix-amp.pipe';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RemoteMainComponent,
-    PlaybackInfoComponent,
-    VolumeControlComponent,
-    NetRadioListComponent,
-    PlaybackControlComponent,
-    OptionsComponent,
-    InputSelectionComponent,
-    DspSelectionComponent,
-    ScenesComponent,
-    PlayModeComponent,
-    SleepComponent,
-    CursorControlComponent,
-    FixAmpPipe
-  ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
@@ -75,7 +60,20 @@ import { FixAmpPipe } from './utils/fix-amp.pipe';
     MatTooltipModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([BasicStatusEffects]),
-    MatCardModule
+    MatCardModule,
+    RemoteMainComponent,
+    PlaybackInfoComponent,
+    VolumeControlComponent,
+    NetRadioListComponent,
+    PlaybackControlComponent,
+    OptionsComponent,
+    InputSelectionComponent,
+    DspSelectionComponent,
+    ScenesComponent,
+    PlayModeComponent,
+    SleepComponent,
+    CursorControlComponent,
+    FixAmpPipe
   ],
   providers: [RemoteService, provideHttpClient(withInterceptorsFromDi())]
 })

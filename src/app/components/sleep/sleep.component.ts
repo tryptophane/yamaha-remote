@@ -3,6 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { skip, switchMap, take, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
 import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
@@ -12,7 +16,7 @@ import { RemoteService } from '../../service/remote-service';
   selector: 'app-sleep',
   templateUrl: './sleep.component.html',
   styleUrls: ['./sleep.component.scss'],
-  standalone: false
+  imports: [NgIf, MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
 })
 export class SleepComponent {
   basicStatusState$: Observable<fromBasicStatus.State>;

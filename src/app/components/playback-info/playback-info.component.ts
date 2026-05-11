@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { NgIf, AsyncPipe } from '@angular/common';
 import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
 import * as fromNetradio from '../../store/reducer/netradio.reducer';
 import * as fromSpotify from '../../store/reducer/spotify.reducer';
@@ -8,12 +9,13 @@ import * as fromServer from '../../store/reducer/server.reducer';
 import * as fromAirplay from '../../store/reducer/airplay.reducer';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
+import { FixAmpPipe } from '../../utils/fix-amp.pipe';
 
 @Component({
   selector: 'app-playback-info',
   templateUrl: './playback-info.component.html',
   styleUrls: ['./playback-info.component.scss'],
-  standalone: false
+  imports: [NgIf, AsyncPipe, FixAmpPipe]
 })
 export class PlaybackInfoComponent {
   basicStatusState$: Observable<fromBasicStatus.State>;

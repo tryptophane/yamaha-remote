@@ -1,11 +1,14 @@
 import { Component, Input } from '@angular/core';
+import { MatFormField } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { NgFor } from '@angular/common';
 import { DspSelectionService } from '../../service/dsp-selection.service';
 
 @Component({
   selector: 'app-dsp-select',
   templateUrl: './dsp-selection.component.html',
   styleUrls: ['./dsp-selection.component.scss'],
-  standalone: false
+  imports: [MatFormField, MatSelect, NgFor, MatOption]
 })
 export class DspSelectionComponent {
   @Input()

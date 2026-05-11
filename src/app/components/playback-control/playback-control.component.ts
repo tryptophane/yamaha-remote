@@ -3,6 +3,10 @@ import { Component, Input } from '@angular/core';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { NgIf, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { MatCard } from '@angular/material/card';
 import * as fromSpotify from '../../store/reducer/spotify.reducer';
 import * as fromServer from '../../store/reducer/server.reducer';
 import * as fromAirplay from '../../store/reducer/airplay.reducer';
@@ -18,7 +22,7 @@ import { ServerService } from '../../service/server.service';
   selector: 'app-playback-control',
   templateUrl: './playback-control.component.html',
   styleUrls: ['./playback-control.component.scss'],
-  standalone: false
+  imports: [MatButton, MatIcon, NgIf, MatCard, NgTemplateOutlet, AsyncPipe]
 })
 export class PlaybackControlComponent {
   @Input()

@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatFormField } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
 import * as fromInputs from '../../store/reducer/inputs.reducer';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
@@ -11,7 +14,7 @@ import { InputSelectionService } from '../../service/input-selection.service';
   selector: 'app-input-selection',
   templateUrl: './input-selection.component.html',
   styleUrls: ['./input-selection.component.scss'],
-  standalone: false
+  imports: [NgIf, MatFormField, MatSelect, NgFor, MatOption, AsyncPipe]
 })
 export class InputSelectionComponent implements OnInit {
   @Input()

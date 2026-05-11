@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatNavList, MatListItem } from '@angular/material/list';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import * as fromNetradio from '../../store/reducer/netradio.reducer';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
@@ -9,12 +14,23 @@ import {
   SetRadioStatusAction
 } from '../../store/actions/netradio.action';
 import { NetradioService } from '../../service/netradio.service';
+import { FixAmpPipe } from '../../utils/fix-amp.pipe';
 
 @Component({
   selector: 'app-net-radio-list',
   templateUrl: './net-radio-list.component.html',
   styleUrls: ['./net-radio-list.component.scss'],
-  standalone: false
+  imports: [
+    NgIf,
+    MatNavList,
+    NgFor,
+    MatListItem,
+    MatButton,
+    MatIcon,
+    MatProgressSpinner,
+    AsyncPipe,
+    FixAmpPipe
+  ]
 })
 export class NetRadioListComponent implements OnInit {
   netradioState$: Observable<fromNetradio.State>;
