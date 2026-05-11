@@ -31,7 +31,7 @@ export class PlaybackControlComponent {
   private readonly serverService = inject(ServerService);
 
   @Input()
-  currentInput: string;
+  currentInput!: string;
 
   spotifyState$: Observable<fromSpotify.State>;
   serverState$: Observable<fromServer.State>;

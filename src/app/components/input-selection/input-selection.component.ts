@@ -21,7 +21,7 @@ export class InputSelectionComponent implements OnInit {
   protected readonly service = inject(InputSelectionService);
 
   @Input()
-  currentInput: string;
+  currentInput!: string;
 
   @Input()
   disabled = false;

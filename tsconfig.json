@@ -9,21 +9,14 @@
     "experimentalDecorators": true,
     "target": "ES2022",
     "allowJs": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
     "module": "es2020",
     "baseUrl": "./",
     "paths": {
-      "stream": [
-        "../node_modules/stream-browserify"
-      ]
+      "stream": ["../node_modules/stream-browserify"]
     },
     "useDefineForClassFields": false,
-    "strictNullChecks": true
+    "strict": true
   }
 }

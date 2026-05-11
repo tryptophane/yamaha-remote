@@ -16,5 +16,5 @@ export class OptionsComponent {
   readonly service = inject(OptionsService);
 
   @Input()
-  basicStatusState: fromBasicStatus.State;
+  basicStatusState!: fromBasicStatus.State;
 }

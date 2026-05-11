@@ -14,7 +14,7 @@ export class DspSelectionComponent {
   private readonly service = inject(DspSelectionService);
 
   @Input()
-  selectedDsp: string;
+  selectedDsp!: string;
 
   @Input()
   disabled = false;

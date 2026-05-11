@@ -1,6 +1,8 @@
+import { Action } from '@ngrx/store';
 import {
-  BasicStatusActions,
-  BasicStatusActionTypes
+  BasicStatusActionTypes,
+  SetBasicStatusAction,
+  SetErrorAction
 } from '../actions/basic-status.action';
 
 export interface State {
@@ -35,16 +37,15 @@ const initialState: State = {
   error: false
 };
 
-export function reducer(
-  state: State = initialState,
-  action: BasicStatusActions
-): State {
+export function reducer(state: State = initialState, action: Action): State {
   switch (action.type) {
     case BasicStatusActionTypes.SET_BASIC_STATUS: {
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, state, (action as SetBasicStatusAction).payload);
     }
     case BasicStatusActionTypes.SET_ERROR: {
-      return Object.assign({}, state, { error: action.payload });
+      return Object.assign({}, state, {
+        error: (action as SetErrorAction).payload
+      });
     }
     default: {
       return state;

@@ -74,7 +74,7 @@ export abstract class AbstractService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseXml(xmlStr: string): any {
     let result;
-    parser.Parser().parseString(xmlStr, (e, r) => (result = r));
+    new parser.Parser().parseString(xmlStr, (_e, r) => (result = r));
     return result;
   }
 

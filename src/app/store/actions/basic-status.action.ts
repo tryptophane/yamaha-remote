@@ -19,7 +19,6 @@ export class SetBasicStatusAction implements Action {
 
 export class RefreshAllStatusAction implements Action {
   type: string = BasicStatusActionTypes.REFRESH_ALL_STATUS;
-  payload: void;
 }
 
 export class SetErrorAction implements Action {
