@@ -1,6 +1,11 @@
-import { Component, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input
+} from '@angular/core';
 import { MatFormField } from '@angular/material/input';
-import { MatSelect, MatOption } from '@angular/material/select';
+import { MatOption, MatSelect } from '@angular/material/select';
 
 import { DspSelectionService } from '../../service/dsp-selection.service';
 
@@ -8,6 +13,7 @@ import { DspSelectionService } from '../../service/dsp-selection.service';
   selector: 'app-dsp-select',
   templateUrl: './dsp-selection.component.html',
   styleUrls: ['./dsp-selection.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatFormField, MatSelect, MatOption]
 })
 export class DspSelectionComponent {

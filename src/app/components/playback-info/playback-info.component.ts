@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
@@ -15,6 +15,7 @@ import { FixAmpPipe } from '../../utils/fix-amp.pipe';
   selector: 'app-playback-info',
   templateUrl: './playback-info.component.html',
   styleUrls: ['./playback-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, FixAmpPipe]
 })
 export class PlaybackInfoComponent {

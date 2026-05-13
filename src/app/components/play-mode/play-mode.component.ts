@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -13,6 +13,7 @@ import { ServerService } from '../../service/server.service';
   selector: 'app-play-mode',
   templateUrl: './play-mode.component.html',
   styleUrls: ['./play-mode.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButton, MatIcon, AsyncPipe]
 })
 export class PlayModeComponent {

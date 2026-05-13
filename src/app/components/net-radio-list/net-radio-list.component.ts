@@ -1,4 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
@@ -20,6 +25,7 @@ import { FixAmpPipe } from '../../utils/fix-amp.pipe';
   selector: 'app-net-radio-list',
   templateUrl: './net-radio-list.component.html',
   styleUrls: ['./net-radio-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatNavList,
     MatListItem,

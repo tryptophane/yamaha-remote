@@ -1,4 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
@@ -12,6 +17,7 @@ import { ScenesService } from '../../service/scenes.service';
   selector: 'app-scenes',
   templateUrl: './scenes.component.html',
   styleUrls: ['./scenes.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButton, AsyncPipe]
 })
 export class ScenesComponent implements OnInit {

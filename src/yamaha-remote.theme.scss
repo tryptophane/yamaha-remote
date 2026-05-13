@@ -4,7 +4,6 @@
 @use 'app/components/net-radio-list/net-radio-list.theming';
 @use 'app/components/play-mode/play-mode.theming';
 @use 'app/components/sleep/sleep.theming';
-@use 'app/components/remote-main/remote-main.theming';
 
 @include mat.elevation-classes();
 @include mat.app-background();
@@ -31,7 +30,6 @@ $angular-dark-theme: mat.m2-define-dark-theme(
 @include net-radio-list.net-radio-list-theme($angular-dark-theme);
 @include play-mode.play-mode-theme($angular-dark-theme);
 @include sleep.sleep-theme($angular-dark-theme);
-@include remote-main.remote-main-theme($angular-dark-theme);
 
 ::-webkit-scrollbar {
   width: 12px;

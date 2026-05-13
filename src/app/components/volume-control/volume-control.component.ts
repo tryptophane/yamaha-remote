@@ -1,4 +1,9 @@
-import { Component, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
@@ -16,6 +21,7 @@ import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
   selector: 'app-volume-control',
   templateUrl: './volume-control.component.html',
   styleUrls: ['./volume-control.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatMiniFabButton,
     MatIcon,

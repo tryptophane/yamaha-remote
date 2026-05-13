@@ -1,4 +1,9 @@
-import { Component, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input
+} from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +15,7 @@ import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
   selector: 'app-options',
   templateUrl: './options.component.html',
   styleUrls: ['./options.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCard, MatSlider, MatSliderThumb, FormsModule, MatSlideToggle]
 })
 export class OptionsComponent {

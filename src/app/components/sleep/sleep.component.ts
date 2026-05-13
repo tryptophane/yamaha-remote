@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { skip, switchMap, take, tap } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { RemoteService } from '../../service/remote-service';
   selector: 'app-sleep',
   templateUrl: './sleep.component.html',
   styleUrls: ['./sleep.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
 })
 export class SleepComponent {

@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnInit
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AsyncPipe } from '@angular/common';
@@ -14,6 +20,7 @@ import { InputSelectionService } from '../../service/input-selection.service';
   selector: 'app-input-selection',
   templateUrl: './input-selection.component.html',
   styleUrls: ['./input-selection.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatFormField, MatSelect, MatOption, AsyncPipe]
 })
 export class InputSelectionComponent implements OnInit {

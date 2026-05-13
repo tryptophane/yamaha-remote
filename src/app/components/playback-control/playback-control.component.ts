@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-import { Component, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input
+} from '@angular/core';
 import { EMPTY, Observable, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
@@ -21,6 +26,7 @@ import { ServerService } from '../../service/server.service';
   selector: 'app-playback-control',
   templateUrl: './playback-control.component.html',
   styleUrls: ['./playback-control.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButton, MatIcon, MatCard, NgTemplateOutlet, AsyncPipe]
 })
 export class PlaybackControlComponent {
