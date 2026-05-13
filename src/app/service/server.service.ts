@@ -1,8 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
-import { State } from '../store/reducer';
 import { SetServerStatusAction } from '../store/actions/server.action';
 import { AbstractService, HttpMethod } from './abstract-service';
 
@@ -10,13 +7,6 @@ import { AbstractService, HttpMethod } from './abstract-service';
   providedIn: 'root'
 })
 export class ServerService extends AbstractService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
-
   refreshServerStatus(): void {
     const command = this.generateXml(
       '<SERVER><Play_Info>GetParam</Play_Info></SERVER>',

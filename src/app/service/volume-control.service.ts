@@ -1,21 +1,11 @@
 import { Injectable } from '@angular/core';
 import { take, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
-import { State } from '../store/reducer';
 import { AbstractService, HttpMethod } from './abstract-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VolumeControlService extends AbstractService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
-
   setVolumeTo(to: string | number): void {
     const command = this.generateXml(
       `<Volume><Lvl><Val>${to}</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume>`,

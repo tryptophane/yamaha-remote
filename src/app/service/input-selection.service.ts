@@ -1,23 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { InputItem } from '../model/input-item.model';
-import { State } from '../store/reducer';
 import { AbstractService, HttpMethod } from './abstract-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InputSelectionService extends AbstractService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
-
   setInputTo(to: string): void {
     const command = this.generateXml(
       `<Input><Input_Sel>${to}</Input_Sel></Input>`,

@@ -1,8 +1,6 @@
 {
   "rules": {
-    "prettier/prettier": [
-      "error"
-    ],
+    "prettier/prettier": ["error"],
     "@angular-eslint/component-selector": [
       "error",
       {
@@ -32,10 +30,7 @@
     ],
     "@typescript-eslint/await-thenable": "off",
     "@typescript-eslint/ban-types": "off",
-    "@typescript-eslint/consistent-type-definitions": [
-      "error",
-      "interface"
-    ],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
     "@typescript-eslint/dot-notation": "off",
     "@typescript-eslint/explicit-member-accessibility": [
       "error",
@@ -48,41 +43,25 @@
       "error",
       {
         "selector": "default",
-        "format": [
-          "camelCase"
-        ]
+        "format": ["camelCase"]
       },
       {
         "selector": "variable",
-        "format": [
-          "camelCase",
-          "UPPER_CASE"
-        ]
+        "format": ["camelCase", "UPPER_CASE"]
       },
       {
         "selector": "parameter",
-        "format": [
-          "camelCase",
-          "UPPER_CASE"
-        ],
+        "format": ["camelCase", "UPPER_CASE"],
         "leadingUnderscore": "allow"
       },
       {
         "selector": "memberLike",
-        "format": [
-          "camelCase",
-          "UPPER_CASE"
-        ],
+        "format": ["camelCase", "UPPER_CASE"],
         "leadingUnderscore": "allow"
       },
       {
-        "selector": [
-          "typeLike",
-          "enumMember"
-        ],
-        "format": [
-          "PascalCase"
-        ]
+        "selector": ["typeLike", "enumMember"],
+        "format": ["PascalCase"]
       }
     ],
     "@typescript-eslint/no-empty-function": "warn",
@@ -113,16 +92,10 @@
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/unbound-method": "off",
     "arrow-body-style": "off",
-    "arrow-parens": [
-      "error",
-      "as-needed"
-    ],
+    "arrow-parens": ["error", "as-needed"],
     "brace-style": "off",
     "class-methods-use-this": "off",
-    "comma-dangle": [
-      "error",
-      "never"
-    ],
+    "comma-dangle": ["error", "never"],
     "complexity": [
       "warn",
       {
@@ -142,42 +115,27 @@
     "jsdoc/newline-after-description": "off",
     "jsdoc/no-types": "warn",
     "linebreak-style": "off",
-    "max-classes-per-file": [
-      "warn",
-      1
-    ],
+    "max-classes-per-file": ["warn", 1],
     "max-len": [
       "error",
       {
         "code": 200
       }
     ],
-    "max-lines": [
-      "warn",
-      400
-    ],
+    "max-lines": ["warn", 400],
     "newline-per-chained-call": "off",
-    "no-console": [
-      "warn",
-      {}
-    ],
+    "no-console": ["warn", {}],
     "no-duplicate-case": "error",
     "no-duplicate-imports": "error",
     "no-empty": "warn",
     "no-invalid-this": "off",
-    "@typescript-eslint/no-invalid-this": [
-      "error"
-    ],
+    "@typescript-eslint/no-invalid-this": ["error"],
     "no-irregular-whitespace": "error",
     "no-magic-numbers": "off",
     "@typescript-eslint/no-magic-numbers": [
       "error",
       {
-        "ignore": [
-          -1,
-          0,
-          1
-        ],
+        "ignore": [-1, 0, 1],
         "ignoreEnums": true,
         "ignoreReadonlyClassProperties": true
       }
@@ -215,10 +173,7 @@
     "prefer-arrow/prefer-arrow-functions": "warn",
     "prefer-object-spread": "off",
     "prefer-template": "off",
-    "quote-props": [
-      "error",
-      "consistent-as-needed"
-    ],
+    "quote-props": ["error", "consistent-as-needed"],
     "space-before-function-paren": [
       "error",
       {
@@ -227,12 +182,8 @@
         "asyncArrow": "always"
       }
     ],
-    "space-in-parens": [
-      "error",
-      "never"
-    ],
+    "space-in-parens": ["error", "never"],
     "unicorn/filename-case": "warn",
-    "yoda": "off",
-    "@microsoft/sdl/no-angular-bypass-sanitizer": "warn"
+    "yoda": "off"
   }
 }

@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { State } from '../store/reducer';
 import { Scene } from '../model/scene.model';
 import { SetScenesAction } from '../store/actions/scenes.action';
 import { AbstractService, HttpMethod } from './abstract-service';
@@ -11,13 +8,6 @@ import { AbstractService, HttpMethod } from './abstract-service';
   providedIn: 'root'
 })
 export class ScenesService extends AbstractService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
-
   loadScenes(): void {
     const command = this.generateXml(
       '<Config>GetParam</Config>',

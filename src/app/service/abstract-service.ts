@@ -4,6 +4,7 @@ import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
 import parser from 'xml2js';
+import { inject } from '@angular/core';
 import {
   SetBasicStatusAction,
   SetErrorAction
@@ -19,10 +20,8 @@ export enum HttpMethod {
 }
 
 export abstract class AbstractService {
-  constructor(
-    private readonly httpClient: HttpClient,
-    private readonly ngrxStore: Store<State>
-  ) {}
+  protected readonly httpClient = inject(HttpClient);
+  protected readonly store: Store<State> = inject(Store);
 
   get zone(): string {
     return 'Main_Zone';
@@ -79,7 +78,7 @@ export abstract class AbstractService {
   }
 
   dispatchBasicStatus(status: fromBasicStatus.State): void {
-    this.ngrxStore.dispatch(new SetBasicStatusAction(status));
+    this.store.dispatch(new SetBasicStatusAction(status));
   }
 
   refreshBasicStatus(): void {
@@ -95,7 +94,7 @@ export abstract class AbstractService {
     );
     return this.sendCommand(command, true).pipe(
       tap(response => {
-        if (!response) this.ngrxStore.dispatch(new SetErrorAction(true));
+        if (!response) this.store.dispatch(new SetErrorAction(true));
       }),
       filter((response): response is string => !!response),
       map(response => {

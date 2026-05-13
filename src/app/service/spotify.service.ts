@@ -1,8 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
-import { State } from '../store/reducer';
 import { SetSpotifyStatusAction } from '../store/actions/spotify.action';
 import { AbstractService, HttpMethod } from './abstract-service';
 
@@ -10,13 +7,6 @@ import { AbstractService, HttpMethod } from './abstract-service';
   providedIn: 'root'
 })
 export class SpotifyService extends AbstractService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
-
   refreshSpotifyStatus(): void {
     const command = this.generateXml(
       '<Spotify><Play_Info>GetParam</Play_Info></Spotify>',

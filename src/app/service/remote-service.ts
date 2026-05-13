@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { State } from '../store/reducer';
 import { SetNetworkNameAction } from '../store/actions/network-name.action';
 import { SleepStates } from '../model/sleep-states.enum';
 import { AbstractService, HttpMethod } from './abstract-service';
@@ -11,13 +8,6 @@ import { AbstractService, HttpMethod } from './abstract-service';
 @Injectable({ providedIn: 'root' })
 export class RemoteService extends AbstractService {
   sleepStates: Array<string> = Object.values(SleepStates);
-
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
 
   powerOn(): void {
     const command = this.generateXml(

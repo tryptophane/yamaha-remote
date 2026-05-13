@@ -1,21 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { State } from '../store/reducer';
 import { AbstractService, HttpMethod } from './abstract-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaybackControlService extends AbstractService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
-
   stop(): Observable<string> {
     const command = this.generateXml(
       '<Play_Control><Playback>Stop</Playback></Play_Control>',

@@ -1,20 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { State } from '../store/reducer';
 import { AbstractService, HttpMethod } from './abstract-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OptionsService extends AbstractService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-  }
-
   adaptiveDRC(on: boolean): void {
     const command = this.generateXml(
       `<Sound_Video><Adaptive_DRC>${

@@ -1,10 +1,7 @@
 import { combineLatest, EMPTY, Observable, timer } from 'rxjs';
 import { filter, map, take, takeWhile } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import * as fromRoot from '../store/reducer';
-import { State } from '../store/reducer';
 import { NetRadioList } from '../model/net-radio-list.model';
 import {
   SetListAction,
@@ -22,12 +19,9 @@ export class NetradioService extends AbstractService {
 
   fetchingNetRadioList = false;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly store: Store<State>
-  ) {
-    super(http, store);
-    this.netradioState$ = store.select(fromRoot.getNetradioState);
+  constructor() {
+    super();
+    this.netradioState$ = this.store.select(fromRoot.getNetradioState);
   }
 
   moveNetRadioCursor(direction: string): Observable<string> {
@@ -64,13 +58,13 @@ export class NetradioService extends AbstractService {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     combineLatest([timer(0, 500), this.netradioState$])
       .pipe(
-        map(([x, state]) => state),
+        map(([, state]) => state),
         takeWhile(state => state.list?.menuStatus !== 'Ready'),
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers
         take(100),
         filter(() => !this.fetchingNetRadioList)
       )
-      .subscribe(x => {
+      .subscribe(() => {
         this.tryToFetchNetRadioList();
       });
   }
