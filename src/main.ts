@@ -5,7 +5,6 @@ import {
   withInterceptorsFromDi
 } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { environment } from './environments/environment';
@@ -21,8 +20,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     provideStore(reducers),
     provideEffects([BasicStatusEffects]),
-    provideHttpClient(withInterceptorsFromDi()),
-    provideAnimations()
+    provideHttpClient(withInterceptorsFromDi())
   ]
 })
   // eslint-disable-next-line no-console
