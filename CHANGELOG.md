@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.2
+
+- Updated docker to use buildx, complete refactoring of Dockerfile
+
 ## v0.2.1
 
 - Replaced xml2js with fast-xml-parser

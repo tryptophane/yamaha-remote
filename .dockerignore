@@ -1,0 +1,13 @@
+.git
+.gitignore
+.angular
+node_modules
+dist
+out-tsc
+*.log
+.vscode
+.idea
+.DS_Store
+Dockerfile
+.dockerignore
+README.md
