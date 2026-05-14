@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v0.2.1
+
+- Replaced xml2js with fast-xml-parser
+- Removed unnecessary dependencies and polyfills.ts
+
 ## v0.2.0
 
 - Migrated to Angular 21
