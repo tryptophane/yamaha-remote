@@ -4,14 +4,13 @@ import {
   inject,
   OnInit
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
 import { MatListItem, MatNavList } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import * as fromNetradio from '../../store/reducer/netradio.reducer';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import {
@@ -32,7 +31,6 @@ import { FixAmpPipe } from '../../utils/fix-amp.pipe';
     MatButton,
     MatIcon,
     MatProgressSpinner,
-    AsyncPipe,
     FixAmpPipe
   ]
 })
@@ -40,11 +38,9 @@ export class NetRadioListComponent implements OnInit {
   private readonly store = inject<Store<State>>(Store);
   private readonly service = inject(NetradioService);
 
-  netradioState$: Observable<fromNetradio.State>;
-
-  constructor() {
-    this.netradioState$ = this.store.select(fromRoot.getNetradioState);
-  }
+  protected readonly netradioState = toSignal(
+    this.store.select(fromRoot.getNetradioState).pipe(distinctUntilChanged())
+  );
 
   ngOnInit() {
     this.store.dispatch(new SetListAction(null));

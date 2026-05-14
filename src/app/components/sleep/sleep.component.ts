@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { skip, switchMap, take, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AsyncPipe } from '@angular/common';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
-import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import { RemoteService } from '../../service/remote-service';
@@ -17,18 +16,17 @@ import { RemoteService } from '../../service/remote-service';
   templateUrl: './sleep.component.html',
   styleUrls: ['./sleep.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatMiniFabButton, MatTooltip, MatIcon, AsyncPipe]
+  imports: [MatMiniFabButton, MatTooltip, MatIcon]
 })
 export class SleepComponent {
   private readonly store = inject<Store<State>>(Store);
   protected readonly service = inject(RemoteService);
   private readonly snackBar = inject(MatSnackBar);
 
-  basicStatusState$: Observable<fromBasicStatus.State>;
-
-  constructor() {
-    this.basicStatusState$ = this.store.select(fromRoot.getBasicStatusState);
-  }
+  private readonly basicStatusState$ = this.store
+    .select(fromRoot.getBasicStatusState)
+    .pipe(distinctUntilChanged());
+  protected readonly basicStatusState = toSignal(this.basicStatusState$);
 
   openSnackBar(message: string) {
     this.snackBar.open(message, undefined, {

@@ -1,11 +1,11 @@
-@if (basicStatusState$ | async; as basicStatusState) {
-  @if (!basicStatusState.error) {
+@if (basicStatusState()) {
+  @if (!basicStatusState().error) {
     <table class="remote-main">
       <tr class="vertical-center top-row">
         <td class="flex-horizontal-left-align vertical-center">
           <mat-button-toggle
             class="power-button"
-            [checked]="basicStatusState.on"
+            [checked]="basicStatusState().on"
             (change)="powerButtonClicked($event.source.checked)"
           >
             <mat-icon>power_settings_new</mat-icon>
@@ -14,36 +14,34 @@
           <app-scenes></app-scenes>
         </td>
         <td class="flex-horizontal-center-align">
-          <span class="device-info">{{
-            (networkNameState$ | async).networkName
-          }}</span>
+          <span class="device-info">{{ networkNameState().networkName }}</span>
         </td>
         <td class="flex-horizontal-right-align pad-16">
           <app-dsp-select
-            [selectedDsp]="basicStatusState.dsp"
-            [disabled]="!basicStatusState.on"
+            [selectedDsp]="basicStatusState().dsp"
+            [disabled]="!basicStatusState().on"
           ></app-dsp-select>
           <app-input-selection
-            [currentInput]="basicStatusState.currentInput"
-            [disabled]="!basicStatusState.on"
+            [currentInput]="basicStatusState().currentInput"
+            [disabled]="!basicStatusState().on"
           ></app-input-selection>
         </td>
       </tr>
       <tr class="vertical-top top-margin">
         <td class="flex-horizontal-left-align">
-          @if (basicStatusState.on) {
+          @if (basicStatusState().on) {
             <div class="flex-vertical-left-align">
               <app-volume-control
-                [disabled]="!basicStatusState.on"
+                [disabled]="!basicStatusState().on"
               ></app-volume-control>
-              @if (basicStatusState.currentInput === 'NET RADIO') {
+              @if (basicStatusState().currentInput === 'NET RADIO') {
                 <app-net-radio-list></app-net-radio-list>
               }
               <div class="flex-vertical-center-align">
                 <app-playback-control
-                  [currentInput]="basicStatusState.currentInput"
+                  [currentInput]="basicStatusState().currentInput"
                 ></app-playback-control>
-                @if (basicStatusState.currentInput === 'SERVER') {
+                @if (basicStatusState().currentInput === 'SERVER') {
                   <app-play-mode></app-play-mode>
                 }
               </div>
@@ -52,16 +50,16 @@
         </td>
         <td class="flex-vertical-center-align">
           <div class="playback-info">
-            @if (basicStatusState.on) {
+            @if (basicStatusState().on) {
               <app-playback-info></app-playback-info>
             }
           </div>
         </td>
         <td class="flex-vertical-right-align">
-          @if (basicStatusState.on) {
-            <app-options [basicStatusState]="basicStatusState"></app-options>
+          @if (basicStatusState().on) {
+            <app-options [basicStatusState]="basicStatusState()"></app-options>
           }
-          @if (basicStatusState.on) {
+          @if (basicStatusState().on) {
             <app-cursor-control></app-cursor-control>
           }
         </td>

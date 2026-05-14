@@ -1,4 +1,4 @@
-@if (netradioState$ | async; as state) {
+@if (netradioState(); as state) {
   <div class="net-radio-list">
     @if (state?.list?.menuStatus === 'Ready') {
       <mat-nav-list>

@@ -1,5 +1,5 @@
 <div class="input-selection">
-  @if ((inputsState$ | async).inputList; as inputList) {
+  @if (inputsState()?.inputList; as inputList) {
     <mat-form-field>
       <mat-select
         (selectionChange)="this.service.setInputTo($event.value)"

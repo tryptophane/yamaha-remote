@@ -4,11 +4,10 @@ import {
   inject,
   OnInit
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
-import * as fromScenes from '../../store/reducer/scenes.reducer';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import { ScenesService } from '../../service/scenes.service';
@@ -18,17 +17,15 @@ import { ScenesService } from '../../service/scenes.service';
   templateUrl: './scenes.component.html',
   styleUrls: ['./scenes.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButton, AsyncPipe]
+  imports: [MatButton]
 })
 export class ScenesComponent implements OnInit {
   private readonly store = inject<Store<State>>(Store);
   private readonly service = inject(ScenesService);
 
-  scenesState$: Observable<fromScenes.State>;
-
-  constructor() {
-    this.scenesState$ = this.store.select(fromRoot.getScenesState);
-  }
+  protected readonly scenesState = toSignal(
+    this.store.select(fromRoot.getScenesState).pipe(distinctUntilChanged())
+  );
 
   ngOnInit() {
     this.service.loadScenes();

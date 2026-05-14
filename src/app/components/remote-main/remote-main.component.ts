@@ -6,17 +6,15 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
+import { distinctUntilChanged, Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AsyncPipe } from '@angular/common';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RefreshAllStatusAction } from '../../store/actions/basic-status.action';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
-import * as fromNetworkName from '../../store/reducer/network-name.reducer';
-import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
 import { RemoteService } from '../../service/remote-service';
 import { SleepComponent } from '../sleep/sleep.component';
 import { ScenesComponent } from '../scenes/scenes.component';
@@ -49,22 +47,20 @@ import { CursorControlComponent } from '../cursor-control/cursor-control.compone
     PlaybackInfoComponent,
     OptionsComponent,
     CursorControlComponent,
-    MatCard,
-    AsyncPipe
+    MatCard
   ]
 })
 export class RemoteMainComponent implements OnInit, OnDestroy {
   private readonly store = inject<Store<State>>(Store);
   private readonly service = inject(RemoteService);
 
-  basicStatusState$: Observable<fromBasicStatus.State>;
-  networkNameState$: Observable<fromNetworkName.State>;
+  protected readonly basicStatusState = toSignal(
+    this.store.select(fromRoot.getBasicStatusState).pipe(distinctUntilChanged())
+  );
+  protected readonly networkNameState = toSignal(
+    this.store.select(fromRoot.getNetworkNameState).pipe(distinctUntilChanged())
+  );
   private readonly unsubscribe$: Subject<void> = new Subject();
-
-  constructor() {
-    this.basicStatusState$ = this.store.select(fromRoot.getBasicStatusState);
-    this.networkNameState$ = this.store.select(fromRoot.getNetworkNameState);
-  }
 
   ngOnInit(): void {
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers

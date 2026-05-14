@@ -3,18 +3,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  input
+  input,
+  signal,
+  Signal
 } from '@angular/core';
-import { EMPTY, Observable, timer } from 'rxjs';
+import { distinctUntilChanged, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { MatCard } from '@angular/material/card';
-import * as fromSpotify from '../../store/reducer/spotify.reducer';
-import * as fromServer from '../../store/reducer/server.reducer';
-import * as fromAirplay from '../../store/reducer/airplay.reducer';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import { PlaybackControlService } from '../../service/playback-control.service';
@@ -27,7 +27,7 @@ import { ServerService } from '../../service/server.service';
   templateUrl: './playback-control.component.html',
   styleUrls: ['./playback-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButton, MatIcon, MatCard, NgTemplateOutlet, AsyncPipe]
+  imports: [MatButton, MatIcon, MatCard, NgTemplateOutlet]
 })
 export class PlaybackControlComponent {
   private readonly store = inject<Store<State>>(Store);
@@ -38,15 +38,15 @@ export class PlaybackControlComponent {
 
   readonly currentInput = input.required<string>();
 
-  spotifyState$: Observable<fromSpotify.State>;
-  serverState$: Observable<fromServer.State>;
-  airplayState$: Observable<fromAirplay.State>;
-
-  constructor() {
-    this.spotifyState$ = this.store.select(fromRoot.getSpotifyState);
-    this.serverState$ = this.store.select(fromRoot.getServerState);
-    this.airplayState$ = this.store.select(fromRoot.getAirplayState);
-  }
+  spotifyState = toSignal(
+    this.store.select(fromRoot.getSpotifyState).pipe(distinctUntilChanged())
+  );
+  serverState = toSignal(
+    this.store.select(fromRoot.getServerState).pipe(distinctUntilChanged())
+  );
+  airplayState = toSignal(
+    this.store.select(fromRoot.getAirplayState).pipe(distinctUntilChanged())
+  );
 
   pause(): void {
     this.service
@@ -98,17 +98,16 @@ export class PlaybackControlComponent {
       .subscribe(() => this.refreshStatus());
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getState(): Observable<any> {
+  getState(): Signal<unknown> {
     const currentInput = this.currentInput();
     if (currentInput === 'SERVER') {
-      return this.serverState$;
+      return this.serverState;
     } else if (currentInput === 'Spotify') {
-      return this.spotifyState$;
+      return this.spotifyState;
     } else if (currentInput === 'AirPlay') {
-      return this.airplayState$;
+      return this.airplayState;
     }
-    return EMPTY;
+    return signal(undefined);
   }
 
   private refreshStatus(): void {

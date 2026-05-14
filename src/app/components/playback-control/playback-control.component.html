@@ -7,12 +7,12 @@
       <mat-icon>stop</mat-icon>
     </button>
   }
-  @if (['Stop', 'Pause'].includes(state.status?.playback)) {
+  @if (['Stop', 'Pause'].includes(state().status?.playback)) {
     <button (click)="play()" mat-button>
       <mat-icon>play_arrow</mat-icon>
     </button>
   }
-  @if (state.status?.playback === 'Play') {
+  @if (state().status?.playback === 'Play') {
     <button (click)="pause()" mat-button>
       <mat-icon>pause</mat-icon>
     </button>
@@ -24,7 +24,7 @@
 @if (['Spotify', 'SERVER', 'AirPlay'].includes(currentInput())) {
   <mat-card class="net-radio-nav-button-bar">
     <ng-container
-      *ngTemplateOutlet="navigation; context: { state: (getState() | async) }"
+      *ngTemplateOutlet="navigation; context: { state: getState() }"
     >
     </ng-container>
   </mat-card>

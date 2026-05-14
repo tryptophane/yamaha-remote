@@ -1,58 +1,52 @@
-@if (basicStatusState$ | async; as basicStatusState) {
+@if (basicStatusState()) {
   <div>
-    @if (
-      basicStatusState.currentInput === 'NET RADIO' && (netradioState$ | async);
-      as netradioState
-    ) {
+    @if (basicStatusState().currentInput === 'NET RADIO' && netradioState()) {
       <div class="radio-info">
         <span class="radio-station">{{
-          netradioState.status?.station | fixAmp
+          netradioState().status?.station | fixAmp
         }}</span>
         <span class="radio-song">{{
-          netradioState.status?.song | fixAmp
+          netradioState().status?.song | fixAmp
         }}</span>
       </div>
     }
-    @if (
-      basicStatusState.currentInput === 'Spotify' && (spotifyState$ | async);
-      as spotifyState
-    ) {
+    @if (basicStatusState().currentInput === 'Spotify' && spotifyState()) {
       <div class="radio-info">
         <span class="radio-station">{{
-          spotifyState.status?.artist | fixAmp
+          spotifyState().status?.artist | fixAmp
         }}</span>
         <span class="radio-song">{{
-          spotifyState.status?.album | fixAmp
+          spotifyState().status?.album | fixAmp
         }}</span>
         <span class="radio-song">{{
-          spotifyState.status?.track | fixAmp
+          spotifyState().status?.track | fixAmp
         }}</span>
       </div>
     }
-    @if (
-      basicStatusState.currentInput === 'SERVER' && (serverState$ | async);
-      as serverState
-    ) {
+    @if (basicStatusState().currentInput === 'SERVER' && serverState()) {
       <div class="radio-info">
         <span class="radio-station">{{
-          serverState.status?.artist | fixAmp
-        }}</span>
-        <span class="radio-song">{{ serverState.status?.album | fixAmp }}</span>
-        <span class="radio-song">{{ serverState.status?.song | fixAmp }}</span>
-      </div>
-    }
-    @if (
-      basicStatusState.currentInput === 'AirPlay' && (airplayState$ | async);
-      as airplayState
-    ) {
-      <div class="radio-info">
-        <span class="radio-station">{{
-          airplayState.status?.artist | fixAmp
+          serverState().status?.artist | fixAmp
         }}</span>
         <span class="radio-song">{{
-          airplayState.status?.album | fixAmp
+          serverState().status?.album | fixAmp
         }}</span>
-        <span class="radio-song">{{ airplayState.status?.song | fixAmp }}</span>
+        <span class="radio-song">{{
+          serverState().status?.song | fixAmp
+        }}</span>
+      </div>
+    }
+    @if (basicStatusState().currentInput === 'AirPlay' && airplayState()) {
+      <div class="radio-info">
+        <span class="radio-station">{{
+          airplayState().status?.artist | fixAmp
+        }}</span>
+        <span class="radio-song">{{
+          airplayState().status?.album | fixAmp
+        }}</span>
+        <span class="radio-song">{{
+          airplayState().status?.song | fixAmp
+        }}</span>
       </div>
     }
   </div>

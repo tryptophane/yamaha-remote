@@ -1,15 +1,15 @@
-@if (basicStatusState$ | async; as basicStatusState) {
+@if (basicStatusState()) {
   <div class="yamaha-sleep">
     <button
-      (click)="toggleSleep(basicStatusState.sleep)"
+      (click)="toggleSleep(basicStatusState().sleep)"
       [class.button-glow]="
-        basicStatusState.sleep && basicStatusState.sleep !== 'Off'
+        basicStatusState().sleep && basicStatusState().sleep !== 'Off'
       "
-      [disabled]="!basicStatusState.on"
+      [disabled]="!basicStatusState().on"
       [matTooltipShowDelay]="500"
       [matTooltip]="
-        basicStatusState.sleep !== service.sleepStates[0]
-          ? 'Sleep timer was set to ' + basicStatusState.sleep
+        basicStatusState().sleep !== service.sleepStates[0]
+          ? 'Sleep timer was set to ' + basicStatusState().sleep
           : 'Sleep Off'
       "
       id="sleepButton"

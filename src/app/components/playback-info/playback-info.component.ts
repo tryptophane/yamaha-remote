@@ -1,12 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
-import * as fromBasicStatus from '../../store/reducer/basic-status.reducer';
-import * as fromNetradio from '../../store/reducer/netradio.reducer';
-import * as fromSpotify from '../../store/reducer/spotify.reducer';
-import * as fromServer from '../../store/reducer/server.reducer';
-import * as fromAirplay from '../../store/reducer/airplay.reducer';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import { FixAmpPipe } from '../../utils/fix-amp.pipe';
@@ -16,22 +11,24 @@ import { FixAmpPipe } from '../../utils/fix-amp.pipe';
   templateUrl: './playback-info.component.html',
   styleUrls: ['./playback-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FixAmpPipe]
+  imports: [FixAmpPipe]
 })
 export class PlaybackInfoComponent {
   private readonly store = inject<Store<State>>(Store);
 
-  basicStatusState$: Observable<fromBasicStatus.State>;
-  netradioState$: Observable<fromNetradio.State>;
-  spotifyState$: Observable<fromSpotify.State>;
-  serverState$: Observable<fromServer.State>;
-  airplayState$: Observable<fromAirplay.State>;
-
-  constructor() {
-    this.basicStatusState$ = this.store.select(fromRoot.getBasicStatusState);
-    this.netradioState$ = this.store.select(fromRoot.getNetradioState);
-    this.spotifyState$ = this.store.select(fromRoot.getSpotifyState);
-    this.serverState$ = this.store.select(fromRoot.getServerState);
-    this.airplayState$ = this.store.select(fromRoot.getAirplayState);
-  }
+  protected readonly basicStatusState = toSignal(
+    this.store.select(fromRoot.getBasicStatusState).pipe(distinctUntilChanged())
+  );
+  protected readonly netradioState = toSignal(
+    this.store.select(fromRoot.getNetradioState).pipe(distinctUntilChanged())
+  );
+  protected readonly spotifyState = toSignal(
+    this.store.select(fromRoot.getSpotifyState).pipe(distinctUntilChanged())
+  );
+  protected readonly serverState = toSignal(
+    this.store.select(fromRoot.getServerState).pipe(distinctUntilChanged())
+  );
+  protected readonly airplayState = toSignal(
+    this.store.select(fromRoot.getAirplayState).pipe(distinctUntilChanged())
+  );
 }

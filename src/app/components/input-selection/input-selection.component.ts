@@ -5,12 +5,11 @@ import {
   input,
   OnInit
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
 import { MatFormField } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
-import * as fromInputs from '../../store/reducer/inputs.reducer';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import { SetInputListAction } from '../../store/actions/inputs.action';
@@ -21,7 +20,7 @@ import { InputSelectionService } from '../../service/input-selection.service';
   templateUrl: './input-selection.component.html',
   styleUrls: ['./input-selection.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatFormField, MatSelect, MatOption, AsyncPipe]
+  imports: [MatFormField, MatSelect, MatOption]
 })
 export class InputSelectionComponent implements OnInit {
   private readonly store = inject<Store<State>>(Store);
@@ -31,11 +30,9 @@ export class InputSelectionComponent implements OnInit {
 
   readonly disabled = input(false);
 
-  inputsState$: Observable<fromInputs.State>;
-
-  constructor() {
-    this.inputsState$ = this.store.select(fromRoot.getInputsState);
-  }
+  protected readonly inputsState = toSignal(
+    this.store.select(fromRoot.getInputsState).pipe(distinctUntilChanged())
+  );
 
   ngOnInit() {
     this.fetchInputList();

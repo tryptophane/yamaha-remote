@@ -1,7 +1,7 @@
-@if (basicStatusState$ | async; as basicStatusState) {
+@if (basicStatusState()) {
   <div class="volume-control">
     <span class="volume-label">{{
-      (basicStatusState.volume / 10).toFixed(1) + ' Db'
+      (basicStatusState().volume / 10).toFixed(1) + ' Db'
     }}</span>
     <div class="control">
       <button
@@ -14,7 +14,7 @@
       <mat-slider [disabled]="disabled()" max="0" min="-800" step="5">
         <input
           matSliderThumb
-          [ngModel]="basicStatusState.volume"
+          [ngModel]="basicStatusState().volume"
           (valueChange)="this.service.setVolumeTo($event.valueOf())"
         />
       </mat-slider>
@@ -27,7 +27,7 @@
       </button>
       <mat-button-toggle
         (change)="this.service.sendMute($event.source.checked)"
-        [checked]="basicStatusState.muted"
+        [checked]="basicStatusState().muted"
         [disabled]="disabled()"
       >
         <mat-icon>volume_off</mat-icon>

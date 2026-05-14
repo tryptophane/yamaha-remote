@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { distinctUntilChanged } from 'rxjs';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import * as fromServer from '../../store/reducer/server.reducer';
+import { toSignal } from '@angular/core/rxjs-interop';
 import * as fromRoot from '../../store/reducer';
 import { State } from '../../store/reducer';
 import { ServerService } from '../../service/server.service';
@@ -14,15 +13,13 @@ import { ServerService } from '../../service/server.service';
   templateUrl: './play-mode.component.html',
   styleUrls: ['./play-mode.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButton, MatIcon, AsyncPipe]
+  imports: [MatButton, MatIcon]
 })
 export class PlayModeComponent {
   private readonly store = inject<Store<State>>(Store);
   readonly service = inject(ServerService);
 
-  serverState$: Observable<fromServer.State>;
-
-  constructor() {
-    this.serverState$ = this.store.select(fromRoot.getServerState);
-  }
+  protected readonly serverState = toSignal(
+    this.store.select(fromRoot.getServerState).pipe(distinctUntilChanged())
+  );
 }
