@@ -16,7 +16,6 @@
             },
             "index": "src/index.html",
             "tsConfig": "src/tsconfig.app.json",
-            "polyfills": ["src/polyfills.ts"],
             "assets": ["src/assets", "src/favicon.ico"],
             "styles": ["src/yamaha-remote.theme.scss", "src/styles.scss"],
             "scripts": [],
