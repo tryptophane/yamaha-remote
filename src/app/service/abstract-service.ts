@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
-import parser from 'xml2js';
+import { XMLParser } from 'fast-xml-parser';
 import { inject } from '@angular/core';
 import {
   SetBasicStatusAction,
@@ -12,12 +12,17 @@ import {
 import * as fromBasicStatus from '../store/reducer/basic-status.reducer';
 import { State } from '../store/reducer';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires,@typescript-eslint/no-require-imports
-
 export enum HttpMethod {
   GET = 'GET',
   PUT = 'PUT'
 }
+
+const xmlParser = new XMLParser({
+  ignoreAttributes: true,
+  parseTagValue: false,
+  jPath: true,
+  isArray: (_name, jPath) => (jPath as string).includes('.')
+});
 
 export abstract class AbstractService {
   protected readonly httpClient = inject(HttpClient);
@@ -72,9 +77,7 @@ export abstract class AbstractService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseXml(xmlStr: string): any {
-    let result;
-    new parser.Parser().parseString(xmlStr, (_e, r) => (result = r));
-    return result;
+    return xmlParser.parse(xmlStr);
   }
 
   dispatchBasicStatus(status: fromBasicStatus.State): void {
