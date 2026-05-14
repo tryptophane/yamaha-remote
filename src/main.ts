@@ -1,4 +1,4 @@
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, provideZoneChangeDetection } from '@angular/core';
 
 import {
   provideHttpClient,
@@ -19,6 +19,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideZoneChangeDetection(),
     provideStore(reducers),
     provideEffects([BasicStatusEffects]),
     provideHttpClient(withInterceptorsFromDi()),
