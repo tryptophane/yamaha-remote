@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.2.0
+
+- Migrated to Angular 21
+- Migrated to all modern Angular features (control flow, inject(), zoneless, standalone, etc.. )
+- Updated all other dependencies
+- Removed all testing related code and dependencies (won't write tests for this project)
+- Fixed volume buttons masked by slider
+
 ## v0.1.9
 
 - dependencies update
