@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, filter, map, take, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, of } from 'rxjs';
-import { XMLParser } from 'fast-xml-parser';
 import { inject } from '@angular/core';
 import {
   SetBasicStatusAction,
@@ -11,18 +10,10 @@ import {
 } from '../store/actions/basic-status.action';
 import * as fromBasicStatus from '../store/reducer/basic-status.reducer';
 import { State } from '../store/reducer';
+import { buildCommand, HttpMethod, XmlValue } from './xml/xml-builder';
+import { parseResponse, pick, pickFlag, pickNumber } from './xml/xml-picker';
 
-export enum HttpMethod {
-  GET = 'GET',
-  PUT = 'PUT'
-}
-
-const xmlParser = new XMLParser({
-  ignoreAttributes: true,
-  parseTagValue: false,
-  jPath: true,
-  isArray: (_name, jPath) => (jPath as string).includes('.')
-});
+export { HttpMethod };
 
 export abstract class AbstractService {
   protected readonly httpClient = inject(HttpClient);
@@ -32,9 +23,112 @@ export abstract class AbstractService {
     return 'Main_Zone';
   }
 
-  sendCommand(xml: string, returnNullOnError = false): Observable<string> {
+  /** PUT/GET a YAMAHA_AV command built from a path and a value. */
+  protected send(
+    method: HttpMethod,
+    path: ReadonlyArray<string>,
+    body: XmlValue,
+    returnNullOnError = false
+  ): Observable<string> {
+    return this.sendRaw(buildCommand(method, path, body), returnNullOnError);
+  }
+
+  /** Send a command, then refresh the cached basic-status (used after writes). */
+  protected sendAndRefresh(
+    method: HttpMethod,
+    path: ReadonlyArray<string>,
+    body: XmlValue
+  ): void {
+    this.send(method, path, body).subscribe(() => this.refreshBasicStatus());
+  }
+
+  /** Like `send`, but automatically prepends the active zone to the path. */
+  protected sendZone(
+    method: HttpMethod,
+    path: ReadonlyArray<string>,
+    body: XmlValue,
+    returnNullOnError = false
+  ): Observable<string> {
+    return this.send(method, [this.zone, ...path], body, returnNullOnError);
+  }
+
+  /** Like `sendAndRefresh`, but automatically prepends the active zone to the path. */
+  protected sendAndRefreshZone(
+    method: HttpMethod,
+    path: ReadonlyArray<string>,
+    body: XmlValue
+  ): void {
+    this.sendZone(method, path, body).subscribe(() =>
+      this.refreshBasicStatus()
+    );
+  }
+
+  /** Parse a raw XML response into a JS object tree. */
+  protected parse(xml: string): unknown {
+    return parseResponse(xml);
+  }
+
+  fetchBasicStatus(): Observable<fromBasicStatus.State> {
+    return this.sendZone('GET', ['Basic_Status'], 'GetParam', true).pipe(
+      tap(response => {
+        if (!response) this.store.dispatch(new SetErrorAction(true));
+      }),
+      filter((response): response is string => !!response),
+      map(response => {
+        const parsed = this.parse(response);
+        console.debug('basic-status (from receiver): ', parsed);
+        const status = this.parseBasicStatus(parsed);
+        console.debug('basic-status (parsed): ', status);
+        return status;
+      })
+    );
+  }
+
+  refreshBasicStatus(): void {
+    this.fetchBasicStatus().subscribe(status =>
+      this.store.dispatch(new SetBasicStatusAction(status))
+    );
+  }
+
+  private parseBasicStatus(parsed: unknown): fromBasicStatus.State {
+    const at = (...rest: Array<string>): ReadonlyArray<string> => [
+      'YAMAHA_AV',
+      this.zone,
+      'Basic_Status',
+      ...rest
+    ];
+    const isStraight =
+      pick(parsed, at('Surround', 'Program_Sel', 'Current', 'Straight')) ===
+      'On';
+    return {
+      volume: pickNumber(parsed, at('Volume', 'Lvl', 'Val')),
+      muted: pickFlag(parsed, at('Volume', 'Mute')),
+      on: pick(parsed, at('Power_Control', 'Power')) === 'On',
+      currentInput: pick(parsed, at('Input', 'Input_Sel')) ?? '',
+      error: false,
+      bass: pickNumber(parsed, at('Sound_Video', 'Tone', 'Bass', 'Val')),
+      treble: pickNumber(parsed, at('Sound_Video', 'Tone', 'Treble', 'Val')),
+      adaptiveDRCEnabled: pickFlag(parsed, at('Sound_Video', 'Adaptive_DRC')),
+      enhancer: pickFlag(
+        parsed,
+        at('Surround', 'Program_Sel', 'Current', 'Enhancer')
+      ),
+      direct: pickFlag(parsed, at('Sound_Video', 'Direct', 'Mode')),
+      // eslint-disable-next-line no-underscore-dangle
+      threeDCinemaDsp: pickFlag(parsed, at('Surround', '_3D_Cinema_DSP')),
+      dsp: isStraight
+        ? 'Straight'
+        : (pick(
+            parsed,
+            at('Surround', 'Program_Sel', 'Current', 'Sound_Program')
+          ) ?? ''),
+      sleep: pick(parsed, at('Power_Control', 'Sleep')) ?? ''
+    };
+  }
+
+  private sendRaw(xml: string, returnNullOnError: boolean): Observable<string> {
     const headers = new HttpHeaders().set('Content-Type', 'application/xml');
-    console.log('Sending XML: ', xml);
+    console.debug('Sending XML: ', xml);
     return this.httpClient
       .post('/YamahaRemoteControl/ctrl', xml, {
         headers,
@@ -57,232 +151,5 @@ export abstract class AbstractService {
         }),
         map(o => (o !== 'ERROR' ? o : ''))
       );
-  }
-
-  executeCommand(xml: string): void {
-    this.sendCommand(xml).subscribe(() => this.refreshBasicStatus());
-  }
-
-  generateXml(cmd: string, method: HttpMethod, noZone?: boolean): string {
-    return (
-      '<YAMAHA_AV cmd="' +
-      method +
-      '">' +
-      (noZone ? '' : '<' + this.zone + '>') +
-      cmd +
-      (noZone ? '' : '</' + this.zone + '>') +
-      '</YAMAHA_AV>'
-    );
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  parseXml(xmlStr: string): any {
-    return xmlParser.parse(xmlStr);
-  }
-
-  dispatchBasicStatus(status: fromBasicStatus.State): void {
-    this.store.dispatch(new SetBasicStatusAction(status));
-  }
-
-  refreshBasicStatus(): void {
-    this.fetchBasicStatus().subscribe(status =>
-      this.dispatchBasicStatus(status)
-    );
-  }
-
-  fetchBasicStatus(): Observable<fromBasicStatus.State> {
-    const command = this.generateXml(
-      '<Basic_Status>GetParam</Basic_Status>',
-      HttpMethod.GET
-    );
-    return this.sendCommand(command, true).pipe(
-      tap(response => {
-        if (!response) this.store.dispatch(new SetErrorAction(true));
-      }),
-      filter((response): response is string => !!response),
-      map(response => {
-        const basicStatus = this.parseXml(response);
-        console.log('basic-status (from receiver): ', basicStatus);
-
-        const state = {
-          volume: Number(
-            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0].Lvl[0]
-              .Val[0]
-          ),
-          muted:
-            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0]
-              .Mute[0] !== 'Off',
-          on:
-            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Power_Control[0]
-              .Power[0] === 'On',
-          off:
-            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Power_Control[0]
-              .Power[0] !== 'On',
-          currentInput:
-            basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Input[0]
-              .Input_Sel[0],
-          error: false,
-          partyModeEnabled: (() => {
-            try {
-              return (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Party_Info[0] === 'On'
-              );
-            } catch (e) {
-              return 'Not Available';
-            }
-          }).apply(this),
-          pureDirectEnabled: (() => {
-            try {
-              return (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Pure_Direct[0].Mode[0] === 'On'
-              );
-            } catch (e) {
-              return 'Not Available';
-            }
-          }).apply(this),
-          bass: (() => {
-            try {
-              return Number(
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Tone[0].Bass[0].Val[0]
-              );
-            } catch (e) {
-              return 0;
-            }
-          }).apply(this),
-          treble: (() => {
-            try {
-              return Number(
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Tone[0].Treble[0].Val[0]
-              );
-            } catch (e) {
-              return 0;
-            }
-          }).apply(this),
-          subwooferTrim: (() => {
-            try {
-              return Number(
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Volume[0]
-                  .Subwoofer_Trim[0].Val[0]
-              );
-            } catch (e) {
-              return 0;
-            }
-          }).apply(this),
-          dialogueLift: (() => {
-            try {
-              return Number(
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Dialogue_Adjust[0].Dialogue_Lift[0]
-              );
-            } catch (e) {
-              return 0;
-            }
-          }).apply(this),
-          dialogueLevel: (() => {
-            try {
-              return Number(
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Dialogue_Adjust[0].Dialogue_Lvl[0]
-              );
-            } catch (e) {
-              return 0;
-            }
-          }).apply(this),
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          YPAOVolumeEnabled: (() => {
-            // values 'Off' or 'Auto'
-            try {
-              return (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].YPAO_Volume[0] !== 'Off'
-              );
-            } catch (e) {
-              return false;
-            }
-          }).apply(this),
-          extraBassEnabled: (() => {
-            // values 'Off' or 'Auto'
-            try {
-              return (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Extra_Bass[0] !== 'Off'
-              );
-            } catch (e) {
-              return false;
-            }
-          }).apply(this),
-          adaptiveDRCEnabled: (() => {
-            // values 'Off' or 'Auto'
-            try {
-              return (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Adaptive_DRC[0] !== 'Off'
-              );
-            } catch (e) {
-              return false;
-            }
-          }).apply(this),
-          enhancer: (() => {
-            try {
-              return (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Surround[0]
-                  .Program_Sel[0].Current[0].Enhancer[0] !== 'Off'
-              );
-            } catch (e) {
-              return false;
-            }
-          }).apply(this),
-          direct: (() => {
-            try {
-              return (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                  .Sound_Video[0].Direct[0].Mode[0] !== 'Off'
-              );
-            } catch (e) {
-              return false;
-            }
-          }).apply(this),
-          threeDCinemaDsp: (() => {
-            try {
-              return (
-                // eslint-disable-next-line no-underscore-dangle
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Surround[0]
-                  ._3D_Cinema_DSP[0] !== 'Off'
-              );
-            } catch (e) {
-              return false;
-            }
-          }).apply(this),
-          dsp: (() => {
-            try {
-              if (
-                basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0].Surround[0]
-                  .Program_Sel[0].Current[0].Straight[0] === 'On'
-              ) {
-                return 'Straight';
-              }
-              return basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                .Surround[0].Program_Sel[0].Current[0].Sound_Program[0];
-            } catch (e) {
-              return false;
-            }
-          }).apply(this),
-          sleep: (() => {
-            try {
-              return basicStatus.YAMAHA_AV[this.zone][0].Basic_Status[0]
-                .Power_Control[0].Sleep[0];
-            } catch (e) {
-              return false;
-            }
-          }).apply(this)
-        };
-        console.log('basic-status (parsed): ', state);
-        return state;
-      })
-    );
   }
 }

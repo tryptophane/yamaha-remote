@@ -2,50 +2,43 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { InputItem } from '../model/input-item.model';
-import { AbstractService, HttpMethod } from './abstract-service';
+import { AbstractService } from './abstract-service';
+import { pick, pickNode } from './xml/xml-picker';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InputSelectionService extends AbstractService {
   setInputTo(to: string): void {
-    const command = this.generateXml(
-      `<Input><Input_Sel>${to}</Input_Sel></Input>`,
-      HttpMethod.PUT
-    );
-    this.executeCommand(command);
+    this.sendAndRefreshZone('PUT', ['Input', 'Input_Sel'], to);
   }
 
   getInputList(): Observable<Array<InputItem>> {
-    const command = this.generateXml(
-      '<Input><Input_Sel_Item>GetParam</Input_Sel_Item></Input>',
-      HttpMethod.GET
-    );
-    return this.sendCommand(command).pipe(
-      map(res => this.parseXml(res)),
-      map(inputs => {
-        const itemList: Array<InputItem> = [];
-        for (
-          let i = 1;
-          inputs.YAMAHA_AV.Main_Zone[0].Input[0].Input_Sel_Item[0][`Item_${i}`];
-          i++
-        ) {
-          itemList.push({
-            param:
-              inputs.YAMAHA_AV.Main_Zone[0].Input[0].Input_Sel_Item[0][
-                `Item_${i}`
-              ][0].Param[0],
-            title:
-              inputs.YAMAHA_AV.Main_Zone[0].Input[0].Input_Sel_Item[0][
-                `Item_${i}`
-              ][0].Title[0],
-            srcName:
-              inputs.YAMAHA_AV.Main_Zone[0].Input[0].Input_Sel_Item[0][
-                `Item_${i}`
-              ][0].Src_Name[0]
-          });
+    return this.sendZone('GET', ['Input', 'Input_Sel_Item'], 'GetParam').pipe(
+      map(res => this.parse(res)),
+      map(parsed => {
+        const node = pickNode(parsed, [
+          'YAMAHA_AV',
+          this.zone,
+          'Input',
+          'Input_Sel_Item'
+        ]) as Record<string, unknown> | undefined;
+        const items: Array<InputItem> = [];
+        if (!node) return items;
+        for (let i = 1; node[`Item_${i}`] !== undefined; i++) {
+          const param = pick(node, [`Item_${i}`, 'Param']);
+          const title = pick(node, [`Item_${i}`, 'Title']);
+          const srcName = pick(node, [`Item_${i}`, 'Src_Name']);
+          if (
+            param === undefined ||
+            title === undefined ||
+            srcName === undefined
+          ) {
+            break;
+          }
+          items.push({ param, title, srcName });
         }
-        return itemList;
+        return items;
       })
     );
   }

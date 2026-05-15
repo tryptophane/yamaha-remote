@@ -5,7 +5,7 @@
         @for (line of state.list?.lines; track line) {
           <mat-list-item
             (click)="selectRadioListLine(line)"
-            [class.selected]="line.txt && line.txt === state.status?.station[0]"
+            [class.selected]="line.txt && line.txt === state.status?.station"
           >
             <span>{{ line.txt | fixAmp }}</span>
           </mat-list-item>

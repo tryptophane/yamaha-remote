@@ -2,33 +2,32 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Scene } from '../model/scene.model';
 import { SetScenesAction } from '../store/actions/scenes.action';
-import { AbstractService, HttpMethod } from './abstract-service';
+import { AbstractService } from './abstract-service';
+import { pick, pickNode } from './xml/xml-picker';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScenesService extends AbstractService {
   loadScenes(): void {
-    const command = this.generateXml(
-      '<Config>GetParam</Config>',
-      HttpMethod.GET
-    );
-    this.sendCommand(command)
+    this.sendZone('GET', ['Config'], 'GetParam')
       .pipe(
-        map(res => this.parseXml(res)),
-        map(config => {
+        map(res => this.parse(res)),
+        map(parsed => {
+          const node = pickNode(parsed, [
+            'YAMAHA_AV',
+            this.zone,
+            'Config',
+            'Name',
+            'Scene'
+          ]) as Record<string, unknown> | undefined;
           const scenes: Array<Scene> = [];
-
-          const scene =
-            config.YAMAHA_AV.Main_Zone[0].Config[0].Name[0].Scene[0];
-
-          for (let i = 1; scene[`Scene_${i}`]; i++) {
-            scenes.push({
-              xmlName: `Scene ${i}`,
-              name: scene[`Scene_${i}`][0]
-            });
+          if (!node) return scenes;
+          for (let i = 1; node[`Scene_${i}`] !== undefined; i++) {
+            const name = pick(node, [`Scene_${i}`]);
+            if (name === undefined) break;
+            scenes.push({ xmlName: `Scene ${i}`, name });
           }
-
           return scenes;
         })
       )
@@ -36,10 +35,6 @@ export class ScenesService extends AbstractService {
   }
 
   selectScene(xmlName: string): void {
-    const command = this.generateXml(
-      `<Scene><Scene_Sel>${xmlName}</Scene_Sel></Scene>`,
-      HttpMethod.PUT
-    );
-    this.executeCommand(command);
+    this.sendAndRefreshZone('PUT', ['Scene', 'Scene_Sel'], xmlName);
   }
 }

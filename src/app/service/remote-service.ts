@@ -3,58 +3,43 @@ import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SetNetworkNameAction } from '../store/actions/network-name.action';
 import { SleepStates } from '../model/sleep-states.enum';
-import { AbstractService, HttpMethod } from './abstract-service';
+import { AbstractService } from './abstract-service';
+import { pick } from './xml/xml-picker';
 
 @Injectable({ providedIn: 'root' })
 export class RemoteService extends AbstractService {
   sleepStates: Array<string> = Object.values(SleepStates);
 
   powerOn(): void {
-    const command = this.generateXml(
-      '<Power_Control><Power>On</Power></Power_Control>',
-      HttpMethod.PUT
-    );
-    this.executeCommand(command);
+    this.sendAndRefreshZone('PUT', ['Power_Control', 'Power'], 'On');
   }
 
   powerOff(): void {
-    const command = this.generateXml(
-      '<Power_Control><Power>Standby</Power></Power_Control>',
-      HttpMethod.PUT
-    );
-    this.executeCommand(command);
+    this.sendAndRefreshZone('PUT', ['Power_Control', 'Power'], 'Standby');
   }
 
   toggleSleep(actualValue: string): Observable<string> {
-    let newValue;
     const i = this.sleepStates.indexOf(actualValue);
-    if (i >= 0 && i < this.sleepStates.length) {
-      if (i === this.sleepStates.length - 1) {
-        newValue = this.sleepStates[0];
-      } else {
-        newValue = this.sleepStates[i + 1];
-      }
-    }
-    if (newValue) {
-      const command = this.generateXml(
-        `<Power_Control><Sleep>${newValue}</Sleep></Power_Control>`,
-        HttpMethod.PUT
-      );
-      return this.sendCommand(command);
-    }
-    return EMPTY;
+    if (i < 0) return EMPTY;
+    const nextIndex = (i + 1) % this.sleepStates.length;
+    const newValue = this.sleepStates[nextIndex];
+    return this.sendZone('PUT', ['Power_Control', 'Sleep'], newValue);
   }
 
   fetchNetworkName(): void {
-    const command = this.generateXml(
-      '<System><Misc><Network><Network_Name>GetParam</Network_Name></Network></Misc></System>',
-      HttpMethod.GET,
-      true
-    );
-    this.sendCommand(command)
+    this.send('GET', ['System', 'Misc', 'Network', 'Network_Name'], 'GetParam')
       .pipe(
-        map(res => this.parseXml(res)),
-        map(json => json.YAMAHA_AV.System[0].Misc[0].Network[0].Network_Name[0])
+        map(res => this.parse(res)),
+        map(
+          parsed =>
+            pick(parsed, [
+              'YAMAHA_AV',
+              'System',
+              'Misc',
+              'Network',
+              'Network_Name'
+            ]) ?? ''
+        )
       )
       .subscribe(name => this.store.dispatch(new SetNetworkNameAction(name)));
   }

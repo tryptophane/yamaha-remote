@@ -8,6 +8,4 @@ import { RemoteMainComponent } from './components/remote-main/remote-main.compon
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RemoteMainComponent]
 })
-export class AppComponent {
-  title = 'yamaha-remote';
-}
+export class AppComponent {}

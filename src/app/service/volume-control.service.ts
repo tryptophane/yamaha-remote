@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 import { take, tap } from 'rxjs/operators';
-import { AbstractService, HttpMethod } from './abstract-service';
+import { AbstractService } from './abstract-service';
+import { dbValue } from './xml/xml-builder';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VolumeControlService extends AbstractService {
   setVolumeTo(to: string | number): void {
-    const command = this.generateXml(
-      `<Volume><Lvl><Val>${to}</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume>`,
-      HttpMethod.PUT
-    );
-    this.executeCommand(command);
+    this.sendAndRefreshZone('PUT', ['Volume', 'Lvl'], dbValue(to));
   }
 
   volumeUp(by: string | number): void {
@@ -27,19 +24,12 @@ export class VolumeControlService extends AbstractService {
     this.fetchBasicStatus()
       .pipe(
         take(1),
-        tap(basicStatus => {
-          this.setVolumeTo(basicStatus.volume + byN);
-        })
+        tap(basicStatus => this.setVolumeTo(basicStatus.volume + byN))
       )
       .subscribe();
   }
 
   sendMute(on: boolean): void {
-    this.executeCommand(
-      this.generateXml(
-        `<Volume><Mute>${on ? 'On' : 'Off'}</Mute></Volume>`,
-        HttpMethod.PUT
-      )
-    );
+    this.sendAndRefreshZone('PUT', ['Volume', 'Mute'], on ? 'On' : 'Off');
   }
 }

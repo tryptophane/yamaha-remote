@@ -9,7 +9,12 @@ import {
   SetRadioStatusAction
 } from '../store/actions/netradio.action';
 import * as fromNetradio from '../store/reducer/netradio.reducer';
-import { AbstractService, HttpMethod } from './abstract-service';
+import { AbstractService } from './abstract-service';
+import { pick, pickNode, pickNumber } from './xml/xml-picker';
+
+const POLL_INTERVAL_MS = 500;
+const MAX_POLL_ATTEMPTS = 100;
+const MAX_LIST_LINES = 8;
 
 @Injectable({
   providedIn: 'root'
@@ -27,26 +32,15 @@ export class NetradioService extends AbstractService {
   moveNetRadioCursor(direction: string): Observable<string> {
     switch (direction) {
       case 'BACK':
-        const cmd1 = this.generateXml(
-          '<NET_RADIO><List_Control><Cursor>Return</Cursor></List_Control></NET_RADIO>',
-          HttpMethod.PUT,
-          true
+        return this.send(
+          'PUT',
+          ['NET_RADIO', 'List_Control', 'Cursor'],
+          'Return'
         );
-        return this.sendCommand(cmd1);
       case 'DOWN':
-        const cmd2 = this.generateXml(
-          '<NET_RADIO><List_Control><Page>Down</Page></List_Control></NET_RADIO>',
-          HttpMethod.PUT,
-          true
-        );
-        return this.sendCommand(cmd2);
+        return this.send('PUT', ['NET_RADIO', 'List_Control', 'Page'], 'Down');
       case 'UP':
-        const cmd3 = this.generateXml(
-          '<NET_RADIO><List_Control><Page>Up</Page></List_Control></NET_RADIO>',
-          HttpMethod.PUT,
-          true
-        );
-        return this.sendCommand(cmd3);
+        return this.send('PUT', ['NET_RADIO', 'List_Control', 'Page'], 'Up');
       default:
         return EMPTY;
     }
@@ -55,38 +49,25 @@ export class NetradioService extends AbstractService {
   fetchNetRadioList(): void {
     this.fetchingNetRadioList = false;
     this.store.dispatch(new SetMenuStatusAction('Busy'));
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    combineLatest([timer(0, 500), this.netradioState$])
+    combineLatest([timer(0, POLL_INTERVAL_MS), this.netradioState$])
       .pipe(
         map(([, state]) => state),
         takeWhile(state => state.list?.menuStatus !== 'Ready'),
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        take(100),
+        take(MAX_POLL_ATTEMPTS),
         filter(() => !this.fetchingNetRadioList)
       )
-      .subscribe(() => {
-        this.tryToFetchNetRadioList();
-      });
+      .subscribe(() => this.tryToFetchNetRadioList());
   }
 
   refreshNetRadioStatus(): void {
-    const command = this.generateXml(
-      '<NET_RADIO><Play_Info>GetParam</Play_Info></NET_RADIO>',
-      HttpMethod.GET,
-      true
-    );
-    this.sendCommand(command)
+    const root = ['YAMAHA_AV', 'NET_RADIO', 'Play_Info'] as const;
+    this.send('GET', ['NET_RADIO', 'Play_Info'], 'GetParam')
       .pipe(
-        map(res => this.parseXml(res)),
-        map(radioStatus => {
-          return {
-            station:
-              radioStatus.YAMAHA_AV.NET_RADIO[0].Play_Info[0].Meta_Info[0]
-                .Station,
-            song: radioStatus.YAMAHA_AV.NET_RADIO[0].Play_Info[0].Meta_Info[0]
-              .Song
-          };
-        })
+        map(res => this.parse(res)),
+        map(parsed => ({
+          station: pick(parsed, [...root, 'Meta_Info', 'Station']) ?? '',
+          song: pick(parsed, [...root, 'Meta_Info', 'Song']) ?? ''
+        }))
       )
       .subscribe(status =>
         this.store.dispatch(new SetRadioStatusAction(status))
@@ -94,7 +75,12 @@ export class NetradioService extends AbstractService {
   }
 
   selectWebRadioListItem(index: number): Observable<string> {
-    return this.selectListItem('NET_RADIO', index);
+    if (this.fetchingNetRadioList) return EMPTY;
+    return this.send(
+      'PUT',
+      ['NET_RADIO', 'List_Control', 'Direct_Sel'],
+      `Line_${index}`
+    );
   }
 
   private tryToFetchNetRadioList(): void {
@@ -106,72 +92,38 @@ export class NetradioService extends AbstractService {
   }
 
   private retrieveNetRadioList(): Observable<NetRadioList> {
-    const command = this.generateXml(
-      '<NET_RADIO><List_Info>GetParam</List_Info></NET_RADIO>',
-      HttpMethod.GET,
-      true
-    );
-    return this.sendCommand(command).pipe(
-      map(res => this.parseXml(res)),
-      map(inputs => {
-        const menuStatus =
-          inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Menu_Status[0];
-        const menuLayer =
-          inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Menu_Layer[0];
-        const menuName =
-          inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Menu_Name[0];
-        const currentLine =
-          inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Cursor_Position[0]
-            .Current_Line[0];
-        const maxLine =
-          inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Cursor_Position[0]
-            .Max_Line[0];
-
+    const root = ['YAMAHA_AV', 'NET_RADIO', 'List_Info'] as const;
+    return this.send('GET', ['NET_RADIO', 'List_Info'], 'GetParam').pipe(
+      map(res => this.parse(res)),
+      map(parsed => {
+        const currentList = pickNode(parsed, [...root, 'Current_List']) as
+          | Record<string, unknown>
+          | undefined;
         const lines: Array<{ txt: string; attribute: string; index: number }> =
           [];
-
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        for (let i = 1; i < 9; i++) {
-          if (
-            !inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Current_List[0][
-              `Line_${i}`
-            ]
-          ) {
-            break;
+        if (currentList) {
+          for (let i = 1; i <= MAX_LIST_LINES; i++) {
+            const key = `Line_${i}`;
+            if (currentList[key] === undefined) break;
+            const txt = pick(currentList, [key, 'Txt']);
+            const attribute = pick(currentList, [key, 'Attribute']);
+            if (txt === undefined || attribute === undefined) break;
+            lines.push({ txt, attribute, index: i });
           }
-          lines.push({
-            txt: inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Current_List[0][
-              `Line_${i}`
-            ][0].Txt[0],
-            attribute:
-              inputs.YAMAHA_AV.NET_RADIO[0].List_Info[0].Current_List[0][
-                `Line_${i}`
-              ][0].Attribute[0],
-            index: i
-          });
         }
-
         return {
-          menuStatus,
-          menuLayer,
-          menuName,
-          currentLine,
-          maxLine,
+          menuStatus: pick(parsed, [...root, 'Menu_Status']) ?? '',
+          menuLayer: pickNumber(parsed, [...root, 'Menu_Layer']),
+          menuName: pick(parsed, [...root, 'Menu_Name']) ?? '',
+          currentLine: pickNumber(parsed, [
+            ...root,
+            'Cursor_Position',
+            'Current_Line'
+          ]),
+          maxLine: pickNumber(parsed, [...root, 'Cursor_Position', 'Max_Line']),
           lines
         };
       })
     );
-  }
-
-  private selectListItem(listname: string, index: number): Observable<string> {
-    if (!this.fetchingNetRadioList) {
-      const command = this.generateXml(
-        `<${listname}><List_Control><Direct_Sel>Line_${index}</Direct_Sel></List_Control></${listname}>`,
-        HttpMethod.PUT,
-        true
-      );
-      return this.sendCommand(command);
-    }
-    return EMPTY;
   }
 }

@@ -1,48 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AbstractService, HttpMethod } from './abstract-service';
+import { AbstractService } from './abstract-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaybackControlService extends AbstractService {
   stop(): Observable<string> {
-    const command = this.generateXml(
-      '<Play_Control><Playback>Stop</Playback></Play_Control>',
-      HttpMethod.PUT
-    );
-    return this.sendCommand(command);
+    return this.sendPlayback('Stop');
   }
 
   pause(): Observable<string> {
-    const command = this.generateXml(
-      '<Play_Control><Playback>Pause</Playback></Play_Control>',
-      HttpMethod.PUT
-    );
-    return this.sendCommand(command);
+    return this.sendPlayback('Pause');
   }
 
   play(): Observable<string> {
-    const command = this.generateXml(
-      '<Play_Control><Playback>Play</Playback></Play_Control>',
-      HttpMethod.PUT
-    );
-    return this.sendCommand(command);
+    return this.sendPlayback('Play');
   }
 
   skip(): Observable<string> {
-    const command = this.generateXml(
-      '<Play_Control><Playback>Skip Fwd</Playback></Play_Control>',
-      HttpMethod.PUT
-    );
-    return this.sendCommand(command);
+    return this.sendPlayback('Skip Fwd');
   }
 
   rewind(): Observable<string> {
-    const command = this.generateXml(
-      '<Play_Control><Playback>Skip Rev</Playback></Play_Control>',
-      HttpMethod.PUT
-    );
-    return this.sendCommand(command);
+    return this.sendPlayback('Skip Rev');
+  }
+
+  private sendPlayback(value: string): Observable<string> {
+    return this.sendZone('PUT', ['Play_Control', 'Playback'], value);
   }
 }
