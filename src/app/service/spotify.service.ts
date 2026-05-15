@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+/* eslint-disable no-console */
+import { Injectable, signal } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
-import { SetSpotifyStatusAction } from '../store/actions/spotify.action';
+import { SpotifyStatus } from '../model/spotify-status.model';
 import { AbstractService } from './abstract-service';
 import { pick } from './xml/xml-picker';
 
@@ -8,6 +9,8 @@ import { pick } from './xml/xml-picker';
   providedIn: 'root'
 })
 export class SpotifyService extends AbstractService {
+  readonly status = signal<SpotifyStatus | null>(null);
+
   refreshSpotifyStatus(): void {
     const root = ['YAMAHA_AV', 'Spotify', 'Play_Info'] as const;
     this.send('GET', ['Spotify', 'Play_Info'], 'GetParam')
@@ -20,11 +23,8 @@ export class SpotifyService extends AbstractService {
           availability: pick(parsed, [...root, 'Feature_Availability']) ?? '',
           playback: pick(parsed, [...root, 'Playback_Info']) ?? ''
         })),
-        // eslint-disable-next-line no-console
         tap(status => console.debug('spotify-status: ', status))
       )
-      .subscribe(status =>
-        this.store.dispatch(new SetSpotifyStatusAction(status))
-      );
+      .subscribe(status => this.status.set(status));
   }
 }

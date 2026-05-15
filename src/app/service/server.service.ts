@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+/* eslint-disable no-console */
+import { Injectable, signal } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
-import { SetServerStatusAction } from '../store/actions/server.action';
+import { ServerStatus } from '../model/server-status.model';
 import { AbstractService } from './abstract-service';
 import { pick } from './xml/xml-picker';
 
@@ -8,6 +9,8 @@ import { pick } from './xml/xml-picker';
   providedIn: 'root'
 })
 export class ServerService extends AbstractService {
+  readonly status = signal<ServerStatus | null>(null);
+
   refreshServerStatus(): void {
     const root = ['YAMAHA_AV', 'SERVER', 'Play_Info'] as const;
     this.send('GET', ['SERVER', 'Play_Info'], 'GetParam')
@@ -22,12 +25,9 @@ export class ServerService extends AbstractService {
           shuffle: pick(parsed, [...root, 'Play_Mode', 'Shuffle']) === 'On',
           repeat: pick(parsed, [...root, 'Play_Mode', 'Repeat']) === 'All'
         })),
-        // eslint-disable-next-line no-console
         tap(status => console.debug('server-status: ', status))
       )
-      .subscribe(status =>
-        this.store.dispatch(new SetServerStatusAction(status))
-      );
+      .subscribe(status => this.status.set(status));
   }
 
   toggleShuffle(on: boolean): void {

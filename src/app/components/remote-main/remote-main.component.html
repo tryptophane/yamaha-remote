@@ -1,77 +1,75 @@
-@if (basicStatusState()) {
-  @if (!basicStatusState().error) {
-    <table class="remote-main">
-      <tr class="vertical-center top-row">
-        <td class="flex-horizontal-left-align vertical-center">
-          <mat-button-toggle
-            class="power-button"
-            [checked]="basicStatusState().on"
-            (change)="powerButtonClicked($event.source.checked)"
-          >
-            <mat-icon>power_settings_new</mat-icon>
-          </mat-button-toggle>
-          <app-sleep></app-sleep>
-          <app-scenes></app-scenes>
-        </td>
-        <td class="flex-horizontal-center-align">
-          <span class="device-info">{{ networkNameState().networkName }}</span>
-        </td>
-        <td class="flex-horizontal-right-align pad-16">
-          <app-dsp-select
-            [selectedDsp]="basicStatusState().dsp"
-            [disabled]="!basicStatusState().on"
-          ></app-dsp-select>
-          <app-input-selection
-            [currentInput]="basicStatusState().currentInput"
-            [disabled]="!basicStatusState().on"
-          ></app-input-selection>
-        </td>
-      </tr>
-      <tr class="vertical-top top-margin">
-        <td class="flex-horizontal-left-align">
-          @if (basicStatusState().on) {
-            <div class="flex-vertical-left-align">
-              <app-volume-control
-                [disabled]="!basicStatusState().on"
-              ></app-volume-control>
-              @if (basicStatusState().currentInput === 'NET RADIO') {
-                <app-net-radio-list></app-net-radio-list>
-              }
-              <div class="flex-vertical-center-align">
-                <app-playback-control
-                  [currentInput]="basicStatusState().currentInput"
-                ></app-playback-control>
-                @if (basicStatusState().currentInput === 'SERVER') {
-                  <app-play-mode></app-play-mode>
-                }
-              </div>
-            </div>
-          }
-        </td>
-        <td class="flex-vertical-center-align">
-          <div class="playback-info">
-            @if (basicStatusState().on) {
-              <app-playback-info></app-playback-info>
+@if (!basicStatusStore.error()) {
+  <table class="remote-main">
+    <tr class="vertical-center top-row">
+      <td class="flex-horizontal-left-align vertical-center">
+        <mat-button-toggle
+          class="power-button"
+          [checked]="basicStatusStore.on()"
+          (change)="powerButtonClicked($event.source.checked)"
+        >
+          <mat-icon>power_settings_new</mat-icon>
+        </mat-button-toggle>
+        <app-sleep></app-sleep>
+        <app-scenes></app-scenes>
+      </td>
+      <td class="flex-horizontal-center-align">
+        <span class="device-info">{{ service.networkName() }}</span>
+      </td>
+      <td class="flex-horizontal-right-align pad-16">
+        <app-dsp-select
+          [selectedDsp]="basicStatusStore.dsp()"
+          [disabled]="!basicStatusStore.on()"
+        ></app-dsp-select>
+        <app-input-selection
+          [currentInput]="basicStatusStore.currentInput()"
+          [disabled]="!basicStatusStore.on()"
+        ></app-input-selection>
+      </td>
+    </tr>
+    <tr class="vertical-top top-margin">
+      <td class="flex-horizontal-left-align">
+        @if (basicStatusStore.on()) {
+          <div class="flex-vertical-left-align">
+            <app-volume-control
+              [disabled]="!basicStatusStore.on()"
+            ></app-volume-control>
+            @if (basicStatusStore.currentInput() === 'NET RADIO') {
+              <app-net-radio-list></app-net-radio-list>
             }
+            <div class="flex-vertical-center-align">
+              <app-playback-control
+                [currentInput]="basicStatusStore.currentInput()"
+              ></app-playback-control>
+              @if (basicStatusStore.currentInput() === 'SERVER') {
+                <app-play-mode></app-play-mode>
+              }
+            </div>
           </div>
-        </td>
-        <td class="flex-vertical-right-align">
-          @if (basicStatusState().on) {
-            <app-options [basicStatusState]="basicStatusState()"></app-options>
+        }
+      </td>
+      <td class="flex-vertical-center-align">
+        <div class="playback-info">
+          @if (basicStatusStore.on()) {
+            <app-playback-info></app-playback-info>
           }
-          @if (basicStatusState().on) {
-            <app-cursor-control></app-cursor-control>
-          }
-        </td>
-      </tr>
-    </table>
-  } @else {
-    <mat-card class="error">
-      <mat-icon>error</mat-icon>
-      <span>
-        There was an error while connecting the receiver. Check your network
-        connection or the configured IP address of the receiver.
-      </span>
-    </mat-card>
-  }
+        </div>
+      </td>
+      <td class="flex-vertical-right-align">
+        @if (basicStatusStore.on()) {
+          <app-options></app-options>
+        }
+        @if (basicStatusStore.on()) {
+          <app-cursor-control></app-cursor-control>
+        }
+      </td>
+    </tr>
+  </table>
+} @else {
+  <mat-card class="error">
+    <mat-icon>error</mat-icon>
+    <span>
+      There was an error while connecting the receiver. Check your network
+      connection or the configured IP address of the receiver.
+    </span>
+  </mat-card>
 }

@@ -1,4 +1,3 @@
-import { Store } from '@ngrx/store';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,16 +5,13 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import { distinctUntilChanged, Subject, timer } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { RefreshAllStatusAction } from '../../store/actions/basic-status.action';
-import * as fromRoot from '../../store/reducer';
-import { State } from '../../store/reducer';
 import { RemoteService } from '../../service/remote-service';
+import { BasicStatusStore } from '../../store/basic-status.store';
 import { SleepComponent } from '../sleep/sleep.component';
 import { ScenesComponent } from '../scenes/scenes.component';
 import { DspSelectionComponent } from '../dsp-selection/dsp-selection.component';
@@ -27,6 +23,8 @@ import { PlayModeComponent } from '../play-mode/play-mode.component';
 import { PlaybackInfoComponent } from '../playback-info/playback-info.component';
 import { OptionsComponent } from '../options/options.component';
 import { CursorControlComponent } from '../cursor-control/cursor-control.component';
+
+const REFRESH_INTERVAL_MS = 5000;
 
 @Component({
   selector: 'app-remote-main',
@@ -51,22 +49,15 @@ import { CursorControlComponent } from '../cursor-control/cursor-control.compone
   ]
 })
 export class RemoteMainComponent implements OnInit, OnDestroy {
-  private readonly store = inject<Store<State>>(Store);
-  private readonly service = inject(RemoteService);
+  protected readonly service = inject(RemoteService);
+  protected readonly basicStatusStore = inject(BasicStatusStore);
 
-  protected readonly basicStatusState = toSignal(
-    this.store.select(fromRoot.getBasicStatusState).pipe(distinctUntilChanged())
-  );
-  protected readonly networkNameState = toSignal(
-    this.store.select(fromRoot.getNetworkNameState).pipe(distinctUntilChanged())
-  );
   private readonly unsubscribe$: Subject<void> = new Subject();
 
   ngOnInit(): void {
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    timer(0, 5000)
+    timer(0, REFRESH_INTERVAL_MS)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => this.store.dispatch(new RefreshAllStatusAction()));
+      .subscribe(() => this.service.refreshAll());
 
     this.service.fetchNetworkName();
   }

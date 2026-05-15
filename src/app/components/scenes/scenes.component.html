@@ -1,5 +1,5 @@
 <div class="scene-selection">
-  @for (scene of scenesState()?.scenes; track scene) {
+  @for (scene of service.scenes(); track scene) {
     <button (click)="selectScene(scene.xmlName)" mat-stroked-button>
       {{ scene.name }}
     </button>

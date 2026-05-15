@@ -1,14 +1,8 @@
-import { combineLatest, EMPTY, Observable, timer } from 'rxjs';
+import { EMPTY, Observable, timer } from 'rxjs';
 import { filter, map, take, takeWhile } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import * as fromRoot from '../store/reducer';
+import { Injectable, signal } from '@angular/core';
 import { NetRadioList } from '../model/net-radio-list.model';
-import {
-  SetListAction,
-  SetMenuStatusAction,
-  SetRadioStatusAction
-} from '../store/actions/netradio.action';
-import * as fromNetradio from '../store/reducer/netradio.reducer';
+import { NetRadioStatus } from '../model/net-radio-status.model';
 import { AbstractService } from './abstract-service';
 import { pick, pickNode, pickNumber } from './xml/xml-picker';
 
@@ -20,14 +14,10 @@ const MAX_LIST_LINES = 8;
   providedIn: 'root'
 })
 export class NetradioService extends AbstractService {
-  netradioState$: Observable<fromNetradio.State>;
+  readonly status = signal<NetRadioStatus | null>(null);
+  readonly list = signal<NetRadioList | null>(null);
 
-  fetchingNetRadioList = false;
-
-  constructor() {
-    super();
-    this.netradioState$ = this.store.select(fromRoot.getNetradioState);
-  }
+  private fetchingNetRadioList = false;
 
   moveNetRadioCursor(direction: string): Observable<string> {
     switch (direction) {
@@ -48,11 +38,10 @@ export class NetradioService extends AbstractService {
 
   fetchNetRadioList(): void {
     this.fetchingNetRadioList = false;
-    this.store.dispatch(new SetMenuStatusAction('Busy'));
-    combineLatest([timer(0, POLL_INTERVAL_MS), this.netradioState$])
+    this.markListBusy();
+    timer(0, POLL_INTERVAL_MS)
       .pipe(
-        map(([, state]) => state),
-        takeWhile(state => state.list?.menuStatus !== 'Ready'),
+        takeWhile(() => this.list()?.menuStatus !== 'Ready'),
         take(MAX_POLL_ATTEMPTS),
         filter(() => !this.fetchingNetRadioList)
       )
@@ -69,9 +58,7 @@ export class NetradioService extends AbstractService {
           song: pick(parsed, [...root, 'Meta_Info', 'Song']) ?? ''
         }))
       )
-      .subscribe(status =>
-        this.store.dispatch(new SetRadioStatusAction(status))
-      );
+      .subscribe(status => this.status.set(status));
   }
 
   selectWebRadioListItem(index: number): Observable<string> {
@@ -83,10 +70,26 @@ export class NetradioService extends AbstractService {
     );
   }
 
+  private markListBusy(): void {
+    const current = this.list();
+    this.list.set(
+      current
+        ? { ...current, menuStatus: 'Busy' }
+        : {
+            menuStatus: 'Busy',
+            menuLayer: 0,
+            menuName: '',
+            currentLine: 0,
+            maxLine: 0,
+            lines: []
+          }
+    );
+  }
+
   private tryToFetchNetRadioList(): void {
     this.fetchingNetRadioList = true;
     this.retrieveNetRadioList().subscribe(list => {
-      this.store.dispatch(new SetListAction(list));
+      this.list.set(list);
       this.fetchingNetRadioList = false;
     });
   }

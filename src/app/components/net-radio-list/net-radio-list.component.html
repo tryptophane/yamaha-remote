@@ -1,11 +1,13 @@
-@if (netradioState(); as state) {
-  <div class="net-radio-list">
-    @if (state?.list?.menuStatus === 'Ready') {
+<div class="net-radio-list">
+  @if (service.list(); as list) {
+    @if (list.menuStatus === 'Ready') {
       <mat-nav-list>
-        @for (line of state.list?.lines; track line) {
+        @for (line of list.lines; track line) {
           <mat-list-item
             (click)="selectRadioListLine(line)"
-            [class.selected]="line.txt && line.txt === state.status?.station"
+            [class.selected]="
+              line.txt && line.txt === service.status()?.station
+            "
           >
             <span>{{ line.txt | fixAmp }}</span>
           </mat-list-item>
@@ -21,16 +23,16 @@
         </mat-progress-spinner>
       </div>
     }
-    <div class="net-radio-nav-button-bar">
-      <button (click)="moveNetRadioCursor('BACK')" mat-button>
-        <mat-icon>chevron_left</mat-icon>
-      </button>
-      <button (click)="moveNetRadioCursor('DOWN')" mat-button>
-        <mat-icon>expand_more</mat-icon>
-      </button>
-      <button (click)="moveNetRadioCursor('UP')" mat-button>
-        <mat-icon>expand_less</mat-icon>
-      </button>
-    </div>
+  }
+  <div class="net-radio-nav-button-bar">
+    <button (click)="moveNetRadioCursor('BACK')" mat-button>
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button (click)="moveNetRadioCursor('DOWN')" mat-button>
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <button (click)="moveNetRadioCursor('UP')" mat-button>
+      <mat-icon>expand_less</mat-icon>
+    </button>
   </div>
-}
+</div>

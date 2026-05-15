@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Scene } from '../model/scene.model';
-import { SetScenesAction } from '../store/actions/scenes.action';
 import { AbstractService } from './abstract-service';
 import { pick, pickNode } from './xml/xml-picker';
 
@@ -9,6 +8,8 @@ import { pick, pickNode } from './xml/xml-picker';
   providedIn: 'root'
 })
 export class ScenesService extends AbstractService {
+  readonly scenes = signal<Array<Scene>>([]);
+
   loadScenes(): void {
     this.sendZone('GET', ['Config'], 'GetParam')
       .pipe(
@@ -31,7 +32,7 @@ export class ScenesService extends AbstractService {
           return scenes;
         })
       )
-      .subscribe(scenes => this.store.dispatch(new SetScenesAction(scenes)));
+      .subscribe(scenes => this.scenes.set(scenes));
   }
 
   selectScene(xmlName: string): void {

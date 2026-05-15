@@ -1,16 +1,16 @@
-@if (serverState()) {
+@if (service.status(); as status) {
   <div>
     <button
-      (click)="service.toggleRepeat(serverState().status?.repeat)"
-      [class.on]="serverState().status?.repeat"
+      (click)="service.toggleRepeat(status.repeat)"
+      [class.on]="status.repeat"
       aria-label="Repeat"
       mat-button
     >
       <mat-icon>repeat</mat-icon>
     </button>
     <button
-      (click)="service.toggleShuffle(serverState().status?.shuffle)"
-      [class.on]="serverState().status?.shuffle"
+      (click)="service.toggleShuffle(status.shuffle)"
+      [class.on]="status.shuffle"
       aria-label="Shuffle"
       mat-button
     >

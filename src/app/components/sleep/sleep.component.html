@@ -1,21 +1,19 @@
-@if (basicStatusState()) {
-  <div class="yamaha-sleep">
-    <button
-      (click)="toggleSleep(basicStatusState().sleep)"
-      [class.button-glow]="
-        basicStatusState().sleep && basicStatusState().sleep !== 'Off'
-      "
-      [disabled]="!basicStatusState().on"
-      [matTooltipShowDelay]="500"
-      [matTooltip]="
-        basicStatusState().sleep !== service.sleepStates[0]
-          ? 'Sleep timer was set to ' + basicStatusState().sleep
-          : 'Sleep Off'
-      "
-      id="sleepButton"
-      mat-mini-fab
-    >
-      <mat-icon>snooze</mat-icon>
-    </button>
-  </div>
-}
+<div class="yamaha-sleep">
+  <button
+    (click)="toggleSleep(basicStatusStore.sleep())"
+    [class.button-glow]="
+      basicStatusStore.sleep() && basicStatusStore.sleep() !== 'Off'
+    "
+    [disabled]="!basicStatusStore.on()"
+    [matTooltipShowDelay]="500"
+    [matTooltip]="
+      basicStatusStore.sleep() !== service.sleepStates[0]
+        ? 'Sleep timer was set to ' + basicStatusStore.sleep()
+        : 'Sleep Off'
+    "
+    id="sleepButton"
+    mat-mini-fab
+  >
+    <mat-icon>snooze</mat-icon>
+  </button>
+</div>

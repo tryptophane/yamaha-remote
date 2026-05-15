@@ -1,16 +1,14 @@
 <div class="input-selection">
-  @if (inputsState()?.inputList; as inputList) {
-    <mat-form-field>
-      <mat-select
-        (selectionChange)="this.service.setInputTo($event.value)"
-        [disabled]="disabled()"
-        [value]="currentInput()"
-        panelClass="input-select-panel-class"
-      >
-        @for (input of inputList; track input) {
-          <mat-option value="{{ input.param }}">{{ input.title }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  }
+  <mat-form-field>
+    <mat-select
+      (selectionChange)="this.service.setInputTo($event.value)"
+      [disabled]="disabled()"
+      [value]="currentInput()"
+      panelClass="input-select-panel-class"
+    >
+      @for (item of service.inputList(); track item) {
+        <mat-option value="{{ item.param }}">{{ item.title }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
 </div>

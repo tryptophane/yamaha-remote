@@ -2,21 +2,16 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   input,
-  signal,
   Signal
 } from '@angular/core';
-import { distinctUntilChanged, timer } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { timer } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { NgTemplateOutlet } from '@angular/common';
 import { MatCard } from '@angular/material/card';
-import { toSignal } from '@angular/core/rxjs-interop';
-import * as fromRoot from '../../store/reducer';
-import { State } from '../../store/reducer';
 import { PlaybackControlService } from '../../service/playback-control.service';
 import { AirplayService } from '../../service/airplay.service';
 import { SpotifyService } from '../../service/spotify.service';
@@ -27,10 +22,9 @@ import { ServerService } from '../../service/server.service';
   templateUrl: './playback-control.component.html',
   styleUrls: ['./playback-control.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButton, MatIcon, MatCard, NgTemplateOutlet]
+  imports: [MatButton, MatIcon, MatCard]
 })
 export class PlaybackControlComponent {
-  private readonly store = inject<Store<State>>(Store);
   private readonly service = inject(PlaybackControlService);
   private readonly airplayService = inject(AirplayService);
   private readonly spotifyService = inject(SpotifyService);
@@ -38,15 +32,18 @@ export class PlaybackControlComponent {
 
   readonly currentInput = input.required<string>();
 
-  spotifyState = toSignal(
-    this.store.select(fromRoot.getSpotifyState).pipe(distinctUntilChanged())
-  );
-  serverState = toSignal(
-    this.store.select(fromRoot.getServerState).pipe(distinctUntilChanged())
-  );
-  airplayState = toSignal(
-    this.store.select(fromRoot.getAirplayState).pipe(distinctUntilChanged())
-  );
+  protected readonly playback: Signal<string> = computed(() => {
+    switch (this.currentInput()) {
+      case 'SERVER':
+        return this.serverService.status()?.playback ?? '';
+      case 'Spotify':
+        return this.spotifyService.status()?.playback ?? '';
+      case 'AirPlay':
+        return this.airplayService.status()?.playback ?? '';
+      default:
+        return '';
+    }
+  });
 
   pause(): void {
     this.service
@@ -98,26 +95,19 @@ export class PlaybackControlComponent {
       .subscribe(() => this.refreshStatus());
   }
 
-  getState(): Signal<unknown> {
-    const currentInput = this.currentInput();
-    if (currentInput === 'SERVER') {
-      return this.serverState;
-    } else if (currentInput === 'Spotify') {
-      return this.spotifyState;
-    } else if (currentInput === 'AirPlay') {
-      return this.airplayState;
-    }
-    return signal(undefined);
-  }
-
   private refreshStatus(): void {
-    const currentInput = this.currentInput();
-    if (currentInput === 'SERVER') {
-      this.serverService.refreshServerStatus();
-    } else if (currentInput === 'Spotify') {
-      this.spotifyService.refreshSpotifyStatus();
-    } else if (currentInput === 'AirPlay') {
-      this.airplayService.refreshAirplayStatus();
+    switch (this.currentInput()) {
+      case 'SERVER':
+        this.serverService.refreshServerStatus();
+        break;
+      case 'Spotify':
+        this.spotifyService.refreshSpotifyStatus();
+        break;
+      case 'AirPlay':
+        this.airplayService.refreshAirplayStatus();
+        break;
+      default:
+        break;
     }
   }
 }

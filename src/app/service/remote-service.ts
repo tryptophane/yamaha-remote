@@ -1,14 +1,24 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SetNetworkNameAction } from '../store/actions/network-name.action';
 import { SleepStates } from '../model/sleep-states.enum';
 import { AbstractService } from './abstract-service';
+import { AirplayService } from './airplay.service';
+import { NetradioService } from './netradio.service';
+import { ServerService } from './server.service';
+import { SpotifyService } from './spotify.service';
 import { pick } from './xml/xml-picker';
 
 @Injectable({ providedIn: 'root' })
 export class RemoteService extends AbstractService {
   sleepStates: Array<string> = Object.values(SleepStates);
+
+  readonly networkName = signal<string>('');
+
+  private readonly netradio = inject(NetradioService);
+  private readonly spotify = inject(SpotifyService);
+  private readonly server = inject(ServerService);
+  private readonly airplay = inject(AirplayService);
 
   powerOn(): void {
     this.sendAndRefreshZone('PUT', ['Power_Control', 'Power'], 'On');
@@ -41,6 +51,32 @@ export class RemoteService extends AbstractService {
             ]) ?? ''
         )
       )
-      .subscribe(name => this.store.dispatch(new SetNetworkNameAction(name)));
+      .subscribe(name => this.networkName.set(name));
+  }
+
+  /**
+   * Refresh basic status and, when on, cascade a refresh of the currently
+   * selected input's status (NET RADIO / Spotify / SERVER / AirPlay).
+   */
+  refreshAll(): void {
+    this.basicStatusStore.refresh().subscribe(state => {
+      if (!state.on) return;
+      switch (state.currentInput) {
+        case 'NET RADIO':
+          this.netradio.refreshNetRadioStatus();
+          break;
+        case 'Spotify':
+          this.spotify.refreshSpotifyStatus();
+          break;
+        case 'SERVER':
+          this.server.refreshServerStatus();
+          break;
+        case 'AirPlay':
+          this.airplay.refreshAirplayStatus();
+          break;
+        default:
+          break;
+      }
+    });
   }
 }
