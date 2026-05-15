@@ -1,7 +1,7 @@
 {
   "name": "yamaha-remote",
-  "version": "0.2.2",
-  "license": "MIT",
+  "version": "0.2.3",
+  "license": "GPL-3.0-or-later",
   "private": true,
   "scripts": {
     "ng": "ng",

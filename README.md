@@ -115,6 +115,10 @@ like tablets or smartphones.
 Use Github to report bugs or send pull requests. I'm doing this in my free time and have lots of other hobbies, so there
 is no guarantee that I will reply, fix bugs or review / merge your pull requests. But maybe I'll try :-)
 
+### License
+
+GPL-3.0-or-later — see [LICENSE](./LICENSE)
+
 ## Screenshots
 
 ![screenshot AV1 input](./resources/screenshots/Screenshot_Input_Net_Radio.png)

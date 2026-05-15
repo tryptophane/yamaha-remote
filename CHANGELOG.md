@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v0.2.3
+
+This release completes the past days series of updating and refactoring the app to make it leaner, easier to maintain and
+using the latest technologies provided by Angular. The app is now more performant, uses less CPU and is more stable. the
+bundle size has been drastically reduced. New features can now be added more easily. The UI-layout still needs a
+complete redesign.
+
+- Performed a complete refactoring of the communication with the receiver
+- Removed the classical NgRX-Store and replaced it with SignalStore for "BasicStatus" and simple signals for all other
+  states, resulting in much leaner code and better performance
+- Updated instructions for serving the app in README
+- Added receiver API of the RX-V475 model as served under `http://<receiver-ip>/desc.xml` to resources
+- Corrected "license" field in package.json
+
 ## v0.2.2
 
 - Updated docker to use buildx, complete refactoring of Dockerfile
