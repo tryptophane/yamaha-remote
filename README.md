@@ -39,18 +39,22 @@ This project relies on the following technologies:
 - Typescipt
 - Angular (with CLI)
 - RxJS
-- NgRx Store
+- NgRx SignalStore
 - Node.js NPM
 - Docker
 - NGINX
-
-It was developed in the WebStorm IDE.
 
 You can find an XML description of the REST-API of your receiver at this URL:
 
 *http://[IP of your receiver]/YamahaRemoteControl/desc.xml*
 
 ## Development server
+
+### Requirements
+
+- npm installed on your system
+
+### Run dev server
 
 Edit `proxy.conf.json` and replace the URL with the URL of your receiver in your local network. Install module
 dependencies with `npm install`. Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will
@@ -60,6 +64,15 @@ automatically reload if you change any of the source files.
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag
 for a production build.
+
+## Serve
+
+To serve a production build, run `npm run serve` in the root of the project
+
+Alternatively, serve it with nginx on your host, your NAS or any other server. For a simple configuration of an nginx 
+on your host, the same file as the docker container can be used, located at [dev/nginx.conf](./dev/nginx.conf). Replace
+the value of `root` with the path of the `dist/` folder containing the build output, and replace `${BACKEND_API_URL}` 
+with your receivers URL or set the environment variable.
 
 ## Build docker container
 
@@ -75,7 +88,7 @@ the app on port 9200, start the container like this:
 
 ## Start docker container from Docker Hub
 
-master releases of YamahaRemote automatically get build at Docker Hub. You can deploy directly from Docker Hub without
+master releases of YamahaRemote are made available at Docker Hub. You can deploy directly from Docker Hub without
 having to download the sources and build the container by yourself by issuing the following command (for receiver at IP
 192.168.188.80 and serving on port 9200):
 
@@ -87,10 +100,8 @@ Docker Hub URL: https://hub.docker.com/repository/docker/tryptophane/yamaha-remo
 
 ### Functionality:
 
-- FM / AM radio control (Tuning, selecting and storing presets, switching between AM and FM, etc...)
-- USB file selection
+- Implementing all features the API enables
 - Network discovery (suppress the need for configuring the IP address of the receiver)
-- Support multiple zones
 - You tell me...
 
 ### Design:
@@ -98,11 +109,6 @@ Docker Hub URL: https://hub.docker.com/repository/docker/tryptophane/yamaha-remo
 I focused on functionality and invested only little efforts in layout and design. The layout is optimized for the HiDPI
 screen of my notebook. There is some work to do to make it compatible with lower resolution screens and mobile devices
 like tablets or smartphones.
-
-### Coding:
-
-- Architecure improvements (make it easier to extend to other receiver models)
-- Tests (karma /E2E) *little motivation to write tests in my free time...*
 
 ## Want to help?
 
